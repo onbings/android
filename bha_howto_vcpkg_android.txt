@@ -1,0 +1,156 @@
+add C:\Android\Sdk\platform-tools to patch for adb.exe
+add alseo C:\Program Files\CMake\bin and c:\pro\vcpkg
+set env var ANDROID_HOME to C:\Android\Sdk
+set env var JAVA_HOME to C:\Android\jre
+
+copy C:\pro\vcpkg\triplets\community\arm-android.cmake        C:\pro\vcpkg\triplets\community\arm-android-30.cmake
+copy C:\pro\vcpkg\triplets\community\arm-neon-android.cmake   C:\pro\vcpkg\triplets\community\arm-neon-android-30.cmake
+copy C:\pro\vcpkg\triplets\community\arm64-android.cmake      C:\pro\vcpkg\triplets\community\arm64-android-30.cmake
+copy C:\pro\vcpkg\triplets\community\armv6-android.cmake      C:\pro\vcpkg\triplets\community\armv6-android-30.cmake
+copy C:\pro\vcpkg\triplets\community\x64-android.cmake        C:\pro\vcpkg\triplets\community\x64-android-30.cmake
+copy C:\pro\vcpkg\triplets\community\x86-android.cmake        C:\pro\vcpkg\triplets\community\x86-android-30.cmake
+
+add
+#BHA
+set(VCPKG_CMAKE_SYSTEM_VERSION 30)
+at the end on -30.cmake file
+
+copy C:\pro\vcpkg\triplets\community\arm-android.cmake        C:\pro\vcpkg\triplets\community\arm-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\arm-neon-android.cmake   C:\pro\vcpkg\triplets\community\arm-neon-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\arm64-android.cmake      C:\pro\vcpkg\triplets\community\arm64-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\armv6-android.cmake      C:\pro\vcpkg\triplets\community\armv6-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\x64-android.cmake        C:\pro\vcpkg\triplets\community\x64-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\x86-android.cmake        C:\pro\vcpkg\triplets\community\x86-android-32.cmake
+
+add
+#BHA
+set(VCPKG_CMAKE_SYSTEM_VERSION 32)
+at the end on -32.cmake file
+    
+- Install last cmake, put it in PATH
+- Install android studio
+- Use android studio to create a 'game activity c++" app
+		Tools - Sdk Manager - download Ndk and api 30/32 in c:\adroid\sdk and c:\adroid\sdk\ndk
+- Edit C:\Program Files\CMake\share\cmake-3.25\Modules\FindThreads.cmake and comment the line	
+	int main(void)
+	{
+		pthread_t thread;
+		pthread_create(&thread, NULL, test_func, NULL);
+		pthread_detach(thread);
+		--->//BHA_FOR_ANDROID pthread_cancel(thread);
+  
+- Android studio: create new app base on game activity template (one of the last of the list)
+NEED SDK API LEVEL 32GAME ACTIVITY TEMPLATE
+File-Project structure - Modules: set compile sdk version (32), tool version (33) and ndk build (25...)  
+- edit C:\pro\android\MyApplication\app\build.gradle and add:
+abiFilters
+cmake new version number
+ndkVersion
+remove second externalNativeBuild	
+
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.example.myapplication'
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.example.myapplication"
+        minSdk 30
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+		ndk {
+--->            abiFilters "x86_64"
+        }
+        externalNativeBuild {
+            cmake {
+                cppFlags '-std=c++14'
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        prefab true
+    }
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+--->REMOVE            version '3.18.1'
+--->		    version '3.25.1'
+        }
+    }	
+--->    buildToolsVersion '33.0.0'
+--->    ndkVersion '25.1.8937393'
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.games:games-activity:1.0.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
+		
+File - Sync project with gradle files.
+buildrun
+		
+- use c:\pro\android\cmp_prj.bat to compile bofstd/bof2d and lvgl
+c:\pro\android\cmp_prj github\bofstd x86_64 30 x64 Debug
+c:\pro\android\cmp_prj github\bofstd x86_64 32 x64 Debug
+c:\pro\android\cmp_prj github\bofstd x86 30 x86 Debug
+c:\pro\android\cmp_prj github\bofstd x86 32 x86 Debug
+		
+- Modify C:\pro\android\MyApplication\app\src\main\cpp\CMakeLists.txt		
+
+
+DO NOT USE 10.1 WXGA tablet in emulator for open gl app it does not work
+Use nexus 10 (best) or pixelC device.
+Some device (pixelC are not gles3 but gles 2) so you need to change
+C:\pro\android\demobof2d\app\src\main\cpp\CMakeLists.txt:
+target_link_libraries( # Specifies the target library.
+        demobof2d
+
+        android
+
+        # The game activity
+        game-activity::game-activity
+
+        # EGL, required for configuring the display context
+        EGL
+
+        # GL ES 3, used for the sample renderer
+--->      GLESv3 -->GLESv2
+
+C:\pro\android\demobof2d\app\src\main\cpp\Renderer.cpp
+    constexpr EGLint attribs[] = {
+--->            EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,   -->EGL_OPENGL_ES2_BIT
+            EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+            EGL_BLUE_SIZE, 8,
+            EGL_GREEN_SIZE, 8,
+            EGL_RED_SIZE, 8,
+            EGL_DEPTH_SIZE, 24,
+            EGL_NONE
+    };
+	
+	    EGLint contextAttribs[] = {EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE};  -->EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE
+		
+C:\pro\android\demobof2d\app\src\main\cpp\CMakeLists.txt		
+
+

@@ -1,0 +1,1183 @@
+Install redis:
+ https://redis.io/docs/getting-started/
+ curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+ echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+ sudo apt-get update
+ sudo apt-get install redis
+ redis-server --help
+ 
+config:
+ cd
+ mkdir redis
+ sudo cp /etc/redis/redis.conf /home/bha/redis/
+ sudo chown bha ./redis/redis.conf
+ chmod 666 ./redis/redis.conf
+
+ nano ./redis/redis.conf
+ 
+    Adresses IP
+
+    #bind 127.0.0.1 -::1
+    bind 127.0.0.1 10.129.170.19
+
+    Pathes
+
+    # Note that you must specify a directory here, not a file name.
+    dir /home/bha/redis/rdb/
+
+    ACL
+
+# Basically ACL rules are processed left-to-right.
+	user nma on +@all ~* >MyPassWord
+	user default off
+
+
+test:
+ redis-cli
+ redis-cli -h 10.129.170.19
+ 
+ Install redis-client on windows:
+ https://github.com/qishibo/AnotherRedisDesktopManager/releases/tag/v1.5.5
+
+Stop redis:
+ If automatically started stop it with 
+ sudo /etc/init.d/redis-server stop
+
+ If started by "me"
+ ps -ax | grep redis
+ kill pid
+
+Start redis:
+ redis-server ./redis/redis.conf
+
+
+
+Switcher-X : Build environment
+https://wiki.evs.tv/pages/viewpage.action?spaceKey=PRENG&title=Switcher-X+%3A+Build+environment
+
+Switcher-X : Building
+https://wiki.evs.tv/pages/viewpage.action?spaceKey=PRENG&title=Switcher-X+%3A+Building
+
+C:
+md pro
+cd pro
+
+git clone ssh://git@bitbucket.evs.tv:7999/vcpkg/vcpkg-packaging-env.git
+git clone ssh://git@bitbucket.evs.tv:7999/vcpkg/evs-vcpkg-registry.git
+
+git clone ssh://git@bitbucket.evs.tv:7999/vcpkg/evs-vcpkg-library-template.git
+git clone ssh://git@bitbucket.evs.tv:7999/vcpkg/vcpkg.git
+replaced by the next one git clone ssh://git@bitbucket.evs.tv:7999/swc/evs-muse.git
+git clone ssh://git@bitbucket.evs.tv:7999/swc/evs-muse.git
+
+https://stackoverflow.com/questions/2657786/suddenly-getting-no-supported-authentication-methods-available-when-pushing-to
+For me there was a problem to perform actions against the remote repository only when using TortoiseGit, through CMD / GitBash there have been no issue at all. So what I did was Very simple: I opened TortoiseGit-->Settings --> Network and in SSH Client I changed to "C:\Program Files\Git\usr\bin\ssh.exe" instead of "TortoiseGitPlink.exe".
+
+cd ./vcpkg
+bootstrap-vcpkg.bat	or ./bootstrap-vcpkg.sh
+cd C:/bld
+md evs-muse / mkdir evs-muse
+cd evs-muse
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=OFF -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-static C:/pro/evs-muse
+or bofstd:
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=OFF -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-static -DBOFSTD_GENERATE_HELP=ON C:/pro/github/bofstd
+or
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic C:/pro/evs-muse
+Linux:
+les triplets sont documentés ici : https://wiki.evs.tv/display/PRENG/Switcher-X+%3A+Building
+
+cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic  ~/pro/evs-muse
+cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic  ~/pro/bofstd
+
+Recover disk space
+PS C:\pro\evs-vcpkg-registry\scripts> python .\build-cache.py --download-folder --vcpkg-root C:\pro\vcpkg
+PS C:\pro\evs-vcpkg-registry\scripts> python .\clear-cache.py --download-folder --vcpkg-root C:\pro\vcpkg
+
+Compile bofstd in docker:
+https://wiki.evs.tv/display/PRENG/Switcher-X+%3A+Build+environment
+
+goto linux computer 10.129.170.18
+cd /home/bha/pro/bofstd
+git pull
+cd /home/bha/pro/cpp-build-environment
+git pull
+python3 ./docker_build.py --list
+
+bha@NMA-PMY:~/pro/cpp-build-environment$ python3 ./docker_build.py --list
+centos_7_devel
+centos_7_devel_4
+centos_7_runtime
+debian_10_devel
+debian_10_runtime
+
+IF YOU WANT TO BUILD DOCKER IMAGE
+bha@NMA-PMY:~/pro/cpp-build-environment$ python3 ./docker_build.py -i debian_10_devel  <= USE PREBUILD INSTEAD
+
+===>BETTER TO USE PRE-BUILDED
+===>bha@NMA-PMY:~/pro/cpp-build-environment$ python3 ./docker_run.py -i debian_10_devel
+
+sudo systemctl start docker if not started
+
+bha@NMA-PMY:~/pro/cpp-build-environment$ ./docker_run.py -i debian_10_devel
+Starting docker for image evs-build-release-docker.artifactory.evs.tv/swc/debian_9:17
+Unable to find image 'evs-build-release-docker.artifactory.evs.tv/swc/debian_9:17' locally
+17: Pulling from swc/debian_9
+7919f5b7d602: Already exists
+0ecbbee6acf2: Pull complete
+ba5fd3268ce3: Pull complete
+a66eb782319f: Pull complete
+cf46ad06ddf3: Pull complete
+c4bc804cbf9a: Pull complete
+62e68311d76e: Pull complete
+699ef52dae9c: Pull complete
+cc35869006ea: Pull complete
+e8b2dc38bbfa: Pull complete
+Digest: sha256:131cf554b61ae41c436f7fb8f7ff250b6d69ab61017cabd4023fcfb780360fe1
+Status: Downloaded newer image for evs-build-release-docker.artifactory.evs.tv/swc/debian_9:17
+bha@f3284dda6e5d:~$ ls
+Downloads  bld  doc  pro  redis  repo
+
+build bofstd with docker
+
+bha@f3284dda6e5d:~$ cd ./bld/bofstd/
+cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic  ~/pro/bofstd
+
+build evs-muse with docker
+
+bha@f3284dda6e5d:~$ cd ./bld/evs-muse/
+bha@f3284dda6e5d:~/bld/evs-muse$  cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic  ~/pro/evs-muse
+
+
+cmake --build .
+
+exec test unitaire
+CTest .
+
+or 
+export LD_LIBRARY_PATH=/home/bha/bld/bofstd/vcpkg_installed/evs-x64-swx-linux-dynamic/debug/lib:/home/bha/bld/bofstd/vcpkg_installed/evs-x64-swx-linux-dynamic/lib:$LD_LIBRARY_PATH
+
+cd /home/bha/bld/bofstd/tests
+./bofstd-tests
+
+Re-exec test sous valgrind / clang-tidy 
+https://wiki.evs.tv/display/PRENG/Muse+%3A+Building
+cd /home/bha/pro
+git clone ssh://git@bitbucket.evs.tv:7999/swc/cmake-scripts.git
+bha@2525b5e4be4a:~/bld/evs-muse$ 
+rm -r *
+cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic -DCMAKE_BUILD_TYPE="Debug" -DCMAKE_PROJECT_INCLUDE=/home/bha/pro/cmake-scripts/cmake/main.cmake  ~/pro/evs-muse
+cmake --build .
+ctest . -T MemCheck -j $(nproc) --output-on-failure
+export LD_LIBRARY_PATH=/home/bha/bld/evs-muse/vcpkg_installed/evs-x64-swx-linux-dynamic/debug/lib:/home/bha/bld/vcpkg_installed/evs-x64-swx-linux-dynamic/lib:$LD_LIBRARY_PATH
+
+cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic -DCMAKE_BUILD_TYPE="Debug" -DCMAKE_PROJECT_INCLUDE=/home/bha/pro/cmake-scripts/cmake/main.cmake  ~/pro/bofstd
+export LD_LIBRARY_PATH=/home/bha/bld/bofstd/vcpkg_installed/evs-x64-swx-linux-dynamic/debug/lib:$LD_LIBRARY_PATH
+
+
+
+350/351 MemCheck #350: evs-muse-common_test_logger_test.log_overflow ..............................................................................................................................   Passed    5.67 sec
+351/351 MemCheck #331: evs-muse-storage_Muse_Storage_FileSystem_Test.MediaInfo ....................................................................................................................***Failed   18.51 sec
+
+99% tests passed, 1 tests failed out of 351
+
+Total Test time (real) =  87.12 sec
+
+The following tests FAILED:
+        331 - evs-muse-storage_Muse_Storage_FileSystem_Test.MediaInfo (Failed)
+-- Processing memory checking output:
+351/351 MemCheck: #331: evs-muse-storage_Muse_Storage_FileSystem_Test.MediaInfo ....................................................................................................................   Defects: 2
+MemCheck log files can be found here: (<#> corresponds to test number)
+/home/bha/bld/evs-muse/Testing/Temporary/MemoryChecker.<#>.log
+Memory checking results:
+Memory Leak - 2
+        Errors while running CTest
+Output from these tests are in: /home/bha/bld/evs-muse/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+
+Analyse ut test core dump:
+cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=OFF -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-static  ~/pro/evs-muse
+cd /home/bha/bld/evs-muse/binaries/bin
+gdb ./ut_muse_storage-tests -c core.24713
+backtrace
+break /home/bha/pro/vcpkg/buildtrees/bofstd/src/4613f59a2d-5563455ca3.clean/lib/src/bofvideostandard.cpp:65
+break /home/bha/pro/vcpkg/buildtrees/bofstd/src/4613f59a2d-5563455ca3.clean/lib/src/bofvideostandard.cpp:116
+
+=>nano /home/bha/bld/evs-muse/Testing/Temporary/MemoryChecker.331.log
+ 
+ctest . -T MemCheck -j $(nproc) -R '^test_' regular expression --output-on-failure
+ctest . -T MemCheck -j $(nproc) -R 'Muse_Storage_FileSystem_Test.MediaInfo' --output-on-failure
+ctest . -R 'Muse_Storage_Api_Test.ImportMedia' --output-on-failure
+ 
+
+
+ drmemory:
+ https://drmemory.org/page_running.html
+ cd C:\bld\bofstd\tests\
+ drmemory.exe -- C:\bld\bofstd\tests\Debug\bofstd-tests.exe
+ 
+docker windows:
+cd c:\pro\cpp-build-environment
+python ./docker_run.py -i windows_10_devel -vc:\pro:C:\pro
+cd c:\pro\bld_for_docker
+cmake -DCMAKE_TOOLCHAIN_FILE=c:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic  c:/pro/evs-muse
+
+DockerBridge for visualcode
+ssh -NL localhost:23750:/var/run/x.sock bha@10.129.170.19
+
+binary caching:
+[9:32 AM] MARIQUE, Nicolas
+https://wiki.evs.tv/display/PRENG/vcpkg+%3A+3+-+Enable+binary+caching
+
+[9:38 AM] MARIQUE, Nicolas
+VCPKG_BINARY_SOURCES=default,readwrite;nuget,artifactory,readwrite
+
+[9:38 AM] MARIQUE, Nicolas
+VCPKG_USE_NUGET_CACHE=1
+
+
+./set-nuget-config.py --user bha --url https://artifactory.evs.tv/artifactory/api/nuget/evs-vcpkg-build-nuget --name artifactory --api-key AKCp8hz3iUCzgiWAsmBuWdf87H7bauh3ngLPqnXemMs8MUpqxkQCPg14jjso9HaN78B1Bj2UU --vcpkg-root /home/bha/pro/vcpkg
+
+
+
+teamcity: https://teamcity.evs.tv/project.html?projectId=XT_Libraries_SwitcherCore_Components_Libraries_EvsSwitcherXBusiness
+
+
+
+BUILD_SHARED_LIBS=ON/OFF defines the type of lib and run time lib to use for our compil
+VCPKG_TARGET_TRIPLET=specifies the type of lib dependencies we want to use witgh our lib
+
+python create-project.py --name evs-muse-gui --version 0.1.0 --description "Poc Gui switcher-x" --out-dir C:/pro/evs-muse-gui
+
+Add Qt dependency:
+C:/pro/evs-muse-gui/vcpkg.json:
+{
+  "name": "evs-muse-gui",
+  "version": "0.1.0",
+  "description": "Poc Gui switcher-x",
+  "dependencies": [
+    { "name": "gtest"    },
+    { "name": "qt5-base" }
+  ]
+}
+
+C:/pro/evs-muse-gui/Dependencies.cmake.in:
+# ==========================
+# == PRIVATE DEPENDENCIES ==
+# ==========================
+
+find_package_dependency(Qt5 REQUIRED Core Gui Widgets)
+
+
+add C:/pro/vcpkg to the windows path
+
+Add a lib to vcpkg:
+https://devblogs.microsoft.com/cppblog/registries-bring-your-own-libraries-to-vcpkg/
+https://wiki.evs.tv/display/PRENG/vcpkg+%3A+2+-+Test+a+custom+port
+https://wiki.evs.tv/display/PRENG/vcpkg+%3A+1+-+Add+a+port+to+custom+registry
+
+In port file pass option to disable specific dependencies such as gtest to avoid over complexification of download/compile:
+vcpkg_configure_cmake(
+        SOURCE_PATH ${SOURCE_PATH}
+        PREFER_NINJA
+        OPTIONS
+          -DBOFSTD_BUILD_TESTS=OFF
+          -DBOFSTD_BUILD_TOOLS=OFF
+          -DBOFSTD_BUILD_EXAMPLES=OFF
+		  -DBOFSTD_BUILD_EXAMPLES=OFF
+		  -DBOFSTD_GENERATE_HELP=OFF
+)
+C:/bld>mkdir bofstd
+C:/bld>cd ./bofstd
+C:/bld/bofstd>
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_OVERLAY_PORTS=C:/pro/evs-vcpkg-registry/ports/ C:/pro/github/bofstd
+
+In case of error:
+C:/pro/vcpkg/buildtrees/bofstd/config-x64-windows-out.log
+
+compile bofstd:
+mkdir C:\pro\bofstd
+cd C:\pro\bofstd
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake  C:/pro/github/bofstd
+
+Use BofStd:
+Add it to public or private dependencies:
+C:\pro\evs-muse\Dependencies.cmake
+
+if(NOT TARGET ONBINGS::bofstd)
+   find_package(bofstd REQUIRED)
+endif()
+
+# ===========
+# == BUILD ==
+# ===========
+add_executable(vcpkg-packaging-env main.cpp)
+target_link_libraries(vcpkg-packaging-env
+  PRIVATE 
+  ONBINGS::bofstd
+    # Put your link libraries here
+)
+
+cd c:/bld
+md evs-muse
+cd evs-muse
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic C:/pro/evs-muse
+
+
+list vcpkg package version:
+vcpkg.exe search bofstd --overlay-ports=C:/pro/evs-vcpkg-registry/ports
+
+Modify and test a new triplet
+C:\pro\vcpkg\triplets\community\evs-x64-swx-linux-dynamic.cmake
+# Force ports that don't compile dynamically
+if(PORT MATCHES "libmediainfo")
+  set(VCPKG_LIBRARY_LINKAGE static)
+endif()
+
+VCPKG_OVERLAY_TRIPLETS
+https://vcpkg.readthedocs.io/en/latest/users/config-environment/
+
+Consul:
+download at: https://www.consul.io/downloads
+copy consul.exe to C:\tools\consul
+start it with C:\tools\consul>consul.exe agent --config-dir=C:\tools\consul --data-dir=C:\tools\consul\data
+
+if problem with config start it with consul agent -dev
+Web: http://localhost:8500
+
+windows consul is linked to consul on 10.129.170.18
+
+Republish a new version
+dependency of bofstd: 
+- C:\pro\evs-vcpkg-registry\ports\bofstd\vcpkg.json and 
+- C:\pro\github\bofstd\vcpkg.json
+change version in CMakeLists.txt project(bofstd VERSION 5.1.16.70) C:/pro/github/bofstd/CMakeLists.txt
+Make the modifications
+change version 5.1.16.70 in C:/pro/github/bofstd/vcpkg.json file and update version
+Push modified file to git
+get push ref eeb75ca2ce9f7779b0596abc8eae7c566e216b03		used also during last phase with the ./update-port.py command at rhe end of the procedure
+
+change portfile.cmake file in C:/pro/evs-vcpkg-registry/ports/bofstd/portfile.cmake with the git ref value: eeb75ca2ce9f7779b0596abc8eae7c566e216b03
+portfile.cmake with the new push ref and SHA512 to 0 to get the correct one
+
+validate it with the C:\pro\vcpkg-packaging-env project
+
+add 
+target_link_libraries(vcpkg-packaging-env
+  PRIVATE 
+  ONBINGS::bofstd
+    # Put your link libraries here
+)
+to C:\pro\vcpkg-packaging-env\CMakeLists.txt
+add
+  "dependencies": [
+	"bofstd"
+	]
+to C:\pro\vcpkg-packaging-env\vcpkg.json	
+del a dir and create a new "a" dir
+C:/bld>mkdir a
+C:/bld>cd ./a
+C:/bld/a>cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic -DVCPKG_OVERLAY_PORTS=C:/pro/evs-vcpkg-registry/ports/ C:/pro/vcpkg-packaging-env
+
+[DEBUG] Downloading https://github.com/onbings/bofstd/archive/eeb75ca2ce9f7779b0596abc8eae7c566e216b03.tar.gz
+Error: Failed to download from mirror set:
+File does not have the expected hash:
+             url : [ https://github.com/onbings/bofstd/archive/eeb75ca2ce9f7779b0596abc8eae7c566e216b03.tar.gz ]
+       File path : [ C:\pro\vcpkg\downloads\onbings-bofstd-eeb75ca2ce9f7779b0596abc8eae7c566e216b03.tar.gz.20964.part ]
+   Expected hash : [ 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 ]
+     Actual hash : [ e33ded711b18c07c4aaa20955c17b4bfb02a0449f238f7298ddb9be4f0e504878ddf20f58294c3f8b48059c3e74c101cc53daacc201429e8bc7c1350063315d0 ]
+
+
+
+get the good SHA512 and put it back in portfile.cmake
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic -DVCPKG_OVERLAY_PORTS=C:/pro/evs-vcpkg-registry/ports/ C:/pro/vcpkg-packaging-env
+cmake -DCMAKE_TOOLCHAIN_FILE=/home/bha/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic -DVCPKG_OVERLAY_PORTS=/home/bha/pro/evs-vcpkg-registry/ports/ /home/bha/pro/vcpkg-packaging-env
+should be ok
+compile it with  cmake --build .
+
+you can check this new bofstd against evs-muse
+md b
+cd b
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic -DVCPKG_OVERLAY_PORTS=C:/pro/evs-vcpkg-registry/ports/ C:/pro/evs-muse
+with doc gen:
+cmake -DEVS_MUSE_STORAGE_GENERATE_HELP=ON -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic -DVCPKG_OVERLAY_PORTS=C:/pro/evs-vcpkg-registry/ports/ C:/pro/evs-muse
+
+cd C:/pro/evs-vcpkg-registry
+git pull
+python ./update-port.py bofstd 5.1.16.70 eeb75ca2ce9f7779b0596abc8eae7c566e216b03 <- push git ref of the lib: this is the same than url : [ https://github.com/onbings/bofstd/archive/eeb75ca2ce9f7779b0596abc8eae7c566e216b03.tar.gz ]
+
+get the new push git ref 949ecf17a451641f3dd6b114732625478ccb067c (C:/pro/evs-vcpkg-registry>git log)
+commit message should be "Update bofstd to 5.1.16.70/eeb75ca2ce9f7779b0596abc8eae7c566e216b03"
+
+commit 949ecf17a451641f3dd6b114732625478ccb067c (HEAD -> master)
+Author: bha <b.harmel@evs.com>
+Date:   Fri Aug 12 14:53:18 2022 +0200
+
+    Update bofstd to 5.1.16.70/eeb75ca2ce9f7779b0596abc8eae7c566e216b03
+
+
+update baseline in your vcpkg-configuration of your project which want to use this new lib (C:/pro/evs-muse/vcpkg-configuration.json)
+949ecf17a451641f3dd6b114732625478ccb067c
+
+"registries": [
+    {
+      "kind": "git",
+      "repository": "ssh://git@bitbucket.evs.tv:7999/vcpkg/evs-vcpkg-registry.git",
+      "baseline": "949ecf17a451641f3dd6b114732625478ccb067c",
+	  
+C:/pro/evs-vcpkg-registry: git pull, git log,git push git log
+
+cd C:\pro\evs-muse
+C:\pro\evs-muse>git commit -a -m "update baseline"
+C:\pro\evs-muse>git push
+C:\pro\evs-muse>git log	  
+
+cd C:\bld\evs-muse
+DLL:
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic C:/pro/evs-muse
+LIB:
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=OFF -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-static C:/pro/evs-muse	  
+TeamCity muse: https://teamcity.evs.tv/project.html?projectId=XT_Libraries_SwitcherCore_EvsMuse&tab=projectOverview&branch_XT_Libraries_SwitcherCore_EvsMuse=bha_feature_GetSxStorageServerVersion
+	  
+
+vcpkg package dependency: https://vcpkg.io/en/packages.html
+Add bofstd, qt tools and mediainfo dependency to prj:
+edit C:/pro/evs-muse/vcpkg.json   
+{
+  "name": "evs-muse",
+  "version": "0.2.0",
+  "description": "The switcher-x solution",
+  "dependencies": [
+    { "name": "evs-video-protocol"  },
+    { "name": "gtest"               },
+    { "name": "jsoncpp"             },
+    { "name": "openssl"             },
+    { "name": "spdlog"              },
+    { "name": "zeromq"              },
+    {
+      "name": "redis-plus-plus",
+      "features": [
+        "cxx17"
+      ]
+    },
+    {
+      "name": "qt5-base",
+      "platform": "windows"
+    },
+    {
+      "name": "qt5-tools",
+      "platform": "windows"
+    }
+    {
+      "name": "bofstd"
+    },
+	{
+      "name": "libmediainfo"
+    }	
+  ]
+}
+
+edit C:/pro/evs-muse/evs-muse-gui/libs/widgets/CMakeLists.txt
+target_link_libraries(evs-muse-gui-lib-widgets-objects
+  PUBLIC
+    EVS::evs-muse-gui-lib-backend
+
+    Qt5::Core
+    Qt5::Widgets
+	
+  PRIVATE
+	ONBINGS::bofstd
+)
+
+edit C:/pro/evs-muse/evs-muse-gui/libs/backend/CMakeLists.txt
+target_link_libraries(evs-muse-gui-lib-backend-objects
+  PUBLIC
+    EVS::evs-muse-app-helpers
+    EVS::evs-muse-production-api
+  
+    Qt5::Core
+
+  PRIVATE
+    OpenSSL::SSL
+	ONBINGS::bofstd
+	mediainfo
+)
+
+dependency: 
+edit  C:\pro\evs-muse\evs-muse-storage/Dependencies.cmake.in   
+  or  C:\pro\evs-muse\evs-muse-storage\Dependencies.private.cmake
+  or  C:\pro\evs-muse\vcpkg-configuration.json
+  or  C:\pro\evs-muse\Dependencies.cmake
+if(NOT TARGET ONBINGS::bofstd)
+  find_package_dependency(bofstd REQUIRED)
+endif()
+
+
+build from cli
+cmake --build . --config Release
+install from cli
+cmake --install . --config Release --prefix C:/tmp
+
+
+
+C:/bld/evs-muse>cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic C:/pro/evs-muse
+-- Running vcpkg install
+Detecting compiler hash for triplet evs-x64-swx-windows-dynamic...
+Detecting compiler hash for triplet x64-windows...
+The following packages will be built and installed:
+  * freeglut[core]:evs-x64-swx-windows-dynamic -> 3.2.2 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/f4eceb7b1ee13b64d859833d2dce4152233c99bc
+  * jasper[core,opengl]:evs-x64-swx-windows-dynamic -> 2.0.33#3 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/caf8b5e479138be21f8a7782806e9ef5c1dcdb37
+  * liblzma[core]:evs-x64-swx-windows-dynamic -> 5.2.5#5 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/18b7cbd0972b536a6bd4c0ef0f41dce9c3f047ac
+  * libwebp[core,nearlossless,simd,unicode]:evs-x64-swx-windows-dynamic -> 1.2.1 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/ca5a8b2ed264617e8a35d22e1e6ac18ebe99900f
+  * opengl[core]:evs-x64-swx-windows-dynamic -> 2022-03-14 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/6778094e7a9e5027545a46af473d27ce28890c53
+  * qt5-activeqt[core]:evs-x64-swx-windows-dynamic -> 5.15.3 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/ebae9d515816c48a9bbb2550acd02d02bfcfddc7
+  * qt5-declarative[core]:evs-x64-swx-windows-dynamic -> 5.15.3 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/51388bc681cd6616f0d2ecb29b1f3901b2e66613
+  * qt5-imageformats[core]:evs-x64-swx-windows-dynamic -> 5.15.3 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/bdb4dae2e952e636c45967063bcb7c5dbb9cea65
+  * qt5-svg[core]:evs-x64-swx-windows-dynamic -> 5.15.3 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/6a43bcf48e884abdd82502f747342962e2a2c4b8
+    qt5-tools[core]:evs-x64-swx-windows-dynamic -> 5.15.3 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/0f3066692eacc724dde9d8f17d4cb67f019ecc75
+  * tiff[core,jpeg,lzma,zip]:evs-x64-swx-windows-dynamic -> 4.3.0#6 -- C:/Users/bha/AppData/Local/vcpkg/registries/git-trees/7d1677b9568234f05c4be9f04f321b9506884376
+Additional packages (*) will be modified to complete this operation.
+Restored 11 packages from C:/Users/bha/AppData/Local/vcpkg/archives in 4.73 s. Use --debug to see more details.
+Starting package 1/11: qt5-svg:evs-x64-swx-windows-dynamic
+Installing package qt5-svg[core]:evs-x64-swx-windows-dynamic...
+Elapsed time for package qt5-svg:evs-x64-swx-windows-dynamic: 701.9 ms
+Starting package 2/11: liblzma:evs-x64-swx-windows-dynamic
+Installing package liblzma[core]:evs-x64-swx-windows-dynamic...
+Elapsed time for package liblzma:evs-x64-swx-windows-dynamic: 195.7 ms
+Starting package 3/11: tiff:evs-x64-swx-windows-dynamic
+Installing package tiff[core,jpeg,lzma,zip]:evs-x64-swx-windows-dynamic...
+Elapsed time for package tiff:evs-x64-swx-windows-dynamic: 132.6 ms
+Starting package 4/11: libwebp:evs-x64-swx-windows-dynamic
+Installing package libwebp[core,nearlossless,simd,unicode]:evs-x64-swx-windows-dynamic...
+Elapsed time for package libwebp:evs-x64-swx-windows-dynamic: 353.6 ms
+Starting package 5/11: opengl:evs-x64-swx-windows-dynamic
+Installing package opengl[core]:evs-x64-swx-windows-dynamic...
+Elapsed time for package opengl:evs-x64-swx-windows-dynamic: 125.4 ms
+Starting package 6/11: freeglut:evs-x64-swx-windows-dynamic
+Installing package freeglut[core]:evs-x64-swx-windows-dynamic...
+Elapsed time for package freeglut:evs-x64-swx-windows-dynamic: 211.6 ms
+Starting package 7/11: jasper:evs-x64-swx-windows-dynamic
+Installing package jasper[core,opengl]:evs-x64-swx-windows-dynamic...
+Elapsed time for package jasper:evs-x64-swx-windows-dynamic: 235.2 ms
+Starting package 8/11: qt5-imageformats:evs-x64-swx-windows-dynamic
+Installing package qt5-imageformats[core]:evs-x64-swx-windows-dynamic...
+Elapsed time for package qt5-imageformats:evs-x64-swx-windows-dynamic: 272.6 ms
+Starting package 9/11: qt5-declarative:evs-x64-swx-windows-dynamic
+Installing package qt5-declarative[core]:evs-x64-swx-windows-dynamic...
+Elapsed time for package qt5-declarative:evs-x64-swx-windows-dynamic: 8.021 s
+Starting package 10/11: qt5-activeqt:evs-x64-swx-windows-dynamic
+Installing package qt5-activeqt[core]:evs-x64-swx-windows-dynamic...
+Elapsed time for package qt5-activeqt:evs-x64-swx-windows-dynamic: 1.612 s
+Starting package 11/11: qt5-tools:evs-x64-swx-windows-dynamic
+Installing package qt5-tools[core]:evs-x64-swx-windows-dynamic...
+Elapsed time for package qt5-tools:evs-x64-swx-windows-dynamic: 4.307 s
+
+Total elapsed time: 26.32 s
+
+The package bofstd provides CMake targets:
+
+    find_package(bofstd CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE ONBINGS::bofstd ONBINGS::bofstd-objects)
+
+The package openssl is compatible with built-in CMake targets:
+
+    find_package(OpenSSL REQUIRED)
+    target_link_libraries(main PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+
+The package evs-video-protocol provides CMake targets:
+
+    find_package(evs-video-protocol CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE EVS::evs-video-protocol EVS::evs-video-protocol-objects)
+
+The package gtest provides CMake targets:
+
+    find_package(GTest CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main)
+
+The package jsoncpp provides CMake targets:
+
+    find_package(jsoncpp CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE jsoncpp_lib jsoncpp_object JsonCpp::JsonCpp)
+
+The package qt5-base provides CMake targets:
+
+    find_package(Qt5AccessibilitySupport CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::AccessibilitySupport Qt5::AccessibilitySupport Qt::AccessibilitySupportPrivate Qt5::AccessibilitySupportPrivate)
+
+    find_package(Qt5Concurrent CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::Concurrent Qt5::Concurrent Qt::ConcurrentPrivate Qt5::ConcurrentPrivate)
+
+    find_package(Qt5Core CONFIG REQUIRED)
+    # note: 3 targets were omitted.
+    target_link_libraries(main PRIVATE Qt::Core Qt5::Core Qt::WinMain rcc_object_)
+
+    find_package(Qt5DBus CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::DBus Qt5::DBus Qt::DBusPrivate Qt5::DBusPrivate)
+
+    find_package(Qt5DeviceDiscoverySupport CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::DeviceDiscoverySupport Qt5::DeviceDiscoverySupport Qt::DeviceDiscoverySupportPrivate Qt5::DeviceDiscoverySupportPrivate)
+
+    find_package(Qt5EdidSupport CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::EdidSupport Qt5::EdidSupport Qt::EdidSupportPrivate Qt5::EdidSupportPrivate)
+
+    find_package(Qt5EventDispatcherSupport CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::EventDispatcherSupport Qt5::EventDispatcherSupport Qt::EventDispatcherSupportPrivate Qt5::EventDispatcherSupportPrivate)
+
+    find_package(Qt5FbSupport CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::FbSupport Qt5::FbSupport Qt::FbSupportPrivate Qt5::FbSupportPrivate)
+
+    find_package(Qt5FontDatabaseSupport CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::FontDatabaseSupport Qt5::FontDatabaseSupport Qt::FontDatabaseSupportPrivate Qt5::FontDatabaseSupportPrivate)
+
+    find_package(Qt5Gui CONFIG REQUIRED)
+    # note: 10 targets were omitted.
+    target_link_libraries(main PRIVATE Qt::Gui Qt5::Gui Qt5::Gui_ Qt::GuiPrivate)
+
+    find_package(Qt5Network CONFIG REQUIRED)
+    # note: 1 targets were omitted.
+    target_link_libraries(main PRIVATE Qt::Network Qt5::Network Qt::NetworkPrivate Qt5::NetworkPrivate)
+
+    find_package(Qt5OpenGL CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::OpenGL Qt5::OpenGL Qt::OpenGLPrivate Qt5::OpenGLPrivate)
+
+    find_package(Qt5OpenGLExtensions CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::OpenGLExtensions Qt5::OpenGLExtensions Qt::OpenGLExtensionsPrivate Qt5::OpenGLExtensionsPrivate)
+
+    find_package(Qt5PlatformCompositorSupport CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::PlatformCompositorSupport Qt5::PlatformCompositorSupport Qt::PlatformCompositorSupportPrivate Qt5::PlatformCompositorSupportPrivate)
+
+    find_package(Qt5PrintSupport CONFIG REQUIRED)
+    # note: 1 targets were omitted.
+    target_link_libraries(main PRIVATE Qt::PrintSupport Qt5::PrintSupport Qt::PrintSupportPrivate Qt5::PrintSupportPrivate)
+
+    find_package(Qt5Sql CONFIG REQUIRED)
+    # note: 2 targets were omitted.
+    target_link_libraries(main PRIVATE Qt::Sql Qt5::Sql Qt::SqlPrivate Qt5::SqlPrivate)
+
+    find_package(Qt5Test CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::Test Qt5::Test Qt::TestPrivate Qt5::TestPrivate)
+
+    find_package(Qt5ThemeSupport CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::ThemeSupport Qt5::ThemeSupport Qt::ThemeSupportPrivate Qt5::ThemeSupportPrivate)
+
+    find_package(Qt5Widgets CONFIG REQUIRED)
+    # note: 1 targets were omitted.
+    target_link_libraries(main PRIVATE Qt::Widgets Qt5::Widgets Qt::WidgetsPrivate Qt5::WidgetsPrivate)
+
+    find_package(Qt5WindowsUIAutomationSupport CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::WindowsUIAutomationSupport Qt5::WindowsUIAutomationSupport Qt::WindowsUIAutomationSupportPrivate Qt5::WindowsUIAutomationSupportPrivate)
+
+    find_package(Qt5Xml CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::Xml Qt5::Xml Qt::XmlPrivate Qt5::XmlPrivate)
+
+The package qt5-tools provides CMake targets:
+
+    find_package(Qt5Designer CONFIG REQUIRED)
+    # note: 2 targets were omitted.
+    target_link_libraries(main PRIVATE Qt::Designer Qt5::Designer Qt::DesignerPrivate Qt5::DesignerPrivate)
+
+    find_package(Qt5DesignerComponents CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::DesignerComponents Qt5::DesignerComponents Qt::DesignerComponentsPrivate Qt5::DesignerComponentsPrivate)
+
+    find_package(Qt5Help CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::Help Qt5::Help Qt::HelpPrivate Qt5::HelpPrivate)
+
+    find_package(Qt5UiPlugin CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::UiPlugin Qt5::UiPlugin Qt::UiPluginPrivate Qt5::UiPluginPrivate)
+
+    find_package(Qt5UiTools CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE Qt::UiTools Qt5::UiTools Qt::UiToolsPrivate Qt5::UiToolsPrivate)
+
+The package redis-plus-plus provides CMake targets:
+
+    find_package(redis++ CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE redis++::redis++)
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
+
+-- Running vcpkg install - done
+-- Selecting Windows SDK version 10.0.19041.0 to target Windows 10.0.22000.
+-- Detected VCPKG_CRT_LINKAGE as dynamic
+-- Setting CMAKE_MSVC_RUNTIME_LIBRARY to MultiThreaded$<$<CONFIG:Debug>:Debug>DLL
+-- Checking existence of C:/bld/evs-muse/vcpkg_installed
+-- Found redis++ : C:/bld/evs-muse/vcpkg_installed/evs-x64-swx-windows-dynamic/lib/redis++.lib
+-- Found redis++ (debug) : C:/bld/evs-muse/vcpkg_installed/evs-x64-swx-windows-dynamic/debug/lib/redis++.lib
+-- Found Boost: C:/bld/evs-muse/vcpkg_installed/evs-x64-swx-windows-dynamic/include (found version "1.78.0") found components: program_options
+-- Found Boost: C:/bld/evs-muse/vcpkg_installed/evs-x64-swx-windows-dynamic/include (found version "1.78.0") found components: date_time
+-- Found thrift: C:/bld/evs-muse/vcpkg_installed/evs-x64-swx-windows-dynamic
+Enable Vs Hot Reload support...
+-- Checking existence of C:/bld/evs-muse/vcpkg_installed
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/bld/evs-muse
+
+Add qt module
+C'est dans le fichier evs-muse-gui/Dependencies.cmake.in
+find_package_dependency(Qt5 COMPONENTS Widgets LinguistTools Network REQUIRED)
+
+C:/bld/evs-muse>
+
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic C:/pro/evs-muse
+
+
+
+
+
+CMakePresets.json:
+{
+  "version": 4,
+  "configurePresets": [
+    {
+      "name": "windows-default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+      }
+    }
+  ]
+}
+
+CMakeUserPresets.json:
+{
+  "version": 4,
+  "configurePresets": [
+    {
+      "name": "windows-default",
+      "displayName": "Windows x64 Debug",
+      "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, debug build type",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [ "Windows" ]
+        }
+      }
+    }
+  ]
+}
+
+
+Use QtLinguist from vs2022:
+designer and linguist should be in C:/PRO/VCPKG/PACKAGES/QT5-BASE_EVS-X64-SWX-WINDOWS-DYNAMIC/TOOLS/QT5/bin/linguist.exe but are in C:/pro/vcpkg/packages/qt5-tools_x64-windows/tools/qt5/bin
+copy C:/pro/vcpkg/packages/qt5-tools_x64-windows/tools/qt5/bin/designer.exe C:/pro/vcpkg/packages/qt5-base_evs-x64-swx-windows-dynamic/tools/qt5/bin
+copy C:/pro/vcpkg/packages/qt5-tools_x64-windows/tools/qt5/bin/linguist.exe C:/pro/vcpkg/packages/qt5-base_evs-x64-swx-windows-dynamic/tools/qt5/bin
+
+
+vcpkg install azure
+vcpkg.exe --overlay-ports=C:/pro/evs-vcpkg-registry/ports/ --overlay-triplets=evs-x64-swx-windows-dynamic install azure-storage-blobs-cpp:x64-windows
+
+For Clauss
+
+setFollowMain
+sceneEditPushButton
+
+
+
+
+============= switch to muse repo =======================
+Hi guys,
+
+As discussed today here are the details about the brand new Muse repository.
+
+Repository
+
+HTTP     : https://bitbucket.evs.tv/projects/SWC/repos/evs-muse/browse
+SSH        : ssh://git@bitbucket.evs.tv:7999/swc/evs-muse.git
+
+The README.md has been updated with relevant information.
+
+Workflow
+
+Currently, the workflow is as follows :
+
+1.	No commit can be done directly on master branch
+2.	You need to create a branch to commit your developments
+3.	Once your commits are ready, you can create a pull request through bitbucket
+4.	To be able to merge the pull request the following need to happen
+a.	Your branch should be building successfully on Teamcity for each target platform
+b.	You will all be marked as reviewer to be aware of things happening in the repository
+i.	Currently no restriction is made based on the review
+
+Environment
+
+For convenience, Docker images have been created for the various supported environments.
+
+Wiki : https://wiki.evs.tv/display/PRENG/Switcher-X+%3A+Build+environment
+Bitbucket : https://bitbucket.evs.tv/projects/EBE/repos/cpp-build-environment/browse
+
+If you can’t or don’t want to use docker, you can still have a look at those images to see what needs to be installed.
+
+Building
+
+The build uses vcpkg to fetch dependencies.
+
+You can find more information here :
+
+-	About vcpkg :  https://wiki.evs.tv/pages/viewpage.action?pageId=137697725
+-	About cmake : https://wiki.evs.tv/display/PRENG/CMake+cross-platform+packageable+library
+-	About muse build : https://wiki.evs.tv/display/PRENG/Switcher-X+%3A+Building
+
+Have fun !
+
+Nicolas
+
+Nicolas MARIQUE – Principal Embedded Software Engineer
+T. +32 4 361.48.52 n.marique@evs.com
+
+EVS Broadcast Equipment - 13 Rue Bois St Jean - 4102 Seraing - BELGIUM 
+How to get to our HQ ?
+
+Quicklinks:   Latest News   Next Events   Contacts 
+Community:   Facebook   Twitter    LinkedIn  Youtube   Instagram   MyEVS   RSS 
+
+ 
+www.evs.com
+
+EVS Broadcast Equipment is a commercial name which is used for all legal entities of our group. 
+At EVS we give utmost importance to your data's privacy. If you wish to know more on how we manage your data and on your rights, please consult our Privacy Statement. 
+This message may contain confidential information and is intended solely for the use of the addressee. Please do not use or publish the contained information without the agreement of the sender. If you are not the intended recipient of this message, please notify the sender and do not disclose, use, disseminate or copy this message.
+Please consider the environment before printing this email.
+
+without helpers:
+cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic C:/pro/evs-muse
+
+
+with helpers:
+cmake -DCMAKE_PROJECT_INCLUDE=C:/pro/cmake-scripts/cmake/main.cmake -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake  C:/pro/evs-muse
+
+~/build$ cmake --build .
+
+ctest . -C Release --output-on-failure
+
+todo obsolete:  https://wiki.evs.tv/display/PRENG/Switcher-X+%3A+To+do
+
+storage Vincent Durant
+
+https://wiki.evs.tv/display/PRENG/Switcher-X+%3A+Architecture
+[Yesterday 5:25 PM] MARIQUE, Nicolas
+Config sxstorage server with block device : https://developers.evs.tv/docs/evs-sxstorage/4.18.0/html/da/de3/PrepareMonofile.html
+
+[Yesterday 5:25 PM] MARIQUE, Nicolas
+https://developers.evs.tv/docs/evs-sxstorage/4.18.0/html/dd/d1d/classTrackStorageProxy.html
+Currently used for async reading: TrackReader with SetupAsyncReadCallback and EnqueuAsyncReadRequest
+More recent API but not currently not used : AsyncReadScheduler
+https://developers.evs.tv/docs/evs-sxstorage/4.18.0/html/d4/d69/Abstract.html
+
+
+
+https://developers.evs.tv/docs/evs-sxstorage/4.17.0/html/d4/d69/Abstract.html
+
+on 10.129.170.19:
+git clone ssh://git@bitbucket.evs.tv:7999/evssx/evs-sx-storage.git
+git clone ssh://git@bitbucket.evs.tv:7999/swc/evs-muse.git
+Merge 
+git merge master
+resolve conflict
+git mergetool
+
+Step 1: Checkout the source branch and merge in the changes from the target branch. Resolve conflicts.
+
+git checkout bha_feature_GetSxStorageServerVersion
+git pull origin master
+Step 2: After the merge conflicts are resolved, stage the changes accordingly, commit the changes and push.
+
+git commit
+git push origin HEAD
+Step 3: Merge the updated pull request.
+
+
+Merge master in my branch
+git checkout master
+git pull
+git checkout bha/mediainfo
+git merge master
+
+ssh://git@bitbucket.evs.tv:7999/ebe/cpp-build-environment.git
+
+bha@NMA-PMY:~/cpp-build-environment$ python3 ./docker_build.py --list
+centos_7_devel
+centos_7_devel_4
+centos_7_runtime
+debian_10_devel
+debian_10_runtime
+uname
+
+https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+
+https://developers.evs.tv/docs/evs-sxstorage/4.18.0/html/dd/d1d/classTrackStorageProxy.html#ad2c4e391e4aaf50b0add93645f0b5636
+C:\bld\evs-muse\vcpkg_installed\evs-x64-swx-windows-dynamic\include\evs-sx-storage\protocolx\TrackStorageProxy.h
+branch feature/development
+https://bitbucket.evs.tv/projects/SWC/repos/evs-muse/browse/evs-muse-io-config/lib/include/evs-muse-io-config/muse_io_config_service.h?at=feature/deployment
+
+
+net use Z: /delete
+net use Z: \\10.129.170.18\smb_share /savecred /p:yes
+-->user bha pw a
+
+https://docs.docker.com/engine/install/centos/
+https://docs.docker.com/engine/install/linux-postinstall/
+
+./docker_build.py -i centos_7_devel
+
+sudo yum install -y yum-utils
+sudo yum-config-manager     --add-repo     https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo systemctl start docker
+sudo docker run hello-world
+sudo groupadd docker
+whoami
+sudo usermod -aG docker $USER
+docker run hello-world
+
+
+https://wiki.evs.tv/pages/viewpage.action?spaceKey=PRENG&title=Switcher-X+%3A+Building
+[bha@bha ~]$ cd pro
+git clone https://github.com/onbings/bofstd.git
+
+[bha@bha pro]$ cd ./cpp-build-environment/
+[bha@bha cpp-build-environment]$ ./docker_build.py --list -> prefer to use ./docker_run.py -i centos_7_devel 
+centos_7_devel
+centos_7_devel_4
+centos_7_runtime
+debian_10_devel
+debian_10_runtime
+Rapide: [bha@bha cpp-build-environment]$ ./docker_run.py -i centos_7_devel 
+or ./docker_run.py -i debian_10_devel
+[bha@bha cpp-build-environment]$ ./docker_build.py -i centos_7_devel        tres lent
+
+cd ./bld/evs-muse
+cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic  ~/pro/evs-muse
+cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic  ~/pro/evs-muse
+or
+cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-static  ~/pro/evs-muse
+
+cmake --build .
+
+ut: bha@95994f9ec8c5:~/bld/evs-muse$ ./binaries/bin/ut_muse_storage-tests
+
+//https://www.youtube.com/watch?v=p7Bi-mOyelM
+cd ./Downloads
+wget "http://ftp.gnu.org/gnu/gdb/gdb-8.3.tar.gz"
+tar xzf gdb-8.3.tar.gz -C /home/bha/
+cd /home/bha/gdb-8.3
+./configure --prefix=/usr --with-system-readline
+./configure --prefix=/home/bha/gdb --with-system-readline
+make
+NO sudo make install
+make install -> /home/bha/gdb
+/home/bha/gdb-8.3/gdb/gdb --version
+
+put 
+export PATH=/home/bha/gdb-8.3/gdb:$PATH:/opt/clion-2022.2/bin
+in .bashrc
+
+
+
+j'en suis a 
+export PATH=/home/bha/gdb-8.3/gdb:$PATH:/opt/clion-2022.2/bin
+==> ajouter /home/bha/gdb-8.3/gdb au path et voir pq python se charge pas
+
+[bha@01d1f8137371 evs-muse]$ cmake -DCMAKE_TOOLCHAIN_FILE=~/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-linux-dynamic  ~/pro/evs-muse
+
+https://ahelpme.com/linux/centos7/how-to-install-new-gcc-and-development-tools-under-centos-7/
+
+ntp: https://thebackroomtech.com/2019/01/17/configure-centos-to-sync-with-ntp-time-servers/
+
+tree:
+https://levelup.gitconnected.com/a-template-tree-class-in-c-7be9b4834e09
+https://www.codeproject.com/Articles/12822/A-Tree-Template-Class-in-C
+https://stackoverflow.com/questions/31257983/implementing-tree-using-c-templates
+https://www.boost.org/doc/libs/1_80_0/doc/html/property_tree.html
+
+
+Grootz X-one Nicolas valkenberg
+Playerone: Michel hick/Nicolas michel/jf milan
+
+git checkout from repo ignoring MY local change
+git checkout .
+git pull
+
+git undo commit
+
+IF you have NOT pushed your changes to remote
+
+git reset HEAD~1
+Check if the working copy is clean by git status.
+
+ELSE you have pushed your changes to remote
+
+git revert HEAD
+This command will revert/remove the local commits/change and then you can push
+
+git cheat list: https://www.nobledesktop.com/learn/git/git-branches
+Git lets you branch out from the original code base. This lets you more easily work with other developers, and gives you a lot of flexibility in your workflow.
+
+
+Here's an example of how Git branches are useful. Let's say you need to work on a new feature for a website. You create a new branch and start working. You haven't finished your new feature, but you get a request to make a rush change that needs to go live on the site today. You switch back to the master branch, make the change, and push it live. Then you can switch back to your new feature branch and finish your work. When you're done, you merge the new feature branch into the master branch, and both the new feature and rush change are kept!
+
+For All the Commands Below
+The commands below assume you've navigated to the folder for the Git repo.
+
+See What Branch You're On
+git status
+
+List All Branches
+NOTE: The current local branch will be marked with an asterisk (*).
+To see local branches, run this command:
+git branch
+To see remote branches, run this command:
+git branch -r
+To see all local and remote branches, run this command:
+git branch -a
+
+Create a New Branch
+Run this command (replacing my-branch-name with whatever name you want):
+git checkout -b my-branch-name
+You're now ready to commit to this branch.
+
+Switch to a Branch In Your Local Repo
+git checkout my-branch-name
+Switch to a Branch That Came From a Remote Repo
+To get a list of all branches from the remote, run this command:
+git pull
+Run this command to switch to the branch:
+git checkout --track origin/my-branch-name
+
+PS C:\pro\evs-muse> git branch
+  bha/mediainfo
+* bha/metadata
+  master
+PS C:\pro\evs-muse> git commit -a -m "bha/metadata"
+[bha/metadata 1c930ef] bha/metadata
+ 2 files changed, 1 insertion(+), 5 deletions(-)
+PS C:\pro\evs-muse> git push
+fatal: The current branch bha/metadata has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin bha/metadata
+
+PS C:\pro\evs-muse> git push --set-upstream origin bha/metadata
+Enumerating objects: 11, done.
+Counting objects: 100% (11/11), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 515 bytes | 515.00 KiB/s, done.
+Total 6 (delta 5), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create pull request for bha/metadata:
+remote:   https://bitbucket.evs.tv/projects/SWC/repos/evs-muse/pull-requests?create&sourceBranch=refs/heads/bha/metadata
+
+remote:
+To ssh://bitbucket.evs.tv:7999/swc/evs-muse.git
+ * [new branch]      bha/metadata -> bha/metadata
+Branch 'bha/metadata' set up to track remote branch 'bha/metadata' from 'origin'.
+
+On other computer:
+[bha@bha evs-muse]$ git fetch
+remote: Counting objects: 6, done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 6 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (6/6), 2.42 KiB | 827.00 KiB/s, done.
+From ssh://bitbucket.evs.tv:7999/swc/evs-muse
+ * [new branch]      bha/metadata -> origin/bha/metadata
+[bha@bha evs-muse]$ git branch -v -a
+* bha/mediainfo                                        dcae707 a
+  bha_feature_GetSxStorageServerVersion                16bd667 a
+  master                                               ef3144c [behind 57] Pull request #17: Feature/playout integration
+  remotes/origin/bha/mediainfo                         dcae707 a
+  remotes/origin/bha/metadata                          1c930ef bha/metadata
+[bha@bha evs-muse]$ git checkout bha/metadata
+branch 'bha/metadata' set up to track 'origin/bha/metadata'.
+Switched to a new branch 'bha/metadata'
+[bha@bha evs-muse]$ git branch
+  bha/mediainfo
+* bha/metadata
+  bha_feature_GetSxStorageServerVersion
+  master
+[bha@bha evs-muse]$
+
+
+
+
+
+Push to a Branch
+If your local branch does not exist on the remote, run either of these commands:
+git push -u origin my-branch-name
+git push -u origin HEAD
+NOTE: HEAD is a reference to the top of the current branch, so it's an easy way to push to a branch of the same name on the remote. This saves you from having to type out the exact name of the branch!
+
+If your local branch already exists on the remote, run this command:
+git push
+
+Merge a Branch
+You'll want to make sure your working tree is clean and see what branch you're on. Run this command:
+git status
+First, you must check out the branch that you want to merge another branch into (changes will be merged into this branch). If you're not already on the desired branch, run this command:
+git checkout master
+NOTE: Replace master with another branch name as needed.
+Now you can merge another branch into the current branch. Run this command:
+git merge my-branch-name
+NOTE: When you merge, there may be a conflict. Refer to Handling Merge Conflicts (the next exercise) to learn what to do.
+
+Delete Branches
+To delete a remote branch, run this command:
+git push origin --delete my-branch-name
+To delete a local branch, run either of these commands:
+git branch -d my-branch-name
+git branch -D my-branch-name
+NOTE: The -d option only deletes the branch if it has already been merged. The -D option is a shortcut for --delete --force, which deletes the branch irrespective of its merged status.
+Grow You
+
+undo changes:
+If you mean you want the pull to overwrite local changes, doing the merge as if the working tree were clean, well, clean the working tree:	  
+git reset --hard
+git pull
+
+If on the other hand you want to keep the local modifications somehow, you'd use stash to hide them away before pulling, then reapply them afterwards:
+git stash
+git pull
+git stash pop
+
+remove last commit:
+git reset --soft HEAD~1
+
+remove last added:
+git reset ports/bofstd
+
+add and commit:
+git pull
+git commit -am "Create sub dir in versions if this one does not exist"
+git push
+
+
+artifactory picture: https://artifactory.evs.tv:443/artifactory/evs-muse-release-generic/simulator/resources/resources.7z
+
+
+
+Debug Muse thrift storage with Mfs:Select solution properties and activate Multiple Startup Project with
+evs-muse-api-server
+evs-muse-storage
+Mfs ou ut_muse_storage
+put breakpoint in MuseStorageService::import_media
+
+
+evs-sx-storage
+10.129.170.18  bha a
+sudo systemctl restart evs-sx-storage
+sudo tail -f /var/log/evs/Storage/Storage.log
+
+consul http://localhost:8500
+if restart evs-sx-storage then restart consul sudo systemctl restart consul
+  cd /etc/evs/sx-storage/
+  503  ls
+  504  sudo nano ./evs-sx-storage.conf

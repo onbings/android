@@ -1,0 +1,2692 @@
+dmesg -w | grep -E 'FIELD'
+
+Biggest dir size:
+ sudo du -h / | grep '[0-9\,]\+G'
+Darmstad ip/mac info:
+https://wiki.evs.tv/display/PRENG/Available+PM%27s+in+Dev
+[3:32 PM] WAHLIG, Dirk
+https://wiki.evs.tv/display/PRENG/IP+Addresses
+ wakeup onlan Darmstad:
+ 
+ on 10.143.137.37
+ cd /disk3
+[root@dyvi disk3]$ ./wakeup50
+Sending magic packet to 255.255.255.255:9 with 2c:fd:a1:34:b6:d3
+
+10.143.128.101
+
+tekro darmstad
+http://10.143.137.92/admin/
+
+user admin pw admin
+
+BlackMagic darmstad 10.143.137.97
+BlackMagic in 1 SPG, in2 Phabrix, in 3 XT
+BlackMagic out 33-40->PM 1,2,9,10,1,7,18,2,5,36  whereis PM50
+
+
+export DISPLAY=10.129.1.95:0
+export LIBGL_ALWAYS_INDIRECT=1
+export LD_LIBRARY_PATH=/home/bha/wsl2/vlc/install/lib:/home/bha/wsl2/ffmpeg/install/lib:/home/bha/wsl2/x264/install/lib:/home/bha/wsl2/obs/install/lib:/home/bha/wsl2/qt5/install/lib:$LD_LIBRARY_PATH
+
+project_12g_board
+project_12g_board_cmake
+artifactory:    -DARTIFACTORY_API_KEY=AKCp8hz3iUCzgiWAsmBuWdf87H7bauh3ngLPqnXemMs8MUpqxkQCPg14jjso9HaN78B1Bj2UU
+teamcity: [8:34 AM] MARIQUE, NicolasPour info, la branche project_12g_board_cmake compile sur Teamcity : https://teamcity.evs.tv/project.html?projectId=Dyvi&tab=projectOverview&branch_Dyvi=project_12g_board_cmake
+ 
+ compile app mainframe  marche pas ???
+ cd
+ cd ./hg
+ ./pangaea.sh
+ cd ./Pangaea/Mainframe/make/linux
+ ./build.sh
+ makeresult is in /home/bha/hg/Pangaea/app/Mainframe/make/release
+
+ 
+eclipse
+
+bha@dyvi:~/hg/Pangaea/app/Mainframe/make/debug$ printenv
+LD_LIBRARY_PATH=/usr/local/cuda/lib64:/home/bha/hg/Pangaea/lib/bin/linux:/home/bha/hg/Pangaea3rdParty/lib/bin/linux
+LD_LIBRARY_PATH=/usr/local/cuda/lib64:/Data/user/bha/bld/mainframe/DESKTOP_DEBIAN/Debug/binaries/lib:/Data/user/bha/hg/Pangaea3rdParty/lib/bin/linux
+
+for all cmake add:
+-DCMAKE_MODULE_PATH=/Data/user/bha/BuildTools/cmake/Modules -DPLATFORM_NAME:STRING=DESKTOP_DEBIAN -DCMAKE_FIND_ROOT_PATH:PATH=/Data/user/bha/repo -DCMAKE_INSTALL_PREFIX:PATH=/Data/user/bha/repo -DCMAKE_RELEASE_POSTFIX=_r
+in clion cmake setting + config debug/release
+Generation path:
+/home/bha/bld/mmgw/driver/DESKTOP_DEBIAN/Debug
+/home/bha/bld/mmgw/ddt/DESKTOP_DEBIAN/Debug
+/home/bha/bld/mmgw/sdk/DESKTOP_DEBIAN/Debug
+arg:
+--tst=0 --ip=true --vs=1920x1080_59i --bbm=15 --ibm=255 --obm=15 --nss=3 --nit=0xFFFFFFFF --eoe=true --oal=true --lhl=true --rfr=2000 --tbr=3000 --ll=7 --lm=0xFFFF --rm=0 --rx1=udp://239.131.20.1:8100 --tx1=udp://239.125.250.1:10001 --rx2=udp://239.131.20.1:8100 --tx2=udp://239.125.250.2:10002 --rx3=udp://239.131.20.1:8100 --tx3=udp://239.125.250.3:10003 --rx4=udp://239.131.20.1:8100 --tx4=udp://239.125.250.4:10004 --nip=udp://10.131.120.58 --nmsk=udp://255.255.255.248 --ngw=udp://10.131.120.57
+
+Add -DCMAKE_RELEASE_POSTFIX=_r for release compil as we have collision of file in dyvi or something else which prevent release compile from working
+
+
+add in cmakelists.txt
+set (CMAKE_CXX_STANDARD 14)
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release") 
+set(CMAKE_VERBOSE_MAKEFILE TRUE) 
+set(CMAKE_COLOR_MAKEFILE  TRUE)
+
+cd
+cd ./hg
+./pangaea.sh
+cd /home/bha/hg/Pangaea/lib/ftgl/latest
+./configure
+make -j 40
+cp ./src/.libs/libftgl.so /home/bha/hg/Pangaea/lib/bin/linux/libftgl.so
+cp ./src/.libs/libftgl.so.2 /home/bha/hg/Pangaea/lib/bin/linux/libftgl.so.2
+
+
+
+
+change linux kernel
+
+4.9.35 RDMA compatible but no opengl x11
+bha@dyvi:/boot$ ls -al
+total 46784
+drwxr-xr-x  2 root root     4096 Nov 19 11:15 .
+drwxr-xr-x 29 bha  bha      4096 Oct 18 18:00 ..
+-rw-r--r--  1 root root   115986 May  6  2020 config-4.9.35-dyvi
+-rw-r--r--  1 root root   115197 Apr  9  2018 config-4.9-dyvi
+lrwxrwxrwx  1 root root       21 Nov 19 11:14 initramfs -> ./initrd.img-4.9-dyvi
+-rw-r--r--  1 root root  8666857 Nov 17 18:04 initrd.img-4.9.35-dyvi
+-rw-r--r--  1 root root 12837546 Nov 17 14:06 initrd.img-4.9-dyvi
+-rw-r--r--  1 root root  6913510 Dec 10  2019 initrd.img-4.9-dyvi.chbak
+-rw-r--r--  1 root root  4075769 May  6  2020 System.map-4.9.35-dyvi
+-rw-r--r--  1 root root  4011443 Apr  9  2018 System.map-4.9-dyvi
+lrwxrwxrwx  1 root root       18 Nov 19 11:15 vmlinuz -> ./vmlinuz-4.9-dyvi
+-rw-r--r--  1 root root  5616416 May  6  2020 vmlinuz-4.9.35-dyvi
+-rw-r--r--  1 root root  5522208 Apr  9  2018 vmlinuz-4.9-dyvi
+bha@dyvi:/boot$ sudo ln -sfn ./vmlinuz-4.9.35-dyvi vmlinuz
+bha@dyvi:/boot$ sudo ln -sfn ./initrd.img-4.9.35-dyvi initramfs
+bha@dyvi:/boot$ ls -al
+total 46784
+drwxr-xr-x  2 root root     4096 Nov 19 12:32 .
+drwxr-xr-x 29 bha  bha      4096 Oct 18 18:00 ..
+-rw-r--r--  1 root root   115986 May  6  2020 config-4.9.35-dyvi
+-rw-r--r--  1 root root   115197 Apr  9  2018 config-4.9-dyvi
+lrwxrwxrwx  1 root root       24 Nov 19 12:32 initramfs -> ./initrd.img-4.9.35-dyvi
+-rw-r--r--  1 root root  8666857 Nov 17 18:04 initrd.img-4.9.35-dyvi
+-rw-r--r--  1 root root 12837546 Nov 17 14:06 initrd.img-4.9-dyvi
+-rw-r--r--  1 root root  6913510 Dec 10  2019 initrd.img-4.9-dyvi.chbak
+-rw-r--r--  1 root root  4075769 May  6  2020 System.map-4.9.35-dyvi
+-rw-r--r--  1 root root  4011443 Apr  9  2018 System.map-4.9-dyvi
+lrwxrwxrwx  1 root root       21 Nov 19 12:32 vmlinuz -> ./vmlinuz-4.9.35-dyvi
+-rw-r--r--  1 root root  5616416 May  6  2020 vmlinuz-4.9.35-dyvi
+-rw-r--r--  1 root root  5522208 Apr  9  2018 vmlinuz-4.9-dyvi
+bha@dyvi:/boot$
+
+ou:
+
+4.9 Opengl x11 ok but no rdma (Chelsio driver)
+
+bha@dyvi:/boot$ sudo ln -sfn ./vmlinuz-4.9-dyvi vmlinuz
+bha@dyvi:/boot$ sudo ln -sfn ./initrd.img-4.9-dyvi initramfs
+
+
+redeploy app
+
+mv -f libIODyvi2Channel.so libIODyvi2Channel.so.1 ../../../../bin/linux/
+sync
+Done.
+bha@dyvi:~/hg/Pangaea/lib/IOChannelDrivers/DYVI2/make/linux$make
+result in Pangae/lib.bin/linux/libIODyvi2Channel.so.1.0
+copier dans /home/svs/mainfraime/lib
+ 
+/root/mainframe-restart.sh /home/svs/mainframe --testadapter
+[9:07 AM] PERNOT, Benjamin
+    je vais dans /home/svs/mainframe et je fais:
+./mainframe.sh --testadapter
+
+
+licence dyvi gui: ctrl shift click gauche dans windows
+
+
+cscore salvos    
+http://10.129.110.25:8181/virtuals/salvos
+
+MAP R hudson
+net use R: /delete
+net use R: \\svs-build.evs.tv\builds /savecred /p:yes
+
+MAP Q tran
+net use Q: /delete
+net use Q: \\10.129.110.219 /savecred /p:yes
+ou \\10.129.110.219 dans explorer
+
+net use w: \\10.129.170.29\smb_share /savecred /p:yes
+user bha pw a
+
+net use y: \\10.129.170.33\smb_share /savecred /p:yes
+user bha pw a
+
+POWER ON OFF ON Ipv4 alim
+Infos PDU
+prise 1&2: dyvi 10.129.170.29
+prise 3:   dyvi 10.129.170.33
+prise 4:   PM Sdi  10.129.170.18 matrice video which control it 10.129.35.15 output 9  0c:9d:92:5c:46:5b
+
+
+
+Hostname: BELGPDU_DMZ_IOT_G107-01
+IP : 10.135.27.11
+Login :bha
+Password: 4Zgox3PvVXF9
+
+webcam sur 215
+firefox: http://10.129.110.30:10000/
+
+webcam 216
+ http://10.129.110.218:8100 avec VLC
+
+j'essaye un nouveau systeme pour le retour visuel : 202 en http://10.129.110.210:8082/ et 216 http://10.129.110.210:8081 
+
+
+disque U: monté (user DVB pas de pw)
+0 0478 97 65 98
+
+Wake up machine LTRANlogin as: evsadmin
+evsadmin@10.129.110.112's password:
+Last login: Wed May 19 18:45:27 2021 from 10.135.40.169
+[evsadmin@smha194640 ~]$ ether-wake
+Specify the Ethernet address as 00:11:22:33:44:55.
+[evsadmin@smha194640 ~]$ login as: evsadmin
+
+[18:44] TRAN, Laurent
+    "C:\Program Files\PuTTY\putty.exe" evsadmin@10.129.110.112 -pw evsdvb
+
+    je viens de créer un script pour reveiller mes 4 machines
+    /home/evsadmin/wake_dyvi
+
+ou:
+ aller en remote desktop sur 10.129.110.210 (login:password= DVB:<pas_de_mdp>
+ 
+ App wake-up-on-lan
+
+
+
+
+Wake up for LTRAN 10.129.110.215/216
+rdp on 10.129.110.210
+
+machine ip LTA
+10.129.110.215
+10.129.110.216
+machine Sdi LTA
+10.129.110.202
+10.129.110.203
+-->video matrix matrice 10.129.35.18   admin/admin
+Poste 16
+
+
+CDO
+Tu peux accéder au flux audio et vidéo via l’adresse suivante :
+http://212.222.125.105:5080/WebRTCAppEE/viewer.html?f=957611316280884517406535
+Tu peux sélectionner le out que tu souhaites que tu souhaites monitorer via la page web http://10.129.35.22/index.php
+Login : admin2
+PSWD : admin 
+
+-	Le retour vidéo du kiloview correspond au cadran de droite dans la section outputs. 
+-	Tu peux sélectionner le out du PM que tu souhaites afficher en le sélectionnant dans la partie inputs. 
+-	J’ai câblé les 16 out du 1er PMY SDI sur les 16 1er Input de la Matrice. 
+-	Laurent a également le retour vidéo à son bureau si besoin d’un cross check. 
+
+[9/28 11:10 AM] TRAN, Laurent
+Ant Media Server WebRTC/HLS/DASH Player: http://212.222.125.92:5080/WebRTCAppEE/play.html?name=676729806279927351664858
+
+matrice sdi qui configure le vs des embrionix: http://10.129.35.18/ "Outputs 16"
+J'ai configuré 2 embrionix en 720p59
+239.131.126.5 et .6
+port 8100
+
+[9/28 11:11 AM] TRAN, Laurent
+REC1 = out5 pri
+REC2 = out5 dup
+
+
+Salut Laurent,
+
+Voici les infos : 
+
+BESP
+Publish URL : rtmp://10.135.35.12/WebRTCAppEE/540882050537024401888463
+Stream ID : 540882050537024401888463
+WebRTC Stream : http://212.222.125.92:5080/WebRTCAppEE/play.html?name=540882050537024401888463
+
+BHA
+Publish URL : rtmp://10.135.35.12/WebRTCAppEE/690889547488114826883014
+Stream ID : 690889547488114826883014
+WebRTC Stream : SDI http://212.222.125.92:5080/WebRTCAppEE/play.html?name=690889547488114826883014
+
+Il ne te reste qu’à appliquer le paramètre dans le menu du KiloView.
+J’ai updaté le Wiki.
+
+Sam
+Impeccable ! C’est configuré.
+
+@ESPOSTO, Bruno, tu as donc accès à ton écran de droite en remote via l’adresse http://212.222.125.92:5080/WebRTCAppEE/play.html?name=540882050537024401888463
+
+@HARMEL, Bernard, tu as donc accès à la première sortie de ton PM 12G via l’adresse http://212.222.125.92:5080/WebRTCAppEE/play.html?name=690889547488114826883014
+
+
+repo version dyvi:
+R:\dyvi\2.0.6.1\hudson\4683
+it's also on K:\EVS Software (#20)\Internal Releases (#30)\Dyvi (#401)\2.0.6.1\4683\ because it's an official release.
+
+binary repo:
+vmlinux.bin :
+/home/svs/OTV2_driver
+W:\pingu\mmgw\evs-mmgw-api\niosbridgeapi\data
+W:\hg\LinMainframe\firmware
+/Data/user/bha/firmware/NIOS/2020.03.27/
+
+rbf:
+W:\hg\LinMainframe\firmware
+
+FDN:
+https://wiki.evs.tv/display/PRENG/DYVI+logic+recorder#DYVIlogicrecorder-Subtletimingdifferencesinkerneldriverservicinginterrupts
+https://wiki.evs.tv/pages/downloadallattachments.action?pageId=66259471
+
+SDK:
+[1:25 PM] JACQUET, Fabian
+https://wiki.evs.tv/display/PRENG/SDI+Service+Board+Prerequisites
+https://bitbucket.evs.tv/projects/IPE/repos/evs-sdi-engine/browse/src/Libs/evs-sdi-engineLib/public/sdi-engine/engine/IBoard.h?at=refs%2Ftags%2F19.0.0
+https://bitbucket.evs.tv/projects/IPE/repos/evs-sdi-engine/browse/src/Libs/evs-sdi-engineLib/public/sdi-engine/engine/IBoard.h
+https://bitbucket.evs.tv/projects/IPE/repos/evs-sdi-engine/browse/src/Libs/evs-sdi-engineLib/public/sdi-engine/engine/IChannel.h
+
+WIKI: https://wiki.evs.tv/x/5SyrBg
+
+
+log dydi
+    les logs se trouvent dans /var/log/EVSLogs/development/QA-IP-216-dvl.log
+
+set date and time:
+date -s "11 SEP 2020 15:27:30"
+
+A problem internal to GDBserver has been detected. Unknown register ymm0h requested
+sudo apt install build-essential
+sudo apt-get install libreadline-dev
+https://stackoverflow.com/questions/51100753/visual-studio-2017-linux-remote-debugging-gdbserver
+wget "http://ftp.gnu.org/gnu/gdb/gdb-8.3.tar.gz"
+tar xzf gdb-8.3.tar.gz
+cd gdb-8.3
+./configure --prefix=/usr --with-system-readline
+make
+sudo make install
+
+
+Copy specific file type keeping the folder structure
+
+bha@dyvi:~/hg_feature_premerge_unittest/Pangaea$ find . -name 'CMakeLists.txt' -exec cp -v --parents \{\} -t /home/bha/hg/Pangaea \;
+bha@dyvi:~/hg_feature_premerge_unittest/Pangaea$ find . -name '*.cmake' -exec cp -v --parents \{\} -t /home/bha/hg/Pangaea \;
+cp /home/bha/hg_feature_premerge_unittest/Pangaea/lib/IOChannelDrivers/DYVI2/unittest/source/external.cpp /home/bha/hg/Pangaea/lib//IOChannelDrivers/DYVI2/unittest/source/
+cp /home/bha/hg_feature_premerge_unittest/Pangaea/lib/IOChannelDrivers/DYVI2/unittest/source/ut_dma_tx.cpp /home/bha/hg/Pangaea/lib//IOChannelDrivers/DYVI2/unittest/source/
+cp -r /home/bha/hg_feature_premerge_unittest/Pangaea/lib/IOChannelDrivers/DYVI2/ddt /home/bha/hg/Pangaea/lib//IOChannelDrivers/DYVI2
+##cp -r /home/bha/hg_feature_premerge_unittest/Pangaea/driver/DYVI/user/include/mmgwdrv /home/bha/hg/Pangaea/driver/DYVI/user/include/
+cp -r /home/bha/hg_feature_premerge_unittest/Pangaea/driver/DYVI/user /home/bha/hg/Pangaea/driver/DYVI
+cp  /home/bha/hg_feature_premerge_unittest/Pangaea/lib/IO/src/IOManager.cpp /home/bha/hg/Pangaea/lib/IO/src/
+cp  /home/bha/hg_feature_premerge_unittest/Pangaea/lib/IO/include/IO/IOManager.h  /home/bha/hg/Pangaea/lib/IO/include/IO/
+cp  /home/bha/hg_feature_premerge_unittest/Pangaea/lib/IO/src/IOManagerEnumerate.cpp /home/bha/hg/Pangaea/lib/IO/src/
+
+
+bha@dyvi:~/hg/Pangaea$ find . -name 'CMakeLists.txt' -exec cp -v --parents \{\} /target /home/bha/def/Pangaea \;
+'./lib/bha.txt' -> '/home/bha/prv/hg/Pangaea/./lib/bha.txt'
+
+find . -name 'CMakeLists.txt' -exec cp -v --parents \{\} -t /home/bha/def/Pangaea \;
+find . -name '*.cmake' -exec cp -v --parents \{\} -t /home/bha/def/Pangaea \;
+
+
+at system start /root/autostart.sh is called
+/root/autostart.sh calls  /home/svs/bin/loadAndCheckDyvi2.sh
+
+This loads the driver
+
+driver in bha@dyvi:~bha@dyvi:~/bld/lowleveldrv/DESKTOP_DEBIAN/Debug
+
+
+PM: sudo modinfo ./dyvi.ko
+filename:       /Data/user/bha/bld/mmgw/driver/DESKTOP_DEBIAN/Release/./dyvi.ko
+depends:
+vermagic:       4.9-dyvi SMP preempt mod_unload modversions
+license:        GPL
+depends:
+vermagic:       4.9-dyvi SMP preempt mod_unload modversions
+parm:           Debug:Enable I/O access debug info (default is false) (int)
+parm:           IsrThread:Set isr thread parameter (default is n0:c30:f94) (string)
+parm:           DmaInHrThread:Set dma in hr dpc thread parameter (default is n0:c31:f93) (string)
+parm:           DmaInLrThread:Set dma in lr dpc thread parameter (default is n0:c32:f93) (string)
+parm:           DmaOutHrThread:Set dma out hr dpc thread parameter (default is n0:c32:f93) (string)
+parm:           MiscThread:string
+parm:           GnlkThread:Set misc dpc thread parameter (default is n0:c32:f92)
+parm:           LogLevel:Set log level (default is LOGLEVEL_ERR (3)) (int)
+parm:           LogMask:Set log mask (default is LOG_MASK_ALL (255)) (int)
+parm:           TransQueueSize:Set maximum number of pending transactions (default is 16) (int)
+
+
+
+ sudo insmod ./hg/Pangaea/driver/DYVI/kernel/dyvi/linux/dyvi.ko.pca
+ 
+purge log:
+sudo rm -r /var/log/*
+mais les fichier deleted are still there -> sudo lsof | grep deleted
+Stop rsyslog:
+sudo service rsyslog stop
+df -h /var/log ->space is freed
+sudo service rsyslog start
+
+move /var/log location (ln -s pathtofile linkname)
+bha@dyvi:/var$ mv ./log/ ./log.prv
+bha@dyvi:/var$ ln -s /Data/log log
+
+sudo chown -R nma:nma ./nma
+
+Password;
+bha / a
+root / Larry2011	
+hg: bha@phobos.evs.tv	password is 'evs'
+
+DYVI supervisor
+G4		10.129.170.29		->Pw dyvilive
+evsip	10.129.170.33
+
+
+Remote access:
+1. Install and launch Xming or better VcXsrv to have x11 support on windows
+
+2. Start putty session:
+	ip 10.129.170.29
+	connection - ssh - X11: Enable X11 forwarding
+3. Launch an x11 compatible app and you will see the output on your windows workstation
+
+
+Add user to sudo group / sudoers file:
+usermod -aG sudo bha
+
+change netbios name:
+sudo nano /etc/hostname
+AND
+sudo /etc/hosts
+127.0.0.1 localhost dyvi
+
+change dns
+https://support.rackspace.com/how-to/changing-dns-settings-on-linux/
+add "search evs.tv" to /etc/resolv.conf
+or add it in network manager/Ipv4 Settings/Search domains
+
+bha@dyvi:~$ cat /etc/resolv.conf
+nameserver 10.128.22.11
+nameserver 10.128.22.12
+nameserver 8.8.8.8
+search evs.tv
+
+Split partition RamRecorder
+https://access.redhat.com/articles/1190213
+/dev/sdb
+update /etc/fstab to mount /dev/sdb2
+format:
+sudo mkfs.ext4 /dev/sdb1
+add dir mount point directory and chmod it
+
+Date and time: (ntpdate package)
+https://www.tecmint.com/synchronize-time-with-ntp-in-linux/
+
+Install Chrome:
+sudo apt-get update
+sudo apt-get install google-chrome-stable
+google-chrome to launch it
+
+How To Set Up SSH Keys: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
+1. ssh-keygen -t rsa
+2. ssh-copy-id -i ~/.ssh/id_rsa.pub bha@phobos.evs.tv	
+	
+
+install teamviewer:
+wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
+sudo apt install ./teamviewer_amd64.deb
+
+download clion
+	google-chrome in terminal
+	https://www.jetbrains.com/clion/download/#section=linux	
+	
+install clion	
+	https://www.jetbrains.com/help/clion/install-and-set-up-product.html
+
+	bha@evsip:~/Downloads$ ls -al
+	total 451508
+	drwxr-xr-x 2 bha bha      4096 Sep 20 10:20 .
+	drwxr-xr-x 3 bha bha      4096 Sep 20 10:20 ..
+	-rw-r--r-- 1 bha bha 462328661 Sep 20 10:20 CLion-2020.2.4.tar.gz 
+
+	cd ./Downloads
+	bha@evsip:~/Downloads$ sudo tar xf CLion-2020.2.4.tar.gz -C /opt/
+
+	Add clion to path
+	nano .bashrc
+		export PATH=$PATH:/opt/CLion-2019.3.3/bin
+		export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$HOME/hg/Pangaea/lib/bin/linux:$HOME/hg/Pangaea3rdParty/lib/bin/linux:/home/svs/mainframe/lib/:.
+		xosview +cpus &
+
+clion terminal:
+https://www.u4up.com/q/114250/
+
+Clion edit configuration drop down menu grayed->select it in Run Menu
+
+remote debug:
+https://www.jetbrains.com/help/clion/remote-debug.html#launch-remote-debug
+
+reload .bashrc: 
+	. ~/.bashrc
+	
+view env:
+	printenv
+	
+launch clion:
+	clion.sh &
+
+clion settings:
+	Appearance - theme - Darcula
+	Keymap: Visual Studio
+
+	
+setup clion license server:
+	http://jetbrains.evs.tv:8081
+
+	inotify limit:
+	https://robbinespu.github.io/eng/2018/08/25/slow_file_changes_sync_inotify_limits.html
+	
+	increase memory heap:
+	https://www.jetbrains.com/help/idea/increasing-memory-heap.html
+	
+
+change keyboard layout
+setxkbmap fr 
+ 
+install samba
+https://tutorials.ubuntu.com/tutorial/install-and-configure-samba
+sudo apt install samba
+sudo smbpasswd -a bha
+sudo nano /etc/samba/smb.conf
+--------------------------------------------------------------------------------------------------------
+#
+# Sample configuration file for the Samba suite for CentOs GNU/Linux.
+#
+#
+# This is the main Samba configuration file. You should read the
+# smb.conf(5) manual page in order to understand the options listed
+# here. Samba has a huge number of configurable options most of which
+# are not shown in this example
+#
+# Some options that are often worth tuning have been included as
+# commented-out examples in this file.
+#  - When such options are commented with ";", the proposed setting
+#    differs from the default Samba behaviour
+#  - When commented with "#", the proposed setting is the default
+#    behaviour of Samba but the option is considered important
+#    enough to be mentioned here
+#
+# NOTE: Whenever you modify this file you should run the command
+# "testparm" to check that you have not made any basic syntactic
+# errors.
+
+#======================= Global Settings =======================
+
+[global]
+   ntlm auth = yes
+   follow symlinks = yes
+   wide links = yes
+   unix extensions = no
+
+
+[smb_share]
+    comment = Samba on CentOs
+    path = /home/bha
+    read only = no
+    browsable = yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Browsing/Identification ###
+
+# Change this to the workgroup/NT-domain name your Samba server will part of
+   workgroup = WORKGROUP
+
+# Windows Internet Name Serving Support Section:
+# WINS Support - Tells the NMBD component of Samba to enable its WINS Server
+#   wins support = no
+
+# WINS Server - Tells the NMBD components of Samba to be a WINS Client
+# Note: Samba can be either a WINS Server, or a WINS Client, but NOT both
+;   wins server = w.x.y.z
+
+# This will prevent nmbd to search for NetBIOS names through DNS.
+   dns proxy = no
+
+#### Networking ####
+
+# The specific set of interfaces / networks to bind to
+# This can be either the interface name or an IP address/netmask;
+# interface names are normally preferred
+;   interfaces = 127.0.0.0/8 eth0
+
+# Only bind to the named interfaces and/or networks; you must use the
+# 'interfaces' option above to use this.
+# It is recommended that you enable this feature if your Samba machine is
+# not protected by a firewall or is a firewall itself.  However, this
+# option cannot handle dynamic or non-broadcast interfaces correctly.
+;   bind interfaces only = yes
+
+
+
+#### Debugging/Accounting ####
+
+# This tells Samba to use a separate log file for each machine
+# that connects
+   log file = /var/log/samba/log.%m
+
+# Cap the size of the individual log files (in KiB).
+   max log size = 1000
+
+# If you want Samba to only log through syslog then set the following
+# parameter to 'yes'.
+#   syslog only = no
+
+# We want Samba to log a minimum amount of information to syslog. Everything
+# should go to /var/log/samba/log.{smbd,nmbd} instead. If you want to log
+# through syslog you should set the following parameter to something higher.
+   syslog = 0
+
+# Do something sensible when Samba crashes: mail the admin a backtrace
+   panic action = /usr/share/samba/panic-action %d
+
+
+####### Authentication #######
+
+# Server role. Defines in which mode Samba will operate. Possible
+# values are "standalone server", "member server", "classic primary
+# domain controller", "classic backup domain controller", "active
+# directory domain controller".
+#
+# Most people will want "standalone sever" or "member server".
+# Running as "active directory domain controller" will require first
+# running "samba-tool domain provision" to wipe databases and create a
+# new domain.
+   server role = standalone server
+
+# If you are using encrypted passwords, Samba will need to know what
+# password database type you are using.
+   passdb backend = tdbsam
+
+   obey pam restrictions = yes
+
+# This boolean parameter controls whether Samba attempts to sync the Unix
+# password with the SMB password when the encrypted SMB password in the
+# passdb is changed.
+   unix password sync = yes
+
+# For Unix password sync to work on a CentOs GNU/Linux system, the following
+# parameters must be set (thanks to Ian Kahan <<kahan@informatik.tu-muenchen.de> for
+# sending the correct chat script for the passwd program in CentOs Sarge).
+   passwd program = /usr/bin/passwd %u
+   passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+
+# This boolean controls whether PAM will be used for password changes
+# when requested by an SMB client instead of the program listed in
+# 'passwd program'. The default is 'no'.
+   pam password change = yes
+
+# This option controls how unsuccessful authentication attempts are mapped
+# to anonymous connections
+   map to guest = bad user
+
+########## Domains ###########
+
+#
+# The following settings only takes effect if 'server role = primary
+# classic domain controller', 'server role = backup domain controller'
+# or 'domain logons' is set
+#
+
+# It specifies the location of the user's
+# profile directory from the client point of view) The following
+# required a [profiles] share to be setup on the samba server (see
+# below)
+;   logon path = \\%N\profiles\%U
+# Another common choice is storing the profile in the user's home directory
+# (this is Samba's default)
+#   logon path = \\%N\%U\profile
+
+# The following setting only takes effect if 'domain logons' is set
+# It specifies the location of a user's home directory (from the client
+# point of view)
+;   logon drive = H:
+#   logon home = \\%N\%U
+
+# The following setting only takes effect if 'domain logons' is set
+# It specifies the script to run during logon. The script must be stored
+# in the [netlogon] share
+# NOTE: Must be store in 'DOS' file format convention
+;   logon script = logon.cmd
+
+# This allows Unix users to be created on the domain controller via the SAMR
+# RPC pipe.  The example command creates a user account with a disabled Unix
+# password; please adapt to your needs
+; add user script = /usr/sbin/adduser --quiet --disabled-password --gecos "" %u
+
+# This allows machine accounts to be created on the domain controller via the
+# SAMR RPC pipe.
+# The following assumes a "machines" group exists on the system
+; add machine script  = /usr/sbin/useradd -g machines -c "%u machine account" -d /var/lib/samba -s /bin/false %u
+
+# This allows Unix groups to be created on the domain controller via the SAMR
+# RPC pipe.
+; add group script = /usr/sbin/addgroup --force-badname %g
+
+############ Misc ############
+
+# Using the following line enables you to customise your configuration
+# on a per machine basis. The %m gets replaced with the netbios name
+# of the machine that is connecting
+;   include = /home/samba/etc/smb.conf.%m
+
+# Some defaults for winbind (make sure you're not using the ranges
+# for something else.)
+;   idmap uid = 10000-20000
+;   idmap gid = 10000-20000
+;   template shell = /bin/bash
+
+# Setup usershare options to enable non-root users to share folders
+# with the net usershare command.
+
+# Maximum number of usershare. 0 (default) means that usershare is disabled.
+;   usershare max shares = 100
+
+# Allow users who've been granted usershare privileges to create
+# public shares, not just authenticated ones
+   usershare allow guests = yes
+
+#======================= Share Definitions =======================
+
+[homes]
+   comment = Home Directories
+   browseable = no
+
+# By default, the home directories are exported read-only. Change the
+# next parameter to 'no' if you want to be able to write to them.
+   read only = yes
+
+# File creation mask is set to 0700 for security reasons. If you want to
+# create files with group=rw permissions, set next parameter to 0775.
+   create mask = 0700
+
+# Directory creation mask is set to 0700 for security reasons. If you want to
+# create dirs. with group=rw permissions, set next parameter to 0775.
+   directory mask = 0700
+
+# By default, \\server\username shares can be connected to by anyone
+# with access to the samba server.
+# The following parameter makes sure that only "username" can connect
+# to \\server\username
+# This might need tweaking when using external authentication schemes
+   valid users = %S
+
+# Un-comment the following and create the netlogon directory for Domain Logons
+# (you need to configure Samba to act as a domain controller too.)
+;[netlogon]
+;   comment = Network Logon Service
+;   path = /home/samba/netlogon
+;   guest ok = yes
+;   read only = yes
+
+# Un-comment the following and create the profiles directory to store
+# users profiles (see the "logon path" option above)
+# (you need to configure Samba to act as a domain controller too.)
+# The path below should be writable by all users so that their
+# profile directory may be created the first time they log on
+;[profiles]
+;   comment = Users profiles
+;   path = /home/samba/profiles
+;   guest ok = no
+;   browseable = no
+;   create mask = 0600
+;   directory mask = 0700
+
+[printers]
+   comment = All Printers
+   browseable = no
+   path = /var/spool/samba
+   printable = yes
+   guest ok = no
+   read only = yes
+   create mask = 0700
+
+# Windows clients look for this share name as a source of downloadable
+# printer drivers
+[print$]
+   comment = Printer Drivers
+   path = /var/lib/samba/printers
+   browseable = yes
+   read only = yes
+   guest ok = no
+# Uncomment to allow remote administration of Windows print drivers.
+# You may need to replace 'lpadmin' with the name of the group your
+# admin users are members of.
+# Please note that you also need to set appropriate Unix permissions
+# to the drivers directory for these users to have write rights in it
+;   write list = root, @lpadmin
+
+--------------------------------------------------------------------------------------------------------
+W: \\10.129.170.29\smb_share
+
+Map Y: to \\evsip\smb_share
+User evsip\bha
+Pass a-sudo-user-on-debian/add 
+add
+[global]
+#   lanman auth = no
+   ntlm auth = yes
+  
+
+follow symlinks = yes
+wide links = yes
+unix extensions = no
+   
+...
+;[profiles]
+
+[smb_share]
+    comment = Samba on Debian
+    path = /home/bha
+    read only = no
+    browsable = yes
+   
+   
+to /etc/samba/smb.conf
+
+sudo service smbd restart
+
+On Windows:
+Connect to \\10.143.137.25/\smb_share
+User bha
+Pw a
+
+client: 
+sudo apt-get install cifs-utils
+sudo mount -t cifs //phobos.evs.tv/transfer /home/bha/smb
+Password for root@//phobos.evs.tv/transfer:  evs
+cd /home/bha/smb/ABE
+
+
+  
+kernel driver:
+uname -r -> 4.9.0-6-amd64
+
+
+
+
+
+==========================================================================================================================================================
+USE VcXSrv INSTEAD OF XMing !!!
+
+clone dyvi source:
+		clion: vcs - checkout from version control - mercurial: url: ssh://bha@phobos.EVS.TV//hg/Pangaea Directory: /home/bha/dyvi/Pangaea password evs
+	==>!!! check putty console from where you start clion.sh and you should see:
+		bha@evsip:~$ clion.sh
+		Sep 20, 2018 10:38:36 AM java.util.prefs.FileSystemPreferences$6 run
+		WARNING: Prefs file removed in background /home/bha/.java/.userPrefs/prefs.xml
+		The authenticity of host 'phobos.evs.tv (10.143.136.11)' can't be established.
+		RSA key fingerprint is SHA256:dL/F74pVKW8UHEOsJV1d2zeSHwxYXvia8EszoPalCo0.
+		Are you sure you want to continue connecting (yes/no)?
+		
+	Answwer yes
+	then bha@phobos.evs.tv's password:
+	Answer evs (hg bha password)
+
+	
+Mercurial Hg vcs: user: bha pw: evs		
+ssh://bha@phobos.EVS.TV//hg/Pangaea
+ssh://bha@phobos.EVS.TV//hg/Pangaea3rdParty
+	
+bha@dyvi:~/hg/Pangaea3rdParty/make/linux$ ./makeall_3rdparty.sh
+bha@dyvi:~/hg/Pangaea/make/linux$ ./makeall.sh
+	
+recompile niosbridge:
+
+
+bha@dyvi:~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux$ ./clean.sh
+~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux ~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux
+rm -f obj/*.d  obj/*.o obj/*.so*
+rm -f ../../../bin/linux/libNiosBridgeApi.so.1
+rm -f ../../../bin/linux/libNiosBridgeApi.so.1.0
+rm -f ../../../bin/linux/libNiosBridgeApi.so
+~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux
+bha@dyvi:~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux$ ./configure.sh
+Init base ...
+~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux ~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux
+~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux
+bha@dyvi:~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux$ ./build.sh
+~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux ~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux
+Makefile:112: obj/niosbridge.d: No such file or directory
+Makefile:112: obj/niosbridge_bof.d: No such file or directory
+g++ -MM -I. -I../../src -I../../include  -std=c++11   -D__USERNAME__=\"bha\" -D__REVISION_NUM__=\""646+"\" -D__REVISION_ID__=\""56a394eac421+"\" -D__REVISION_BRANCH__=\""feature_premerge_unittest"\" -D__PANGAEA__ -D__USE_ASSEMBLER__ ../../src/niosbridge_bof.cpp | sed -e "s/niosbridge_bof.o[ :]/obj\/niosbridge_bof.o obj\/niosbridge_bof.d :/g" > obj/niosbridge_bof.d
+g++ -MM -I. -I../../src -I../../include  -std=c++11   -D__USERNAME__=\"bha\" -D__REVISION_NUM__=\""646+"\" -D__REVISION_ID__=\""56a394eac421+"\" -D__REVISION_BRANCH__=\""feature_premerge_unittest"\" -D__PANGAEA__ -D__USE_ASSEMBLER__ ../../src/niosbridge.cpp | sed -e "s/niosbridge.o[ :]/obj\/niosbridge.o obj\/niosbridge.d :/g" > obj/niosbridge.d
+g++ -I. -I../../src -I../../include  -std=c++11   -O3 -mmmx -msse -msse2 -msse3 -mssse3 -msse4.1 -fPIC -m64 -D__USERNAME__=\"bha\" -D__REVISION_NUM__=\""646+"\" -D__REVISION_ID__=\""56a394eac421+"\" -D__REVISION_BRANCH__=\""feature_premerge_unittest"\" -D__PANGAEA__ -D__USE_ASSEMBLER__ -o obj/niosbridge.o -c ../../src/niosbridge.cpp
+g++ -I. -I../../src -I../../include  -std=c++11   -O3 -mmmx -msse -msse2 -msse3 -mssse3 -msse4.1 -fPIC -m64 -D__USERNAME__=\"bha\" -D__REVISION_NUM__=\""646+"\" -D__REVISION_ID__=\""56a394eac421+"\" -D__REVISION_BRANCH__=\""feature_premerge_unittest"\" -D__PANGAEA__ -D__USE_ASSEMBLER__ -o obj/niosbridge_bof.o -c ../../src/niosbridge_bof.cpp
+g++ -shared -Wl,-soname,libNiosBridgeApi.so.1 -o obj/libNiosBridgeApi.so.1.0 obj/niosbridge.o obj/niosbridge_bof.o
+cp obj/libNiosBridgeApi.so.1.0 ../../../bin/linux/
+ln -s -f libNiosBridgeApi.so.1.0 libNiosBridgeApi.so
+ln -s -f libNiosBridgeApi.so.1.0 libNiosBridgeApi.so.1
+mv -f libNiosBridgeApi.so libNiosBridgeApi.so.1 ../../../bin/linux/
+Done.
+~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux
+bha@dyvi:~/hg/Pangaea3rdParty/lib/niosbridgeapi/make/linux$ ./install.sh
+	
+	
+The repository structure is like this:
+/Pangaea/app - folder for the applications (Mainframe, GUI, Panel, ...)
+/Pangaea/lib - folder for the libraries (OCF, PixCom, ...)
+/Pangaea/driver - folder for the drivers (OmniTek, Dyvi)
+/Pangaea/tool - folder for debugging tools
+/Pangaea/make - folder for some make scrips
+
+rebuild Pangea3rdPary
+
+bha@evsip:~/dyvi$ cd ./Pangaea3rdParty/make/linux
+bha@evsip:~/dyvi/Pangaea3rdParty/make/linux$ ./makeall_3rdparty.sh
+result in /dyvi/Pangaea3rdParty/lib/bin
+	
+compile driver:
+bha@evsip:~/dyvi/Pangaea/driver/DYVI/kernel/dyvi/linux  make
+result in dyvi.ko	
+
+bha@dyvi:~$ nano .hgrc  to setup user
+bha@dyvi:~/hg/Pangaea/.hg$ nano ./hgrc
+
+edit ./pangaea.sh to setup build config:
+#!/bin/sh
+
+export PATH=/opt/QtSDK/Desktop/Qt/4.8.1/gcc/bin/:/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/opt/QtSDK/Desktop/Qt/4.8.1/gcc/lib/:/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/Data/user/bha/bld/feature_premerge_unittest/DESKTOP_DEBIAN/Release/lib/IOChannelDrivers/DYVI2/ddt/ddt/dll:/Data/user/bha/hg/Pangaea/lib/bin/linux:/Data/user/bha/hg/Pangaea3rdParty/lib/bin/linux 
+LD_LIBRARY_PATH=/usr/local/cuda/lib64:/Data/user/bha/hg/Pangaea3rdParty/lib/bin/linux
+
+export DEVEL_PATH=/home/bha/HG/mmdevel
+export DEVEL_MAKEFLAGS=" -j 25"
+export DEVEL_ARCH=linux64_i686_gcc44
+
+export PANGAEA=/home/bha/hg/Pangaea
+export PANGAEA_THIRDPARTY=/home/bha/hg/Pangaea3rdParty
+export PANGAEA_UNTESTED_FEATURES=1
+
+export FFMPEG_ROOT=/home/bha/src/ffmpeg-3.4.1
+export NVIDIA_CODEC_SDK_ROOT=/home/bha/src/video match_Codec_SDK_8.1.18
+export X264_ROOT=/home/bha/src/x264-snapshot-20180224-2245-stable
+export OPENH264_ROOT=/home/bha/src/openh264-master
+
+export PS1='\[\033[1;32m\]'$PS1
+echo -e "\033[1;32m"
+
+ulimit -c unlimited
+
+# Do not add anything below here !!
+
+unset SSH_AUTH_SOCK
+test "$SSH_AUTH_SOCK" || exec ssh-agent $SHELL -c "ssh-add; exec $SHELL -login"
+
+goto to target branch and then hg graft --log -D -r sha1 -r sha2...
+compare 2 rev:
+
+I think the following command should do the job:
+
+$ hg status --rev 2.0.7IR_4748 --rev 2.0.7IR_4793
+
+If you need more detail:
+
+$ hg log -vpr "2.0.7IR_4748:2.0.7IR_4793 and branch('default')"
+
+
+revert last unpushed commit:
+hg strip -r -1 --keep
+
+my branch feature_premerge_unittest
+
+hg pw evs for bha
+
+hg clone ssh://bha@phobos.EVS.TV//hg/Pangaea
+cd ./Pangaea
+hg config --edit   => define user name
+hg update feature_mmgw
+
+
+hg tag dyvi2mmgw bha@phobos.EVS.TV
+hg commit .hgtags
+hg push --new-branch 	# pushes the newly created branch to the server
+P.S - please be careful while merging, DO NOT merge your personal branch 
+to the default or other branches. If you want changes for example from 
+the default branch to your branch
+
+bha@dyvi:~/def$ hg clone ssh://bha@phobos.EVS.TV//hg/Pangaea3rdParty
+
+.rbf et driver
+Le repository c’est “LinMainframe” : hg clone ssh://phobos.evs.tv//hg/LinMainframe
+Le script responsable du build dans ce repo c’est « make_version2.sh ».
+Pour ce qui est des RBFs, il package tout dans l’image en choisissant les répertoires dit « debian_9 ».
+
+
+REBUILD ALL FROM SCRATCH
+
+First:
+bha@dyvi:~/hg/Pangaea3rdParty/lib/libresample/libresample-0.1.3$
+add -fPIC in Makefile (CFLAGS)
+
+cd ./def
+pangae.sh
+cd ./Pangaea
+hg update UnitTest	<= goto unittet branch
+hg pull -u
+cd ..
+
+
+cd ./Pangaea3rdParty/make/linux
+bha@dyvi:~/hg/Pangaea3rdParty/make/linux$ ./makeall_3rdparty.sh
+cd ./hg/Pangaea/lib/ftgl/latest
+./configure
+make -j 40
+cp ./src/.libs/libftgl.so /home/bha/hg/Pangaea/lib/bin/linux/libftgl.so
+cp ./src/.libs/libftgl.so.2 /home/bha/hg/Pangaea/lib/bin/linux/libftgl.so.2
+
+bha@dyvi:~/hg/Pangaea/lib/LogServices/make/linux$ ./configure.sh
+bha@dyvi:~/hg/Pangaea/lib/LogServices/make/linux$ ./build.sh
+bha@dyvi:~/hg/Pangaea3rdParty/lib/libresample/libresample-0.1.3$
+add -fPIC in Makefile (CFLAGS)
+make
+cp libresample.a /home/bha/hg/Pangaea3rdParty/lib/bin/linux/libresample.a
+bha@dyvi:~/hg/Pangaea/lib/ftgl/latest/src/.libs$ cp ./libftgl* /home/bha/hg/Pangaea/lib/bin/linux
+
+Add a new lib/app in the system
+edit /home/bha/hg/Pangaea/lib/make/linux/all.objects
+add path to new dir: ../../IOChannelDrivers/DYVI2/ddt/make/linux
+
+bha@dyvi:~/def/Pangaea/make/linux$ ./install_mainframe_devel.sh
+
+merge otherdev from parent branch (2.0.7.x) back in my tabranche feature 
+hg pull
+hg up 2.0.7.x
+hg up tabranche
+hg merge 2.0.7.x
+hg commit -m "after merge"
+hg push
+
+merge my fix branch into the trunk
+hg pull
+hg up 2.0.7.x
+hg merge bha_5259
+hg commit -m "after merge"
+hg push
+
+
+git stash:
+configure your hgrc in .hg dir to enable the extension by adding following lines:
+
+[extensions]
+shelve=
+
+hg shelve "UnfinishedChanges"
+hg shelve --list
+hg unshelve --name "UnfinishedChanges"
+
+
+hg branch         		# checks the current branch, should display your local branch 'feature_mmgw'
+hg pull              	# pulls all the latest changes from the server.
+hg update               # updates your working repository with the latest changes ( might have merge conflicts, that need to be resolved)
+hg merge default    	# takes all the changes from the default and merges to your branch, (again might have merge conflict, if your local copy of some file was also modified in default branch)
+hg commit               # commit the merge with some message " merged from default etc."
+hg push                 # if you want the backup of your latest merge.
+
+hg st -ma		Show modified file
+hg pull			Get last modif from repo
+hg update		update local repo status
+hg merge		merge repo change and local changes
+hg commit		commit local modif in local repo
+hg push			push it to the server repo
+
+in Pangaea directory, add 
+.idea/** 
+cmake-build-debug/** 
+cmake-build-release/** 
+in .hgignore 
+
+merge 2.0.7.x to default	merge back
+hg update default
+hg merge 2.0.7.x
+hg commit -m “merge”
+hg push
+
+
+hg find origin of a branch:
+bha@dyvi:~/hg/Pangaea$ hg log -r "max(ancestors(bha_work_ip) and not branch(bha_work_ip))"
+changeset:   31872:d76a37339ff6
+branch:      feature_Dyvi2Dash7
+parent:      31864:3ca5a222298f
+user:        bha
+date:        Fri Jun 10 11:00:34 2022 +0200
+summary:     New 6.9.7 driver in iso compatible mode
+
+bha@dyvi:~/hg/Pangaea$
+
+
+HG ANDREAS
+Assuming the repos reside in /home/bha/hg. Please use the /home/bha/.hgrc file that I had copied to the PM that I installed last week.
+Creating and initializing the repo :
+cd ~/hg
+hg clone ssh://phobos//hg/Pangaea        # this updates the files to the 'default' branch. You don't want that. See below.
+hg clone ssh://bha@phobos.EVS.TV//hg/Pangaea3rdParty
+hg clone ssh://bha@phobos.EVS.TV//hg/LinMainframe
+
+cd Pangaea
+hg update UnitTest                       # switching to your branch
+Updating from the default branch (note : you have to commit your changes before if there are any). Do not merge from a different branch since 'UnitTest' is branched off from 'default'.
+cd ~/hg/Pangaea
+hg pull -u
+hg merge default
+Checking stuff in and pushing it to the server. Since you're the only one working on your branch there will be no conflicts when committing to your branch.
+hg commit -m "What have I done here"
+hg push
+Merging your stuff back to default is a little more complicated, but we'll talk about it once you've gotten that far.
+
+
+
+https://wiki.evs.tv/display/PDTP/Git+-+Good+to+know
+
+
+if pushing creates a remote head, this means your changes are not on the latest head and these new changesets must be pulled first from the server.. please do
+$ hg pull -uv
+$ hg merge
+//if there are merge conflicts please resolve them
+$hg ci -m 'merge message'
+$hg push
+
+
+find . -type f -mtime -10 -exec ls -l {} \; > last10days.txt
+find . -type f -mtime -10 -name '*.cpp' -exec ls -l {} \;
+
+grep  -r /Data/user/bha/hg/Pangaea/lib/ -e "nvidia"
+
+
+
+
+grep -r --include='*.cpp' txttolookfor .
+
+bit/bitbucket:
+https://bitbucket.evs.tv/projects/EVS/repos/evs-mmgw-api/browse/doc
+
+goto to https://bitbucket.evs.tv/projects/EVS 
+use "Create repository" button
+goto https://bitbucket.evs.tv/projects/EVS/repos/evs-mmgw/browse
+click on "clone" button to get the http path https://bitbucket.evs.tv/scm/evs/evs-mmgw.git
+
+goto terminal and type:
+bha@dyvi:/Data/user/bha/pingu$ git clone https://bitbucket.evs.tv/scm/evs/evs-mmgw.git
+Cloning into 'evs-mmgw'...
+Username for 'https://bitbucket.evs.tv': bha
+Password for 'https://bha@bitbucket.evs.tv':
+warning: You appear to have cloned an empty repository.
+bha@dyvi:/Data/user/bha/pingu$
+
+Add files in sdk
+mkdir sdk
+
+use tutoise git to add files 
+and the commit + push
+Ses result in https://bitbucket.evs.tv/projects/EVS/repos/evs-mmgw/browse
+
+
+Initialized empty Git repository in /Data/user/bha/pingu/evs-mmgw/.git/
+
+git add --all
+git commit -m "Initial Commit"
+git remote add origin ssh://git@bitbucket.evs.tv:7999/evs/evs-mmgw.git
+git push -u origin master
+
+Huge page
+bha@evsip:~$ git clone https://github.com/libhugetlbfs/libhugetlbfs.git
+Cloning into 'libhugetlbfs'...
+bha@evsip:~$ cd ./libhugetlbfs/
+bha@evsip:~/libhugetlbfs$ make
+bha@evsip:~/libhugetlbfs$ make install
+
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/virtualization_tuning_and_optimization_guide/sect-Virtualization_Tuning_Optimization_Guide-Memory-Huge_Pages-1GB-runtime
+default_hugepagesz=1G hugepagesz=1G hugepages=4 hugepagesz=2M hugepages=1024'
+-->for 8+4 channel of uhd (3840*2160=8M pixel->32MB for 4:4:4 
+-->hugepagesz=2M hugepages=176
+
+
+
+https://wiki.debian.org/Hugepages :
+% groupadd my-hugetlbfs
+% getent group my-hugetlbfs
+my-hugetlbfs:x:2021:
+
+% adduser franklin my-hugetlbfs
+Adding user `franklin' to group `my-hugetlbfs' ...
+Edit /etc/sysctl.conf and add this text to specify the number of pages you want to reserve (see pages-size)
+
+# Allocate 256*2MiB for HugePageTables (YMMV)
+vm.nr_hugepages = 256
+
+# Members of group my-hugetlbfs(2021) can allocate "huge" Shared memory segment 
+vm.hugetlb_shm_group = 2021
+
+% mkdir /hugepages
+Add this line in /etc/fstab (The mode of 1770 allows anyone in the group to create files but not unlink or rename each other's files.1)
+hugetlbfs /hugepages hugetlbfs mode=1770,gid=2021 0 0
+
+
+dump 16 w in format x from _rSlot_X.DmaBuffer_X.pData_U8
+(gdb) x/16xw _rSlot_X.DmaBuffer_X.pData_U8
+0x7fc34ea74000:	0x69696900	0x69696969	0x69696969	0x69696969
+0x7fc34ea74010:	0x69696969	0x69696969	0x69696969	0x69696969
+0x7fc34ea74020:	0x69696969	0x69696969	0x69696969	0x69696969
+0x7fc34ea74030:	0x69696969	0x69696969	0x69696969	0x69696969
+
+Video matrix:
+http://10.129.35.15/
+Output 6-XT du bas H4X
+Output 8-XT au dessus H3XP
+output 9-XT tout en haut (DYVI)  10.129.170.33  625i50 cabled to nothing
+output 7- DYVI 10.129.170.18
+
+yum under debian
+sudo apt-get install yum
+
+bha@evsip:~/bld/mmgwapi/DYVI/Release$ sudo yum install ./mmgwapi-1.0.2_1.x86_64.rpm 
+Setting up Install Process
+Examining ./mmgwapi-1.0.2_1.x86_64.rpm: mmgwapi-1.0.2-1.x86_64
+Marking ./mmgwapi-1.0.2_1.x86_64.rpm to be installed
+Resolving Dependencies
+--> Running transaction check
+---> Package mmgwapi.x86_64 0:1.0.2-1 will be installed
+--> Processing Dependency: /bin/sh for package: mmgwapi-1.0.2-1.x86_64
+--> Processing Dependency: /bin/sh for package: mmgwapi-1.0.2-1.x86_64
+--> Processing Dependency: /bin/sh for package: mmgwapi-1.0.2-1.x86_64
+--> Processing Dependency: /bin/sh for package: mmgwapi-1.0.2-1.x86_64
+--> Processing Dependency: /bin/sh for package: mmgwapi-1.0.2-1.x86_64
+--> Processing Dependency: /bin/sh for package: mmgwapi-1.0.2-1.x86_64
+--> Processing Dependency: /bin/sh for package: mmgwapi-1.0.2-1.x86_64
+--> Processing Dependency: /bin/sh for package: mmgwapi-1.0.2-1.x86_64
+--> Finished Dependency Resolution
+Error: Package: mmgwapi-1.0.2-1.x86_64 (/mmgwapi-1.0.2_1.x86_64)
+           Requires: /bin/sh
+ You could try using --skip-broken to work around the problem
+ You could try running: rpm -Va --nofiles --nodigest
+bha@evsip:~/bld/mmgwapi/DYVI/Release$ ls /bin/sh
+/bin/sh
+
+bha@evsip:~/bld/mmgwapi/DYVI/Release$ sudo apt-get install alien
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+Suggested packages:
+  lintian
+The following NEW packages will be installed:
+  alien
+0 upgraded, 1 newly installed, 0 to remove and 164 not upgraded.
+Need to get 82.3 kB of archives.
+After this operation, 170 kB of additional disk space will be used.
+Get:1 http://ftp.de.debian.org/debian stretch/main amd64 alien all 8.95 [82.3 kB]
+Fetched 82.3 kB in 0s (380 kB/s)
+Selecting previously unselected package alien.
+(Reading database ... 260785 files and directories currently installed.)
+Preparing to unpack .../archives/alien_8.95_all.deb ...
+Unpacking alien (8.95) ...
+Setting up alien (8.95) ...
+Processing triggers for man-db (2.7.6.1-2) ...
+bha@evsip:~/bld/mmgwapi/DYVI/Release$ sudo alien -i ./mmgwapi-1.0.2_1.x86_64.rpm 
+	dpkg --no-force-overwrite -i mmgwapi_1.0.2-2_amd64.deb
+Selecting previously unselected package mmgwapi.
+(Reading database ... 260808 files and directories currently installed.)
+Preparing to unpack mmgwapi_1.0.2-2_amd64.deb ...
+Unpacking mmgwapi (1.0.2-2) ...
+Setting up mmgwapi (1.0.2-2) ...
+
+
+
+bha@evsip:~/bld/mmgwapi/DYVI/Release$ sudo apt-get --reinstall install bash
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+0 upgraded, 0 newly installed, 1 reinstalled, 0 to remove and 164 not upgraded.
+Need to get 1,427 kB of archives.
+After this operation, 0 B of additional disk space will be used.
+Get:1 http://ftp.de.debian.org/debian stretch/main amd64 bash amd64 4.4-5 [1,427 kB]
+Fetched 1,427 kB in 0s (1,832 kB/s)
+(Reading database ... 260834 files and directories currently installed.)
+Preparing to unpack .../archives/bash_4.4-5_amd64.deb ...
+Unpacking bash (4.4-5) over (4.4-5) ...
+Setting up bash (4.4-5) ...
+update-alternatives: using /usr/share/man/man7/bash-builtins.7.gz to provide /usr/share/man/man7/builtins.7.gz (builtins.7.gz) in auto mode
+Processing triggers for install-info (6.3.0.dfsg.1-1+b2) ...
+Processing triggers for man-db (2.7.6.1-2) ...
+
+
+
+teamcity
+
+user: teamcity
+pw: compil23!!!
+
+
+check dyvi board:
+bha@evsip:~/hg/Pangaea/driver/DYVI/kernel/dyvi/linux$ sudo insmod ./dyvi.ko 
+
+
+
+flash firmware
+
+copy rbf in /home/bha/firmware/SDI or ../IP
+even number for asus board
+odd number for supermicro board SDI 291 IP 105
+
+bha@evsip:~/hg/Pangaea/tool/IORoutingTest/make/linux/obj/IORoutingTest --standard 1920x1080_50i --imask 0 --omask 0
+
+You can check the serial number from the IORoutingTestShell by command dev1.info
+After that I can derive the MAC address for you from the serial number and tell the command to write to the eeprom.
+>dev1.info
+serialNo: 102112190053
+temperature sensor 0: 55 C
+temperature sensor 1: 79 C
+
+Your mac address should be 0x001cf300a268 and 0x001cf300a269
+to write the mac address to the board eeprom , please go to IORoutingTest Shell and use the command dev1.wmac
+0xa268 = 41576
+$dev1.wmac 41576
+and then restart the software .. next software run you can read the new values ..
+
+Edited<https://teams.microsoft.com/l/message/19:97d1a99a87294ee689d808a62c11d7b9@thread.skype/1570534213103?tenantId=e61db0b4-dfbe-49fe-acd3-c1668c3573cb&amp;groupId=35b182f4-9583-418a-9766-9b5785727d0b&amp;parentMessageId=1570525349566&amp;teamName=DYVI Delivery&amp;channelName=FPGA and Driver&amp;createdTime=1570534213103>
+
+flash /home/bha/firmware/IP/fw1020_0114_1604572199.rbf
+flash /home/bha/firmware/12G/fw1025_0114_1604573692.rbf
+
+ddt in shell mode
+./ddt --tst=3  ..pas important... and then 
+dev0.update /home/bha/firmware/IP/fw1020_0114_1592824766.rbf 0
+dev1.update /home/bha/firmware/IP/fw1020_0114_1592824766.rbf 0
+dev2.update /home/bha/firmware/IP/fw1020_0114_1592824766.rbf 0
+dev3.update /home/bha/firmware/IP/fw1020_0114_1592824766.rbf 0
+
+ou cmd ddt in dyvi shell then
+flash /home/bha/firmware/IP/fw1020_0114_1593102181.rbf,4
+flash /home/bha/firmware/IP/fw1020_0114_1591347805.rbf,4
+
+dev0.update /home/bha/firmware/SDI/fw1005_0334_1591376410.rbf 0		//supermicro sdi
+
+dev1.gmac  ->Get mac address
+dev1.wmac 124335989328 ->Write mac 0x1cf300a250 and 0x1cf300a251
+
+>dev1.gmac
+dev1.gmac
+MacAddress1       1cf3000000, MacAddress2       1cf3000001
+>dev1.wmac 124335989328
+dev1.wmac 124335989328
+>dev1.gmac
+dev1.gmac
+MacAddress1       1cf300a250, MacAddress2       1cf300a251
+
+->POWER ON->OFF->ON !!!!!!!
+
+dev1.info																				
+layout type   : 0xFF
+board type    : PA1021
+board version : 0xC
+num inputs    : 255
+num outputs   : 255
+CPLD name     : fw1021
+CPLD version  : 0x6
+CPLD status   : u:0x0
+FPGA firmware name    : fw1020
+FPGA firmware version : 0x112
+FPGA firmware Build Date : raw 0x5D70C9E7 day 4 date 5/9/2019 time 10:40:7
+temperature sensor 0: 33
+temperature sensor 1: 45
+
+
+
+COMPILE/branch
+
+Currently due to dependence on the PTP changes the two branches cannot be merged.
+
+SDI Board - feature_IPBoard branch
+IP Board - workAroundBranchIP
+
+In future the workAroundBranchIP will be removed and all the new boards SDI (2.0) and IP (3.0) will be based on one single branch.
+Also NO checkin is done on the workAroundBranchIP, only merge from feature_IPBoard. 
+
+lancer source ./pangaea.sh in home directory
+cd ~/hg/Pangaea/make/linux
+If you want to build entire mainframe then use ./install_mainframe_devel.sh ~/mainframe/ compile (26 mins on 24 cores system)
+OR if you just want to launch the IORouting test then use makeall_io.sh (8 mins on 24 core)
+The files are located on ~/hg/Pangaea/make/linux
+
+For 3rd party
+bha@dyvi:~/hg/Pangaea3rdParty/make/linux$ ./makeall_3rdparty.sh
+ ./makeall_3rdparty.sh
+
+test:
+~/hg/Pangaea/tool/IORoutingTest/make/linux/obj/IORoutingTest --standard 1920x1080_50p --uid 1 --npi 8 --imask ff00  --omask f0 --dmask 2 --gui
+
+dmask = 2 as sdi is the second board
+--imask ff00 as we want to see the 8 input of sdi which is the second board
+select the input sdi with IO->Routing and check cross at the intersection of 72 and 8
+
+
+Now under the HG directory. There are two Pangaea folders
+1. Pangaea  (with branch feature_IPBoard, use this to test SDI boards)
+2. Pangaea.workAroundBranchIP (renamed by the script, Pangaea folder workAroundBranchIP)
+
+If you want to test the IP board you need to run the pangaeaLink.sh script to swap the two folders.
+$cd ~/hg
+$ ./pangaeaLink.sh workAroundBranchIP    // renames the Pangaea.workAroundBranchIP folder to Pangaea and the existing Pangaea folder to Pangaea.feature_IPBoard
+
+Then you can continue to use the existing Pangaea folder without recompile to check the IP Boards.
+
+If you want to go back to test the SDI board, do the same step again
+$ cd ~/hg
+$ ./pangaeaLink.sh feature_IPBoard
+
+
+WORK branch
+So i would recommend using the branch feature_IP board for all the code changes that you do.
+Ignore my previous mail when i said to use workAroundBranchIP for kernel code changes, please use the feature_IPBoard for kernel changes also.
+
+
+udev: /dev/dyvi-* default permission
+https://unix.stackexchange.com/questions/200194/how-to-debug-an-udev-rule-in-etc-udev-rules-d
+https://unix.stackexchange.com/questions/141255/give-a-specific-user-permissions-to-a-device-without-giving-access-to-other-user
+sudo udevadm info -a -n /dev/sdb
+sudo udevadm monitor -u
+sudo udevadm control -R
+
+bha@evsip:~/hg/Pangaea/driver/DYVI/cmake-build-debug$ udevadm monitor -u
+monitor will print the received events for:
+UDEV - the event which udev sends out after rule processing
+
+rmmod:
+UDEV  [689879.259026] remove   /devices/virtual/evs/dyvi-1 (evs)
+UDEV  [689879.259333] remove   /devices/virtual/evs/dyvi-0 (evs)
+UDEV  [689879.259470] remove   /evs (class)
+UDEV  [689879.259799] remove   /bus/pci/drivers/dyvi (drivers)
+UDEV  [689879.260191] remove   /module/dyvi (module)
+
+insmod
+UDEV  [689937.720126] add      /module/dyvi (module)
+UDEV  [689937.720418] add      /class/evs (class)
+UDEV  [689937.720939] add      /devices/virtual/evs/dyvi-0 (evs)
+UDEV  [689937.732808] add      /devices/virtual/evs/dyvi-1 (evs)
+UDEV  [689937.743939] add      /bus/pci/drivers/dyvi (drivers)
+
+http://derekmolloy.ie/writing-a-linux-kernel-module-part-2-a-character-device/
+bha@evsip:/sys$ sudo find . -name "dyvi"
+./bus/pci/drivers/dyvi
+./module/dyvi
+bha@evsip:/sys$ udevadm info -a -p /sys/module/dyvi
+
+Udevadm info starts with the device specified by the devpath and then
+walks up the chain of parent devices. It prints for every device
+found, all possible attributes in the udev rules key format.
+A rule to match, can be composed by the attributes of the device
+and the attributes from one single parent device.
+
+  looking at device '/module/dyvi':
+    KERNEL=="dyvi"
+    SUBSYSTEM=="module"
+    DRIVER==""
+    ATTR{coresize}=="61440"
+    ATTR{initsize}=="0"
+    ATTR{initstate}=="live"
+    ATTR{refcnt}=="0"
+    ATTR{taint}=="OF"
+
+  looking at parent device '/module':
+    KERNELS=="module"
+    SUBSYSTEMS=="module"
+    DRIVERS==""
+
+bha@evsip:/sys$
+
+nios bootloader
+put file in /home/bha/NiosBootstrapFiles
+
+
+I will show you the dmesg once this is done. Meanwhile please have a look at the https://wiki.evs.tv/display/PRENG/Custom+component%3A+Capability+Structure that has details of the new capability the NIOS bootloader.
+The details of the address space are in https://wiki.evs.tv/display/PRENG/Qsys+Configuration. The 'Ethernet_top_40G' system contains also the NIOS address space (not mentioned on the wiki).
+
+record all dmesg in a file
+dmesg --follow > mydmesg.log (or -w)
+
+
+si mac associé a l'ip change: (remove (ECDSA) to the list of known hosts)
+ssh -o StrictHostKeyChecking no -l root 10.131.125.250 
+
+cat /var/log/messages
+
+tcpdump port 320
+tcpdump udp -c 4
+
+
+prio and scheduler:
+pidstat -p 2708 -t -R
+affinity:
+taskset -p 2708
+
+apt-get update
+apt-get install sysstat
+pidstat -p pidoftask -t (thread)
+pidstat -p pidoftask -R (cpu/schedul/prio)
+
+
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ ps -ax | grep Dma
+ 2824 ?        S      0:00 [Dma 0-10/all]
+ 2825 ?        S      0:00 [Dma 0-11/all]
+ 2826 ?        S      0:00 [Dma 0-110/all]
+ 2827 ?        S      0:00 [Gnlk_0]
+ 4147 pts/1    S+     0:00 grep --color=auto Bha
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ taskset --all-tasks -pc 2824
+pid 2824's current affinity list: 31
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ taskset --all-tasks -pc 2825
+pid 2825's current affinity list: 32
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ taskset --all-tasks -pc 2826
+pid 2826's current affinity list: 33
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ taskset --all-tasks -pc 2827
+pid 2827's current affinity list: 34
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ pidstat -p 2824 -Rt
+Linux 4.9.0-8-amd64 (evsip)     06/03/2020      _x86_64_        (40 CPU)
+
+04:59:45 PM   UID      TGID       TID prio policy  Command
+04:59:45 PM     0      2824         -   93   FIFO  BhaDma 0-10/all
+04:59:45 PM     0         -      2824   93   FIFO  |__BhaDma 0-10/all
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ pidstat -p 2825 -Rt
+Linux 4.9.0-8-amd64 (evsip)     06/03/2020      _x86_64_        (40 CPU)
+
+04:59:50 PM   UID      TGID       TID prio policy  Command
+04:59:50 PM     0      2825         -   93   FIFO  BhaDma 0-11/all
+04:59:50 PM     0         -      2825   93   FIFO  |__BhaDma 0-11/all
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ pidstat -p 2826 -Rt
+Linux 4.9.0-8-amd64 (evsip)     06/03/2020      _x86_64_        (40 CPU)
+
+04:59:55 PM   UID      TGID       TID prio policy  Command
+04:59:55 PM     0      2826         -   93   FIFO  BhaDma 0-110/al
+04:59:55 PM     0         -      2826   93   FIFO  |__BhaDma 0-110/al
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ pidstat -p 2827 -Rt
+Linux 4.9.0-8-amd64 (evsip)     06/03/2020      _x86_64_        (40 CPU)
+
+05:00:01 PM   UID      TGID       TID prio policy  Command
+05:00:01 PM     0      2827         -   92   FIFO  BhaGnlk_0
+05:00:01 PM     0         -      2827   92   FIFO  |__BhaGnlk_0
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$
+
+
+
+
+ISOLCPU
+
+Using affinity list of a running PangaeaMainfram (tool/ show_process_thread_info.sh) cpu core 30-35 are not isolated
+In W:\hg\LinMainframe\grub\disk0\grub2\grub_cfg.sh: (30: Isr, 31: DmaInHr, 32: DmaInLr, 33: DmaOutHr, 34: Gnlk)
+    ISOLCPU_LIST="isolcpus=0,12,13,24,30,31,32,33,34,36,37"
+	
+cat  /proc/cmdline 
+BOOT_IMAGE=/boot/vmlinuz iomem=relaxed root=/dev/sda3 ro vconsole.keymap=de vconsole.font=latarcyrheb-sun16 nomodeset quiet LANG=en_US.UTF-8 selinux=0 net.ifnames=0 intel_pstate=disable processor.max_cstate=0 intel_idle.max_cstate=0 noswap isolcpus=0,12,13,24,36,37
+
+On my workstation /disk0/grub2/grub.cfg	
+•	ensure that in /disk0/grub2/grub.cfgA and  grub.cfgB, all your linux /boot/vmlinuz root=/.... lines
+are modified to include the following bold text: linux /boot/vmlinuz iomem=relaxed root=/
+
+menuentry 'Linux, Partition A' {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        root=hd0,msdos2
+        linux /boot/vmlinuz iomem=relaxed root=/dev/sda2 ro nomodeset vconsole.font=latarcyrheb-sun16 vconsole.keymap=de quiet LANG=en_US.UTF-8 selinux=0 net.ifnames=0 intel_pstate=disable processor.max_cstate=0 intel_idle.max_cstate=0 noswap isolcpus=0,12,13,24,30,31,32,36,37
+        initrd /boot/initramfs
+}
+
+sur linux (supermicro)
+sudo nano /etc/default/grub
+sudo update-grub
+
+
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ cat /etc/default/grub
+# If you change this file, run 'update-grub' afterwards to update
+# /boot/grub/grub.cfg.
+# For full documentation of the options in this file, see:
+#   info -f grub -n 'Simple configuration'
+
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+GRUB_CMDLINE_LINUX_DEFAULT="quiet isolcpus=30,31,32,33,34"
+GRUB_CMDLINE_LINUX=""
+
+# Uncomment to enable BadRAM filtering, modify to suit your needs
+# This works with Linux (no patch required) and with any kernel that obtains
+# the memory map information from GRUB (GNU Mach, kernel of FreeBSD ...)
+#GRUB_BADRAM="0x01234567,0xfefefefe,0x89abcdef,0xefefefef"
+
+# Uncomment to disable graphical terminal (grub-pc only)
+#GRUB_TERMINAL=console
+
+# The resolution used on graphical terminal
+# note that you can use only modes which your graphic card supports via VBE
+# you can see them in real GRUB with the command `vbeinfo'
+#GRUB_GFXMODE=640x480
+
+# Uncomment if you don't want GRUB to pass "root=UUID=xxx" parameter to Linux
+#GRUB_DISABLE_LINUX_UUID=true
+
+# Uncomment to disable generation of recovery mode menu entries
+#GRUB_DISABLE_RECOVERY="true"
+
+# Uncomment to get a beep at grub start
+#GRUB_INIT_TUNE="480 440 1"
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ sudo nano /etc/default/grub
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ sudo update-grub
+Generating grub configuration file ...
+Found background image: /usr/share/images/desktop-base/desktop-grub.png
+Found linux image: /boot/vmlinuz-4.9.0-8-amd64
+Found initrd image: /boot/initrd.img-4.9.0-8-amd64
+Found linux image: /boot/vmlinuz-4.9.0-4-amd64
+Found initrd image: /boot/initrd.img-4.9.0-4-amd64
+done
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$
+
+
+
+sur pm
+bha@dyvi:~/hg/LinMainframe$ cat ./grub/disk0/grub2/grub_cfg.sh
+
+GRUB_CFG=/disk0/grub2/grub.cfg
+GRUB_CRASHKERNEL=`grep crashkernel $GRUB_CFG`
+if [ "$GRUB_CRASHKERNEL" == "" ]; then
+    echo "Configuring grub for kernel debugging ..."
+    echo ""                                          >> $GRUB_CFG
+    echo "menuentry 'Linux Debug, Partition A' {"    >> $GRUB_CFG
+    echo "        insmod gzio"                       >> $GRUB_CFG
+    echo "        insmod part_msdos"                 >> $GRUB_CFG
+    echo "        insmod ext2"                       >> $GRUB_CFG
+    echo "        root=hd0,msdos2"                   >> $GRUB_CFG
+    echo "        linux /boot/vmlinuz root=/dev/sda2 ro nomodeset vconsole.font=latarcyrheb-sun16 vconsole.keymap=de quiet LANG=en_US.UTF-8 selinux=0 net.ifnames=0 intel_pstate=disable processor.max_cstate=0 intel_idle.max_cstate=0 noswap crashkernel=256M" >> $GRUB_CFG
+    echo "        initrd /boot/initramfs"            >> $GRUB_CFG
+    echo "}"                                         >> $GRUB_CFG
+    echo ""                                          >> $GRUB_CFG
+    echo "menuentry 'Linux Debug, Partition B' {"    >> $GRUB_CFG
+    echo "        insmod gzio"                       >> $GRUB_CFG
+    echo "        insmod part_msdos"                 >> $GRUB_CFG
+    echo "        insmod ext2"                       >> $GRUB_CFG
+    echo "        root=hd0,msdos3"                   >> $GRUB_CFG
+    echo "        linux /boot/vmlinuz root=/dev/sda3 ro nomodeset vconsole.font=latarcyrheb-sun16 vconsole.keymap=de quiet LANG=en_US.UTF-8 selinux=0 net.ifnames=0 intel_pstate=disable processor.max_cstate=0 intel_idle.max_cstate=0 noswap crashkernel=256M" >> $GRUB_CFG
+    echo "        initrd /boot/initramfs"            >> $GRUB_CFG
+    echo "}"                                         >> $GRUB_CFG
+    echo ""                                          >> $GRUB_CFG
+else
+    echo "Grub already configured for kernel debugging."
+
+nano /etc/default/grub added isolcpus=30,31,32,33,34 to the GRUB_CMDLINE_LINUX_DEFAULT= line. Then sudo update-grub and reboot.
+
+ISR:
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ ps -ax | grep dyvi
+ 4687 ?        S      0:00 [irq/74-dyvi]
+ 4691 pts/1    S+     0:00 grep --color=auto dyvi
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$ taskset --all-tasks -pc 4687
+pid 4687's current affinity list: 30
+bha@evsip:/Data/user/bha/bld/mmgwapidrv/DESKTOP_DEBIAN/Release$  pidstat -p 4687 -Rt
+Linux 4.9.0-8-amd64 (evsip)     06/03/2020      _x86_64_        (40 CPU)
+
+05:29:22 PM   UID      TGID       TID prio policy  Command
+05:29:22 PM     0      4687         -   94   FIFO  irq/74-dyvi
+05:29:22 PM     0         -      4687   94   FIFO  |__irq/74-dyvi
+
+				
+update linux:
+[9:49 AM] MARIQUE, Nicolas
+Vérifie que tu as la ligne suivante dans tes sources (/etc/apt/sources.list) :
+
+deb [trusted=yes] http://10.143.137.48/evs/repo/ stretch main testing
+
+Ensuite,
+
+sudo apt-get update
+sudo apt-get install linux-headers-evs-4.9
+sudo apt-get install linux-image-evs-4.9
+
+Puis tu dois aller dans /boot et modifier les liens symboliques sur le initrd et le vmlinuz.
+
+Exemple : 
+
+lrwxrwxrwx  1 root root       28 May 15 15:58 initramfs -> /boot/initrd.img-4.9.35-dyvi
+-rw-r--r--  1 root root 11744432 May 15 15:58 initrd.img-4.9.35-dyvi
+-rw-r--r--  1 root root  4075769 May  6 15:50 System.map-4.9.35-dyvi
+lrwxrwxrwx  1 root root       25 May 15 15:58 vmlinuz -> /boot/vmlinuz-4.9.35-dyvi
+
+Et finalement tu rebootes
+ 
+
+
+Installer WakeMeOnLan et activer option dans bios pour faire redémarrer le dyvi après un poweroff
+[11:24 AM] TRAN, Laurent
+    tiens pour faire des powercycle, tu peux essayer ça:
+plink -pw evsdvb root@10.129.110.235 /home/evs/wake_dyvi
+
+Installer le dyvi gui+license xscure
+Installer le dyvi soft+licence xsecure
+ajouter un lien genlock entre carte ext nvidia et bottom ip board connector 
+ajouter signal genlock on top ip board
+
+rdp on dyvi GUI (10.129.36.145 / dyvi:dyvi) tu as le soft de wake on lan sur le bureau
+
+
+10.129.170.28: wireshark 10Gb
+user fine 
+pw fine
+interface ip dyvi forwarded to enp1s0f0
+ip source liste des sources ip: http://10.129.110.80/sources/
+source ip batiment: https://wiki.evs.tv/pages/viewpage.action?pageId=126945287
+Source IP "Lawo" 1080i 59.94hz UP   http://10.129.110.80/sources/
+source ip https://wiki.evs.tv/pages/viewpage.action?pageId=126945287
+
+source batiment:
+https://wiki.evs.tv/pages/viewpage.action?pageId=126945287
+
+G4:
+connecteur réseau du milieu
+http://100.10.1.91/
+
+Larry2011
+	
+start dyvi mainframe:
+
+/home/svs/mainframe$ ./mainframe.sh
+
+
+build new ver of mainframe
+bha@dyvi:~/hg$ ./pangaea.sh
+cd ./Pangaea/make/linux
+bha@dyvi:~/hg/Pangaea/make/linux$ ./install_mainframe_devel.sh ~/mainframe compile
+result in 
+/home/bha/mainframe/bin : PangaeaMainframe
+to be copied in /home/svs/mainframe/bin
+lib en /home/bha/mainframe/lib
+to be copied in /home/svs/mainframe/bin
+
+Speed up: modify file in clion
+
+compile in console:
+bha@dyvi:~/hg/Pangaea/lib/IO/make/linux$ make
+'PANGAEA is set to /home/bha/hg/Pangaea'
+gcc -MM -I. -I../../src -I../../include -isystem /home/bha/hg/Pangaea/../Pangaea3rdParty/lib/boost/include -isystem ../../../boost/include -I../../../../driver/OmniTekV2/2.2.14.0/linux/Software/InterfaceInclude -I../../../Timing/include -I../../../IO/include -I../../../Resources/include -I../../../Utils/include -I../../../PixCom/src -I../../../eboost/include -I../../../tinyXML/latest/include -I../../../MoviePlayerBase/include -I../../../MovieBase/include -I../../../VideoProcessingHost/include -I../../../VideoProcessing/include -I../../../Processing/include -I../../../VideoState/include -I../../../VideoFrameConverters/include -I../../../VideoFrame/include -I../../../Parameters/include -I../../../VideoBase/include -I../../../Algebra/include -I../../../AudioBlock/include -I../../../Base/include -W -Wall -Wswitch -Wformat -Wchar-subscripts -Wparentheses -Wmultichar -Wtrigraphs -Wpointer-arith -Wcast-align -Wreturn-type -Wno-unused-function -m64 -fno-strict-aliasing  -std=c++11 -DTIXML_USE_STL -D__USE_ASSEMBLER__ ../../src/CaptureDevice.cpp | sed -e "s/CaptureDevice.o[ :]/obj\/CaptureDevice.o obj\/CaptureDevice.d :/g" > obj/CaptureDevice.d
+'PANGAEA is set to /home/bha/hg/Pangaea'
+gcc -I. -I../../src -I../../include -isystem /home/bha/hg/Pangaea/../Pangaea3rdParty/lib/boost/include -isystem ../../../boost/include -I../../../../driver/OmniTekV2/2.2.14.0/linux/Software/InterfaceInclude -I../../../Timing/include -I../../../IO/include -I../../../Resources/include -I../../../Utils/include -I../../../PixCom/src -I../../../eboost/include -I../../../tinyXML/latest/include -I../../../MoviePlayerBase/include -I../../../MovieBase/include -I../../../VideoProcessingHost/include -I../../../VideoProcessing/include -I../../../Processing/include -I../../../VideoState/include -I../../../VideoFrameConverters/include -I../../../VideoFrame/include -I../../../Parameters/include -I../../../VideoBase/include -I../../../Algebra/include -I../../../AudioBlock/include -I../../../Base/include -W -Wall -Wswitch -Wformat -Wchar-subscripts -Wparentheses -Wmultichar -Wtrigraphs -Wpointer-arith -Wcast-align -Wreturn-type -Wno-unused-function -m64 -fno-strict-aliasing  -std=c++11 -O3 -mmmx -msse -msse2 -msse3 -fPIC -DTIXML_USE_STL -D__USE_ASSEMBLER__ -o obj/CaptureDevice.o -c ../../src/CaptureDevice.cpp
+gcc -shared -Wl,-soname,libIO.so.1 -o obj/libIO.so.1.0 obj/AudioInputStreamDriver.o obj/AudioIO.o obj/AudioProperty.o obj/CaptureChannel.o obj/CaptureDevice.o obj/ChannelStreamAdapter.o obj/ChunkMemoryAllocator.o obj/CommandBasedInputStreamDriver.o obj/CommandBasedOutputStreamDriver.o obj/DemoCommandInputStreamDriver.o obj/DemoCommandOutputStreamDriver.o obj/Device.o obj/Genlock.o obj/InputChannelStreamAdapter.o obj/InputStream.o obj/InputStreamDriver.o obj/IO.o obj/IODebug.o obj/IOManager.o obj/IOManagerEnumerate.o obj/IOManagerConfig.o obj/MemoryManager.o obj/MultiCaptureChannel.o obj/MultiPlayerChannel.o obj/OutputChannelStreamAdapter.o obj/OutputStream.o obj/OutputStreamDriver.o obj/PhysicalChannel.o obj/PlayerChannel.o obj/PlayerDevice.o obj/RDMAChannel.o obj/RDMADevice.o obj/SimpleFrameRecorder.o obj/SocketChannel.o obj/SocketDevice.o obj/SignatureRecorder.o obj/Stream.o obj/Sync.o obj/SyncAnalysis.o obj/SyncGuard.o obj/SyncGuardMaster.o obj/SyncGuardSlave.o obj/SyncGuardDebug.o obj/ThreadParameter.o obj/VideoInputStreamDriver.o obj/VideoOutputStreamDriver.o obj/GenericInputStreamDriver.o obj/GenericOutputStreamDriver.o obj/VideoIO.o obj/VideoProperty.o obj/PreviewVideoOutputStreamDriver.o
+cp obj/libIO.so.1.0 ../../../bin/linux/
+ln -s -f libIO.so.1.0 libIO.so
+ln -s -f libIO.so.1.0 libIO.so.1
+mv -f libIO.so libIO.so.1 ../../../bin/linux/
+bha@dyvi:~/hg/Pangaea/lib/IO/make/linux$
+
+result in:
+bha@dyvi:~/hg/Pangaea/lib/bin/linux$ ls -al libIO.*
+lrwxrwxrwx 1 bha bha      12 May  5 09:36 libIO.so -> libIO.so.1.0
+lrwxrwxrwx 1 bha bha      12 May  5 09:36 libIO.so.1 -> libIO.so.1.0
+-rwxr-xr-x 1 bha bha 1101288 May  5 09:36 libIO.so.1.0
+bha@dyvi:~/hg/Pangaea/lib/bin/linux$
+
+deploy just libIO.so.1 with winscp in /home/svs/mainframe/lib
+
+If you want to deploy clion version of libIODyvi2Channel_r do not forget to add libboost_locale.so.1.56.0 in lib dir
+We are in a RELEASE kkkkkkkkk compil, so try to load libIODyvi2Channel_r.so in /home/svs/mainframe
+Error libboost_locale.so.1.56.0: cannot open shared object file: No such file or directory->try to load libIODyvi2Channel.so
+->[root@dyvi mainframe]$ cp ../OTV2_driver/tool/libboost_locale.so.1.56.0 ./lib/
+
+
+
+tar repo kernel header
+bha@dyvi:~/repo$ tar -cvf DESKTOP_DEBIAN-kh-4.9-dyvi.tar.gz ./DESKTOP_DEBIAN/kh/4.9-dyvi/.
+
+
+
+	
+VideoFrameFormatCb8Y8Cr8Y8HD_Packed32_4_2_2_Interleaved	
+
+
+
+build version:;
+bha@dyvi:~/newinput$ ./pangaea.sh  !!DO IT THERE !!
+bha@dyvi:~/newinput$ cd ./Pangaea3rdParty/make/linux/
+bha@dyvi:~/newinput/Pangaea3rdParty/make/linux$ ./makeall_3rdparty.sh
+
+bha@dyvi:~/newinput/Pangaea/make/linux$ ./install_mainframe_devel.sh ~/mainframe/
+
+Version is in /home/bha/mainframe -> mainframe.sh
+
+voir le mainframe vse
+10.129.36.146 ou .147
+tmux a
+Start tmux $ tmux
+Detach from tmux To detach from active tmux session, type control+b followed by d $ ctrl-b d
+Restore tmux session
+To attach to detached tmux session, use: $ tmux attach 
+
+
+copy to a file:
+tmux capture-pane -pS -1000000 > ./tmux.txt
+
+clear:
+ouvrir l'invite de commande du tmux: ctrl+b -> :
+entrer la commande: clear-history
+ou 
+tmux clear-history
+
+/root/mainframe_restart.sh /home/svs/mainframe
+
+
+Tracing:
+https://lttng.org/docs/v2.11/#doc-debian
+
+sudo apt-get install lttng-modules-dkms
+sudo apt-get install liblttng-ust-dev
+sudo apt-get install lttng-tools
+
+https://lttng.org/docs/#doc-getting-started
+
+https://cradpdf.drdc-rddc.gc.ca/PDFS/unc246/p804561_A1b.pdf
+
+viewer:
+https://lttng.org/blog/2018/03/21/lttng-scope-0.3-a-basic-tutorial/   https://lttng.org/beta/
++ trace Compass
+Tracing the kernel requires a root lttng-sessiond daemon, as well as "tracing" group membership or root user ID for the lttng client. 
+
+NO already set sudo groupadd tracing
+sudo usermod -a -G tracing bha
+sudo usermod -a -G tracing root
+groups bha
+
+en /root:
+sudo chown -v  -R bha:tracing ./lttng-traces/
+
+Logout/reboot pour que ca soit pris en compte
+
+
+Capture FDN
+
+
+bha@dyvi:/RamRecorder/fdn$ ls
+AutoTrig      devmem2     fstop_log.sh       recnow    StopRec  test1b
+debugapp.out  fdn0507.7z  pci_rec_spec6.trg  StartRec  test1a   test2a
+bha@dyvi:/RamRecorder/fdn$
+
+sudo ./AutoTrig: check if ok + fpga ver
+
+sudo ./StartRec pci_rec_spec6.trg
+
+
+graph:
+[1:19 PM] TRAN, Laurent
+    
+j'ai aussi un outil de monitoring ici http://10.129.110.217:3000/d/rYdddlPWk/node-exporter-full?orgId=1&from=now-12h&to=now admin:admin
+
+
+hudson: http://svs-build.evs.tv:8080/ -> onglet Build SnapShot -> sur la ligne "CI Build Snapshot" cliquer sur le "play"-> taper dans BRANCH_NAME feature_premerge_unittest or 2.0.7.x
+RC_2.0.6.1 or default -> boutton build
+Version: \\svs-build.evs.tv\builds
+mappé en R:->R:\DYVI\feature_premerge_unittest\hudson
+
+
+NIOS:
+QSFP0:
+Brd 0: 10.131.120.58
+Brd 1: 10.131.120.66
+Brd 3: 10.131.120.74
+Brd 4: 10.131.120.82
+QSFP1:
+Brd 0: 10.131.128.66 
+Brd 1: 10.131.128.74
+pw evsadmi!
+Spine02#ssh -l root 10.131.120.58 takes time
+Warning: Permanently added '10.131.120.58' (ECDSA) to the list of known hosts.
+root@10.131.120.58's password: nios2
+ ip link set up dev eth1
+
+
+Spine02#ssh -l root 10.131.120.66
+Warning: Permanently added '10.131.120.66' (ECDSA) to the list of known hosts.
+root@10.131.120.66's password:
+Spine02#ssh -l root 10.131.120.74
+Warning: Permanently added '10.131.120.74' (ECDSA) to the list of known hosts.
+root@10.131.120.74's password:
+Spine02#ssh -l root 10.131.120.82
+Warning: Permanently added '10.131.120.82' (ECDSA) to the list of known hosts.
+root@10.131.120.82's password:
+
+cat /var/log/messages
+
+Jan  1 00:00:25 nios2 user.info niosd: RequestJoin: Make Join for MC 239.131.20.1 SRC 0.0.0.0 on eth0
+Jan  1 00:00:25 nios2 user.info niosd: RequestJoin: Make Join for MC 239.100.20.2 SRC 0.0.0.0 on eth0
+Jan  1 00:00:25 nios2 user.info niosd: RequestJoin: Make Join for MC 239.100.20.3 SRC 0.0.0.0 on eth0
+Jan  1 00:00:25 nios2 user.info niosd: RequestJoin: Make Join for MC 239.100.20.4 SRC 0.0.0.0 on eth0
+Jan  1 00:00:25 nios2 user.info niosd: RequestJoin: Make Join for MC 239.100.20.5 SRC 0.0.0.0 on eth0
+Jan  1 00:00:25 nios2 user.info niosd: RequestJoin: Make Join for MC 239.100.20.101 SRC 0.0.0.0 on eth0
+Jan  1 00:00:25 nios2 user.info niosd: RequestJoin: Make Join for MC 239.100.20.6 SRC 0.0.0.0 on eth0
+Jan  1 00:00:25 nios2 user.info niosd: RequestJoin: Make Join for MC 239.100.20.102 SRC 0.0.0.0 on eth0
+Jan  1 00:00:25 nios2 daemon.info lldpdevs: Set configuration to :eth0
+Jan  1 00:00:26 nios2 user.notice ptp4l: [26.475] selected best master clock 080011.fffe.21e542
+Jan  1 00:00:26 nios2 user.notice ptp4l: [26.477] port 1: LISTENING to UNCALIBRATED on RS_SLAVE
+Jan  1 00:00:26 nios2 user.notice ptp4l: [26.813] port 1: UNCALIBRATED to SLAVE on MASTER_CLOCK_SELECTED
+
+ip a
+
+# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast qlen 1000
+    link/ether 00:1c:f3:00:a2:52 brd ff:ff:ff:ff:ff:ff
+    inet 10.131.120.58/29 scope global eth0
+       valid_lft forever preferred_lft forever
+
+ps 
+PID   USER     COMMAND
+    1 root     init
+...
+  750 root     /sbin/getty -L console 0 vt100
+  751 root     /root/app/evs/niosd
+  772 root     ptp4l -f /tmp/ptp4l-eth0.conf
+  ...
+# cat /tmp/ptp4l-eth0.conf
+[global]
+twoStepFlag               1
+slaveOnly                 1
+priority1                             255
+priority2                             255
+domainNumber              127
+step_threshold                          1
+uds_address                        /var/run/ptp4l-eth0
+logging_level                           6
+verbose                                 1
+use_syslog                              1
+summary_interval                        6
+time_stamping                           hardware
+
+[eth0]
+logAnnounceInterval       0
+logSyncInterval           -3
+logMinDelayReqInterval    -3
+announceReceiptTimeout    3
+fault_reset_interval                  ASAP
+#
+
+show ptp
+
+Spine02#show arp
+Address         Age (min)  Hardware Addr   Interface
+10.131.120.58         N/A  001c.f300.a252  Ethernet24/1
+10.131.120.66         N/A  001c.f300.a250  Ethernet25/1
+10.131.120.74         N/A  001c.f300.a26a  Ethernet26/1
+10.131.120.82         N/A  001c.f300.a2e8  Ethernet27/1
+10.131.129.62         N/A  2899.3aa0.c305  Ethernet30/1
+Spine02#clear arp
+
+Spine02#bash
+tcpdump port 320
+tcpdump udp -c 4 
+ 
+ 
+
+Spine02#show arp
+Address         Age (min)  Hardware Addr   Interface
+10.131.120.58         N/A  001c.f300.a252  Ethernet24/1
+10.131.129.62         N/A  2899.3aa0.c305  Ethernet30/1
+Spine02#sh int et24/1-et28/1 counters rates
+Port      Name        Intvl   In Mbps      %  In Kpps  Out Mbps      % Out Kpps
+Et24/1    DYVI40G #8   0:05       0.0   0.0%        0    1311.1   3.3%      129
+Et25/1    DYVI40G #9   0:05       0.0   0.0%        0       0.0   0.0%        0
+Et26/1    DYVI40G#10   0:05       0.0   0.0%        0       0.0   0.0%        0
+Et27/1    DYVI40G#11   0:05       0.0   0.0%        0       0.0   0.0%        0
+Et28/1    DYVI40G#12   5:00       0.0   0.0%        0       0.0   0.0%        0
+Spine02#sh int e24/1 counters rate
+Port      Name        Intvl   In Mbps      %  In Kpps  Out Mbps      % Out Kpps
+Et24/1    DYVI40G #8   0:05       0.0   0.0%        0    1311.7   3.3%      129
+Spine02#sh ip igmp mem int e24/1
+Interface----------------Group Address----IncludeSrc----------ExcludeSrc----------
+Ethernet24/1             224.0.1.129      0.0.0.0
+Ethernet24/1             239.100.20.2     0.0.0.0
+Ethernet24/1             239.131.20.1     0.0.0.0
+Spine02#
+
+show and refresh bandwith 1.311 for 1080i59
+show interfaces counters rates | grep -E "Port|Et24"
+Every 2.0s: CliShell -s ar -p 15 -c show interfaces counters rates | grep -E "Port|Et24"          Wed Jul 27 15:24:33 2022
+
+Port      Name        Intvl   In Mbps      %  In Kpps  Out Mbps      % Out Kpps
+Et24/1    DYVI40G #8   0:05       0.0   0.0%        0    1311.2   3.3%      129
+
+
+switch:
+10.129.111.240 user admin pw evsadmi!
+
+switch 10.129.111.240 user admin pw evsadmi!
+ssh -l root 10.131.120.58 password is nios2
+
+ssh -l root 10.131.120.162 password is nios2	//tran 10.131.120.162, .178 .194 .210
+cd /home/svs/OTV2_driver/tool
+./ddt --oal=true --lhl=true --idl=4000 --tbr=2000 --tst=0 --ll=7 --lm=0xFFFF --rm=0 --bbm=15 --nbi=8 --nbo=4 --nit=0xFFFFFFFF --nss=1 --eoe=true --rxmc=udp://239.131.20.1:8100 --txmc=udp://239.125.250.1:10000 --nip=udp://10.131.120.162:8100,udp://10.131.120.178:8100,udp://10.131.120.194:8100,udp://10.131.120.210:8100 --nmsk=udp://255.255.255.248 --ngw=udp://10.131.120.161
+
+scp root@10.131.120.162:/var/log/messages .
+result in /mnt/flash
+ls is replaced by dir
+
+[9:58 AM] TRAN, Laurent
+    le 215 est sur le même switch, les nios sont en 10.131.120.98, .114, 130, 146
+	le 216 est sur le même switch, les nios sont en 10.131.120.162, .178, 194, 210
+​[9:59 AM] TRAN, Laurent
+    j'ai des sources IP en 239.131.20.31-36 et 239.131.126.1-3
+ssh -l root 10.131.120.98 password is nios2
+
+couper un flux:
+[3:27 PM] TRAN, Laurent
+    
+on .215 primary streams are on spine 2 at 10.129.111.240 	
+on .215 secondary streams are on spine 3 at 10.129.110.219 	
+enable
+conf t
+interface e1/1
+shut
+no shut
+
+[10:49 AM] DUPONT, Fabrice
+    HARMEL, Bernard You have to use int Et24/1-Et28/1
+for your PM with 4 IP boards connected to 10.129.111.240 Spine 02 switch
+[10:34 AM] DUPONT, Fabrice
+    
+On an Arista switch command prompt,
+.201 AKR setup
+Arista on 10.143.137.90 and 10.143.137.91
+Board 3: 10.243.10.146
+sh int et 1/1-32/1 counters rate
+ 
+watch show interfaces counters rates | grep -E "Port|Et10|Et11|Et26|Et27"
+
+doc: 
+https://wiki.evs.tv/display/PRENG/Useful+Arista+Switch+commands
+https://wiki.evs.tv/x/ACb7Bg
+https://wiki.evs.tv/display/PRENG/IP+Troubleshooting
+"interface bandwidth"
+
+you can use the following example scripts to simulate QSFP dis/re-connections to all DYVI IP boards
+replace xx below by corresponding first and last interface numbers for your DYVI PM IP boards
+
+show ip igmp group 
+ 
+To simulate "disconnection" use the following script
+
+conf
+int Etxx/1-Etxx/1			for me it is int Et24/1-Et28/1
+shutdown
+exit
+exit
+
+
+To "reconnect" use the following script
+
+conf
+int Etxx/1-Etxx/1
+no shutdown
+exit
+exit
+
+Pour qsfp1:
+spine03 10.129.110.212
+
+Et9/1        BHA PMY        connected      ... by TRAN, Laurent
+TRAN, Laurent9:50 AM
+Et9/1      BHA PMY      connected    routed   full   40G    40GBASE-SR4
+Et10/1     BHA PMY      connected    routed   full   40G    40GBASE-SR4
+
+désactiver/activer le ptp no ptp enable ptp... by TRAN, Laurent
+TRAN, Laurent9:50 AM
+désactiver/activer le ptp
+
+no ptp enable
+
+ptp enable
+
+has context menu
+
+Spine02 switch and DYVI configuration
+Skip to end of metadata
+Created by DUPONT, Fabrice, last modified 28 minutes ago, viewed 10 timesGo to start of metadata
+Spine02 switch: 10.129.111.240
+user admin pw evsadmi!
+BHA: Spine02(config-if-Et24/1,25/1,26/1,27/1,28/1)
+LTRAN .216 Spine02(config-if-Et9/1,10/1,...,15/1,16/1)
+
+BHA DYVI PMY2 G4 with 4 IP boards: Mngmt: http://10.129.170.29     (pwd:dyvilive)
+
+FDN DYVI PMY2 G4 with 2 IP boards: Mngmt: http://10.129.170.170   (pwd:dyvilive)
+
+NiosIPAdrs: from DYVI IP column
+NiosMask = 255.255.255.248 (/29)
+NiosGw: from Subnet (GW IP) column
+
+DYVI 40G #8	24	4	BHA PMY board 1	10.131.120.57/29	10.131.120.58	10.129.170.29
+DYVI 40G #9	25	5	BHA PMY board 2	10.131.120.65/29	10.131.120.66	
+DYVI 40G #10	26	6	BHA PMY board 3	10.131.120.73/29	10.131.120.74	
+DYVI 40G #11	27	7	BHA PMY board 4	10.131.120.81/29	10.131.120.82	
+
+
+Spine02#sh int et24/1-et28/1 counters rates
+Port      Name        Intvl   In Mbps      %  In Kpps  Out Mbps      % Out Kpps
+Et24/1    DYVI40G #8   0:05       0.0   0.0%        0       0.0   0.0%        0
+Et25/1    DYVI40G #9   0:05       0.0   0.0%        0       0.0   0.0%        0
+Et26/1    DYVI40G#10   0:05       0.0   0.0%        0       0.0   0.0%        0
+Et27/1    DYVI40G#11   0:05       0.0   0.0%        0       0.0   0.0%        0
+Et28/1    DYVI40G#12   5:00       0.0   0.0%        0       0.0   0.0%        0
+Spine02#
+
+leaf05>sh int et52/1
+Ethernet52/1 is up, line protocol is up (connected)
+  Hardware is Ethernet, address is 2899.3a51.3bcd
+  Description: spine01-et20/1
+  Internet address is 10.131.125.249/29
+  Broadcast address is 255.255.255.255
+  Address determined by manual configuration
+  IP MTU 9198 bytes , BW 40000000 kbit
+  Full-duplex, 40Gb/s, auto negotiation: off, uni-link: n/a
+  Up 2 days, 30 minutes, 31 seconds
+  Loopback Mode : None
+  122 link status changes since last clear
+  Last clearing of "show interface" counters 342 days, 6:39:30 ago
+  5 seconds input rate 5.27 kbps (0.0% with framing overhead), 7 packets/sec
+  5 seconds output rate 1.09 Gbps (2.8% with framing overhead), 108031 packets/sec
+     673476490009 packets input, 853936494314144 bytes
+     Received 28 broadcasts, 673474695794 multicast
+     0 runts, 0 giants
+     1887 input errors, 1465 CRC, 0 alignment, 226 symbol, 0 input discards
+     0 PAUSE input
+     652958442449 packets output, 826640321133414 bytes
+     Sent 102 broadcasts, 652942908973 multicast
+     0 output errors, 0 collisions
+     0 late collision, 0 deferred, 83 output discards
+     0 PAUSE output
+leaf05>sh int et52/1
+Ethernet52/1 is up, line protocol is up (connected)
+  Hardware is Ethernet, address is 2899.3a51.3bcd
+  Description: spine01-et20/1
+  Internet address is 10.131.125.249/29
+  Broadcast address is 255.255.255.255
+  Address determined by manual configuration
+  IP MTU 9198 bytes , BW 40000000 kbit
+  Full-duplex, 40Gb/s, auto negotiation: off, uni-link: n/a
+  Up 2 days, 40 minutes, 45 seconds
+  Loopback Mode : None
+  122 link status changes since last clear
+  Last clearing of "show interface" counters 342 days, 6:49:44 ago
+  5 seconds input rate 1.67 Mbps (0.0% with framing overhead), 172 packets/sec
+  5 seconds output rate 1.09 Gbps (2.8% with framing overhead), 108022 packets/sec
+     673483914144 packets input, 853945887820286 bytes
+     Received 28 broadcasts, 673482119928 multicast
+     0 runts, 0 giants
+     1888 input errors, 1466 CRC, 0 alignment, 226 symbol, 0 input discards
+     0 PAUSE input
+     653024607863 packets output, 826724049778310 bytes
+     Sent 102 broadcasts, 653009074387 multicast
+     0 output errors, 0 collisions
+     0 late collision, 0 deferred, 83 output discards
+     0 PAUSE output
+leaf05>
+leaf05>
+leaf05>
+leaf05>
+leaf05>enable			->Pw is evsadmi!
+Password:
+Password:
+leaf05#show int status
+Port       Name           Status       Vlan      Duplex Speed  Type         Flags
+Et1                       notconnect   routed    full   10G    Not Present
+Et2                       notconnect   routed    full   10G    Not Present
+Et3                       notconnect   routed    full   10G    Not Present
+Et4                       notconnect   routed    full   10G    Not Present
+Et5                       notconnect   routed    full   10G    Not Present
+Et6                       notconnect   routed    full   10G    Not Present
+Et7                       notconnect   routed    full   10G    Not Present
+Et8                       notconnect   monitorin full   10G    Not Present
+Et9                       notconnect   routed    full   10G    10GBASE-SR
+Et10                      notconnect   routed    full   10G    Not Present
+Et11                      notconnect   routed    full   10G    Not Present
+Et12                      notconnect   routed    full   10G    Not Present
+Et13                      notconnect   routed    full   10G    Not Present
+Et14                      notconnect   routed    full   10G    Not Present
+Et15                      notconnect   routed    full   10G    10GBASE-SR
+Et16                      connected    routed    full   10G    10GBASE-SR
+Et17                      connected    routed    full   10G    10GBASE-SR
+Et18                      notconnect   routed    full   10G    Not Present
+Et19                      connected    routed    full   10G    10GBASE-SR
+Et20                      notconnect   routed    full   10G    Not Present
+Et21                      connected    routed    full   10G    10GBASE-SR
+Et22                      notconnect   routed    full   10G    Not Present
+Et23                      connected    routed    full   10G    10GBASE-SR
+Et24                      connected    routed    full   10G    10GBASE-SR
+Et25                      connected    routed    full   10G    10GBASE-CR
+Et26                      notconnect   routed    full   10G    Not Present
+Et27                      notconnect   routed    full   10G    Not Present
+Et28                      notconnect   routed    full   10G    Not Present
+Et29                      notconnect   routed    full   10G    Not Present
+Et30                      notconnect   routed    full   10G    Not Present
+Et31                      notconnect   routed    full   10G    Not Present
+Et32                      disabled     routed    full   10G    Not Present
+Et33                      connected    monitorin full   10G    10GBASE-SRL
+Et34                      notconnect   2925      full   10G    Not Present
+Et35                      notconnect   2925      full   10G    Not Present
+Et36                      notconnect   2925      full   10G    Not Present
+Et37                      notconnect   2925      full   10G    Not Present
+Et38                      notconnect   2925      full   10G    Not Present
+Et39                      notconnect   2925      full   10G    Not Present
+Et40                      notconnect   2925      full   10G    Not Present
+Et41                      notconnect   2925      full   10G    Not Present
+Et42                      notconnect   2925      full   10G    Not Present
+Et43                      notconnect   2925      full   10G    Not Present
+Et44                      notconnect   2925      full   10G    Not Present
+Et45                      notconnect   2925      full   10G    Not Present
+Et46                      notconnect   2925      full   10G    Not Present
+Et47                      notconnect   2925      full   10G    Not Present
+Et48                      notconnect   2925      full   10G    Not Present
+Et49/1     spine01-et17/1 connected    routed    full   40G    40GBASE-XSR4
+Et50/1     spine01-et18/1 connected    routed    full   40G    40GBASE-XSR4
+Et51/1     spine01-et19/1 connected    routed    full   40G    40GBASE-SR4
+Et52/1     spine01-et20/1 connected    routed    full   40G    40GBASE-SR4
+Ma1                       connected    routed    a-full a-1G   10/100/1000
+
+leaf05#show int et52/1
+Ethernet52/1 is up, line protocol is up (connected)
+  Hardware is Ethernet, address is 2899.3a51.3bcd
+  Description: spine01-et20/1
+  Internet address is 10.131.125.249/29
+  Broadcast address is 255.255.255.255
+  Address determined by manual configuration
+  IP MTU 9198 bytes , BW 40000000 kbit
+  Full-duplex, 40Gb/s, auto negotiation: off, uni-link: n/a
+  Up 3 hours, 54 minutes, 38 seconds
+  Loopback Mode : None
+  128 link status changes since last clear
+  Last clearing of "show interface" counters 345 days, 5:44:55 ago
+  5 seconds input rate 5.26 kbps (0.0% with framing overhead), 7 packets/sec
+  5 seconds output rate 19.9 kbps (0.0% with framing overhead), 26 packets/sec
+     673501973642 packets input, 853966500503590 bytes
+     Received 28 broadcasts, 673500179425 multicast
+     0 runts, 0 giants
+     1889 input errors, 1467 CRC, 0 alignment, 226 symbol, 0 input discards
+     0 PAUSE input
+     653039087783 packets output, 826734600208262 bytes
+     Sent 102 broadcasts, 653023554307 multicast
+     0 output errors, 0 collisions
+     0 late collision, 0 deferred, 87 output discards
+     0 PAUSE output
+leaf05#show int et52/1
+Ethernet52/1 is up, line protocol is up (connected)
+  Hardware is Ethernet, address is 2899.3a51.3bcd
+  Description: spine01-et20/1
+  Internet address is 10.131.125.249/29
+  Broadcast address is 255.255.255.255
+  Address determined by manual configuration
+  IP MTU 9198 bytes , BW 40000000 kbit
+  Full-duplex, 40Gb/s, auto negotiation: off, uni-link: n/a
+  Up 3 hours, 55 minutes, 52 seconds
+  Loopback Mode : None
+  128 link status changes since last clear
+  Last clearing of "show interface" counters 345 days, 5:46:09 ago
+  5 seconds input rate 495 Mbps (1.3% with framing overhead), 48905 packets/sec
+  5 seconds output rate 18.2 kbps (0.0% with framing overhead), 24 packets/sec
+     673502393253 packets input, 853967031059468 bytes
+     Received 28 broadcasts, 673500599036 multicast
+     0 runts, 0 giants
+     1889 input errors, 1467 CRC, 0 alignment, 226 symbol, 0 input discards
+     0 PAUSE input
+     653039089692 packets output, 826734600391584 bytes
+     Sent 102 broadcasts, 653023556216 multicast
+     0 output errors, 0 collisions
+     0 late collision, 0 deferred, 87 output discards
+     0 PAUSE output
+leaf05#show int et52/1
+Ethernet52/1 is up, line protocol is up (connected)
+  Hardware is Ethernet, address is 2899.3a51.3bcd
+  Description: spine01-et20/1
+  Internet address is 10.131.125.249/29
+  Broadcast address is 255.255.255.255
+  Address determined by manual configuration
+  IP MTU 9198 bytes , BW 40000000 kbit
+  Full-duplex, 40Gb/s, auto negotiation: off, uni-link: n/a
+  Up 3 hours, 56 minutes, 1 seconds
+  Loopback Mode : None
+  128 link status changes since last clear
+  Last clearing of "show interface" counters 345 days, 5:46:18 ago
+  5 seconds input rate 99.9 Mbps (0.3% with framing overhead), 9868 packets/sec
+  5 seconds output rate 19.5 kbps (0.0% with framing overhead), 25 packets/sec
+     673502393316 packets input, 853967031065138 bytes
+     Received 28 broadcasts, 673500599099 multicast
+     0 runts, 0 giants
+     1889 input errors, 1467 CRC, 0 alignment, 226 symbol, 0 input discards
+     0 PAUSE input
+     653039089900 packets output, 826734600411534 bytes
+     Sent 102 broadcasts, 653023556424 multicast
+     0 output errors, 0 collisions
+     0 late collision, 0 deferred, 87 output discards
+     0 PAUSE output
+leaf05#show int et52/1
+Ethernet52/1 is up, line protocol is up (connected)
+  Hardware is Ethernet, address is 2899.3a51.3bcd
+  Description: spine01-et20/1
+  Internet address is 10.131.125.249/29
+  Broadcast address is 255.255.255.255
+  Address determined by manual configuration
+  IP MTU 9198 bytes , BW 40000000 kbit
+  Full-duplex, 40Gb/s, auto negotiation: off, uni-link: n/a
+  Up 3 hours, 56 minutes, 7 seconds
+  Loopback Mode : None
+  128 link status changes since last clear
+  Last clearing of "show interface" counters 345 days, 5:46:24 ago
+  5 seconds input rate 20.1 Mbps (0.1% with framing overhead), 1997 packets/sec
+  5 seconds output rate 20.3 kbps (0.0% with framing overhead), 27 packets/sec
+     673502393382 packets input, 853967031071054 bytes
+     Received 28 broadcasts, 673500599165 multicast
+     0 runts, 0 giants
+     1889 input errors, 1467 CRC, 0 alignment, 226 symbol, 0 input discards
+     0 PAUSE input
+     653039090112 packets output, 826734600431820 bytes
+     Sent 102 broadcasts, 653023556636 multicast
+     0 output errors, 0 collisions
+     0 late collision, 0 deferred, 87 output discards
+     0 PAUSE output
+leaf05#show run int et33
+interface Ethernet33
+   mtu 9198
+   switchport access vlan 2925
+   ip pim sparse-mode
+   spanning-tree portfast
+leaf05#show int status
+Port       Name           Status       Vlan      Duplex Speed  Type         Flags
+Et1                       notconnect   routed    full   10G    Not Present
+Et2                       notconnect   routed    full   10G    Not Present
+Et3                       notconnect   routed    full   10G    Not Present
+Et4                       notconnect   routed    full   10G    Not Present
+Et5                       notconnect   routed    full   10G    Not Present
+Et6                       notconnect   routed    full   10G    Not Present
+Et7                       notconnect   routed    full   10G    Not Present
+Et8                       notconnect   monitorin full   10G    Not Present
+Et9                       notconnect   routed    full   10G    10GBASE-SR
+Et10                      notconnect   routed    full   10G    Not Present
+Et11                      notconnect   routed    full   10G    Not Present
+Et12                      notconnect   routed    full   10G    Not Present
+Et13                      notconnect   routed    full   10G    Not Present
+Et14                      notconnect   routed    full   10G    Not Present
+Et15                      notconnect   routed    full   10G    10GBASE-SR
+Et16                      connected    routed    full   10G    10GBASE-SR
+Et17                      connected    routed    full   10G    10GBASE-SR
+Et18                      notconnect   routed    full   10G    Not Present
+Et19                      connected    routed    full   10G    10GBASE-SR
+Et20                      notconnect   routed    full   10G    Not Present
+Et21                      connected    routed    full   10G    10GBASE-SR
+Et22                      notconnect   routed    full   10G    Not Present
+Et23                      connected    routed    full   10G    10GBASE-SR
+Et24                      connected    routed    full   10G    10GBASE-SR
+Et25                      connected    routed    full   10G    10GBASE-CR
+Et26                      notconnect   routed    full   10G    Not Present
+Et27                      notconnect   routed    full   10G    Not Present
+Et28                      notconnect   routed    full   10G    Not Present
+Et29                      notconnect   routed    full   10G    Not Present
+Et30                      notconnect   routed    full   10G    Not Present
+Et31                      notconnect   routed    full   10G    Not Present
+Et32                      disabled     routed    full   10G    Not Present
+Et33                      connected    monitorin full   10G    10GBASE-SRL
+Et34                      notconnect   2925      full   10G    Not Present
+Et35                      notconnect   2925      full   10G    Not Present
+Et36                      notconnect   2925      full   10G    Not Present
+Et37                      notconnect   2925      full   10G    Not Present
+Et38                      notconnect   2925      full   10G    Not Present
+Et39                      notconnect   2925      full   10G    Not Present
+Et40                      notconnect   2925      full   10G    Not Present
+Et41                      notconnect   2925      full   10G    Not Present
+Et42                      notconnect   2925      full   10G    Not Present
+Et43                      notconnect   2925      full   10G    Not Present
+Et44                      notconnect   2925      full   10G    Not Present
+Et45                      notconnect   2925      full   10G    Not Present
+Et46                      notconnect   2925      full   10G    Not Present
+Et47                      notconnect   2925      full   10G    Not Present
+Et48                      notconnect   2925      full   10G    Not Present
+Et49/1     spine01-et17/1 connected    routed    full   40G    40GBASE-XSR4
+Et50/1     spine01-et18/1 connected    routed    full   40G    40GBASE-XSR4
+Et51/1     spine01-et19/1 connected    routed    full   40G    40GBASE-SR4
+Et52/1     spine01-et20/1 connected    routed    full   40G    40GBASE-SR4
+Ma1                       connected    routed    a-full a-1G   10/100/1000
+
+leaf05#show run int et25
+interface Ethernet25
+   no switchport
+   ip address 10.131.125.193/29
+   ip igmp static-group 239.163.20.1 10.131.125.250
+   ip multicast boundary 224.0.1.129/32 out
+   ip pim sparse-mode
+   ptp announce interval 0
+   ptp sync interval -3
+   ptp delay-req interval -3
+leaf05#config
+leaf05(config)#int et25
+leaf05(config-if-Et25)#ip igmp static-group 239.131.20.11 10.131.125.250
+leaf05(config-if-Et25)#show run int et25
+interface Ethernet25
+   no switchport
+   ip address 10.131.125.193/29
+   ip igmp static-group 239.20.10.1 10.131.125.250
+   ip igmp static-group 239.163.20.1 10.131.125.250
+   ip multicast boundary 224.0.1.129/32 out
+   ip pim sparse-mode
+   ptp announce interval 0
+   ptp sync interval -3
+   ptp delay-req interval -3
+leaf05(config-if-Et25)#
+
+remove igmp
+leaf05#configure
+leaf05(config)#interface Ethernet 25
+leaf05(config-if-Et25)#no  ip igmp static-group 239.163.20.1 10.131.125.250
+leaf05(config-if-Et25)#exit
+leaf05(config)#exit
+leaf05#write
+
+monitor session bha source Ethernet25 both
+monitor session bha source Ethernet52/1 both
+monitor session bha destination Ethernet33
+
+
+show lldp neighbors detail
+
+Bernard, 
+
+Tu as câblé la carte DYVI sur le switch Leaf5 – Ports 25,27,29,31
+
+	DFGW	IP Endpoint	Mask
+---> 25	10.131.125.193	10.131.125.194	255.255.255.248 <---
+27	10.131.125.209	10.131.125.210	255.255.255.248
+29	10.131.125.225	10.131.125.226	255.255.255.248
+31	10.131.125.241	10.131.125.242	255.255.255.248
+
+
+Pour info, si tu souhaites modifier ton câblage le fichier avec l’adressage se trouve sur : "T:\Test\Organisation\Infra Nodal G\Infra IP\Infra IP_2018_04_current.xlsx"
+
+cmd arista
+https://www.arista.com/en/um-eos
+
+
+mac sdi:
+
+[root@dyvi ~]$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: lan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 0c:9d:92:5c:46:5b brd ff:ff:ff:ff:ff:ff
+    inet 10.129.170.18/24 brd 10.129.170.255 scope global lan0
+       valid_lft forever preferred_lft forever
+3: lan1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN group default qlen 1000
+    link/ether 0c:9d:92:5c:46:5c brd ff:ff:ff:ff:ff:ff
+    inet 10.129.250.56/24 brd 10.129.250.255 scope global lan1
+       valid_lft forever preferred_lft forever
+4: hslan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 8900 qdisc mq state UP group default qlen 1000
+    link/ether 00:07:43:49:d1:b0 brd ff:ff:ff:ff:ff:ff
+    inet 192.178.1.1/24 brd 192.178.1.255 scope global hslan0
+       valid_lft forever preferred_lft forever
+5: hslan1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 8900 qdisc mq state DOWN group default qlen 1000
+    link/ether 00:07:43:49:d1:b8 brd ff:ff:ff:ff:ff:ff
+    inet 192.178.2.1/24 brd 192.178.2.255 scope global hslan1
+       valid_lft forever preferred_lft forever
+
+rebuil lib IOChannelDrivers  libIODyvi2Channel_r.so
+We are in a RELEASE compil, so try to load libIODyvi2Channel_r.so from /home/svs/mainframe
+bha@dyvi:/Data/user/bha/bld/feature_premerge_unittest/DESKTOP_DEBIAN/Release/lib/IOChannelDrivers/DYVI2$ ls
+CMakeFiles  cmake_install.cmake  CTestTestfile.cmake  ddt  IODyvi2Channel.cbp  libIODyvi2Channel_r.so  Makefile  mdt  unittest
+
+
+
+W:\bld\feature_premerge_unittest\DESKTOP_DEBIAN\Release\lib\IOChannelDrivers\DYVI2
+W:\bld\mmgwapidrv\DESKTOP_DEBIAN\Release
+
+
+install clion and compile on a pm 
+apt-get install nasm
+apt-get install liblcms2-dev
+ apt install g++ libtiff5-dev zlib1g-dev libjpeg-dev
+
+
+
+
+Mix c and asm fct to look for dump:
+
+# create assembler code:
+g++ -S -fverbose-asm -g -O2 test.cc -o test.s
+# create asm interlaced with source lines:
+as -alhnd test.s > test.lst
+gcc -S -fverbose-asm -g -I. -I../../src -I../../include -isystem /home/bha/hg/Pangaea/../Pangaea3rdParty/lib/boost/include -I../../../../../driver/DYVI/user/include -I../../../../VideoProcessing/include -I../../../../Timing/include -I../../../../IO/include -I../../../../Resources/include -I../../../../Utils/include -I../../../../eboost/include -I../../../../VideoFrame/include -I../../../../AudioBlock/include -I../../../../VideoBase/include -I../../../../OpenGL/include -I../../../../Processing/include -I../../../../Algebra/include -I../../../../Base/include -I/home/bha/hg/Pangaea/../Pangaea3rdParty/lib/niosbridgeapi/include -I/home/bha/hg/Pangaea/../Pangaea3rdParty/lib/glew/glew-1.13.0/include  -W -Wall -Wswitch -Wformat -Wchar-subscripts -Wparentheses -Wmultichar -Wtrigraphs -Wpointer-arith -Wcast-align -Wreturn-type -Wno-unused-function -m64 -fno-strict-aliasing  -std=c++11 -Dlinux -DDYVI_DRIVER -O3 -mmmx -msse -msse2 -msse3 -fPIC -D__USE_ASSEMBLER__ -D__BHA_NEW_DRIVER_INTERFACE__ -o Dyvi2InputChannel.s -c ../../src/Dyvi2InputChannel.cpp
+
+as -alhnd Dyvi2InputChannel.s > Dyvi2InputChannel.lst
+
+OR
+
+gcc -c -g -Wa,-a,-ad -I. -I../../src -I../../include -isystem /home/bha/hg/Pangaea/../Pangaea3rdParty/lib/boost/include -I../../../../../driver/DYVI/user/include -I../../../../VideoProcessing/include -I../../../../Timing/include -I../../../../IO/include -I../../../../Resources/include -I../../../../Utils/include -I../../../../eboost/include -I../../../../VideoFrame/include -I../../../../AudioBlock/include -I../../../../VideoBase/include -I../../../../OpenGL/include -I../../../../Processing/include -I../../../../Algebra/include -I../../../../Base/include -I/home/bha/hg/Pangaea/../Pangaea3rdParty/lib/niosbridgeapi/include -I/home/bha/hg/Pangaea/../Pangaea3rdParty/lib/glew/glew-1.13.0/include  -W -Wall -Wswitch -Wformat -Wchar-subscripts -Wparentheses -Wmultichar -Wtrigraphs -Wpointer-arith -Wcast-align -Wreturn-type -Wno-unused-function -m64 -fno-strict-aliasing  -std=c++11 -Dlinux -DDYVI_DRIVER -O3 -mmmx -msse -msse2 -msse3 -fPIC -D__USE_ASSEMBLER__ -D__BHA_NEW_DRIVER_INTERFACE__ -o Dyvi2InputChannel.s -c ../../src/Dyvi2InputChannel.cpp > Dyvi2InputChannel.lst
+
+https://bitbucket.evs.tv/projects/PCIEIO/repos/libevs-pcie-io-updater
+ git clone ssh://git@bitbucket.evs.tv:7999/pcieio/libevs-pcie-io-updater.git
+cmake -DENABLE_DOC_libevs-pcie-io-updater=OFF /home/nma/git/test/libevs-pcie-io-updater/
+
+docker
+docker run --rm -it -v/home/$USER:/some/directory/ dyvi_panel:v2
+
+
+To install apt-file, do:
+sudo apt-get install apt-file
+Then, you need to update it's database:
+sudo apt-file update
+And, finally, search the file:
+$ apt-file find kwallet.h
+
+
+
+flash with dyvi-debug:
+43 0 /disk3/fw1025_0114_1627647275.rbf
+
+PM25 10.143.137.25 is link to iKVM 10.143.137.65 (+40) user admin pw admin -> can make power cycle
+For the PM's with newer BIOS and newer iKVM, iKVM requires https: access via https://10.143.137.65
+File in /RamRecorder/home/bha/hg
+
+Remote windows connection to virtual machine (faster than Darmstad direct connection)
+name: dedavcovidw03
+
+cd /RamRecorder/home/bha/hg
+./pangaea.sh
+
+cd eclipse
+./eclipse
+
+Run
+I/O->Routing matrix
+
+eclipse mercurial plugin https://www.programmersought.com/article/41906443385/
+step
+- Open eclipse, help->install new software->add
+- Enter in location: https://foss.heptapod.net/mercurial/mercurialeclipse-updatesite/-/raw/branch/default/p2
+- Select both and click Next.
+
+
+debug remotely
+clion
+Run/debu config
+create remote Gdb Server (name it ddt remote)
+Configuration:
+Target ddt
+Executable ddt
+Credential (FDN PM) root@10.193.2.95
+Upload path /disk3/ddt/install
+target remote args 10.193.2.95:1234
+Gdb Server /disk3/ddt/install/gdbserver
+Gdb server arg: :1234 /disk3/ddt/install/ddt --tst=0 --ip=false --ilm=true --isct=0 --osct=0 --vs=1920x1080_50p --bbm=1 --ibm=1 --obm=0 --nss=3 --nit=0xFFFFFFFF --eoe=true --oal=true --rfr=2000 --tbr=3000 --ll=7 --lm=0xFFFF --rm=0 --rx1=udp://239.131.20.1:8100 --tx1=udp://239.125.250.1:10001 --rx2=udp://239.131.20.1:8100 --tx2=udp://239.125.250.2:10002 --rx3=udp://239.131.20.1:8100 --tx3=udp://239.125.250.3:10003 --rx4=udp://239.131.20.1:8100 --tx4=udp://239.125.250.4:10004 --nip=udp://10.131.120.58 --nmsk=udp://255.255.255.248 --ngw=udp://10.131.120.57
+
+Advanced Gdb server options
+Environement variables: LD_LIBRARY_PATH=/disk3/ddt/install/dll
+
+on host
+cp ./dll/libIODyvi2Channel.so.1 ./dll/libIODyvi2Channel_r.so
+
+OU
+
+
+cd /disk3/ddt
+./gdbserver :1234 ./ddt --tst=0 --ip=false --ilm=true --isct=0 --osct=0 --vs=1920x1080_59i --bbm=1 --ibm=1 --obm=1 --nss=3 --nit=0xFFFFFFFF --eoe=true --oal=true --rfr=2000 --tbr=3000 --ll=7 --lm=0xFFFF --rm=0 --rx1=udp://239.131.20.1:8100 --tx1=udp://239.125.250.1:10001 --rx2=udp://239.131.20.1:8100 --tx2=udp://239.125.250.2:10002 --rx3=udp://239.131.20.1:8100 --tx3=udp://239.125.250.3:10003 --rx4=udp://239.131.20.1:8100 --tx4=udp://239.125.250.4:10004 --nip=udp://10.131.120.58 --nmsk=udp://255.255.255.248 --ngw=udp://10.131.120.57
+
+winscp W:/bld/mmgw/ddt/DESKTOP_DEBIAN/Debug/lib/IOChannelDrivers/DYVI2/libIODyvi2Channel_d.so /disk3/ddt/install/dll
+winscp W:/bld/mmgw/ddt/DESKTOP_DEBIAN/Release/lib/IOChannelDrivers/DYVI2/libIODyvi2Channel_r.so /disk3/ddt/install/dll
+
+mkdir -p /disk3/ddt/install
+cd /disk3/ddt
+tar -xvzf  /disk3/ddt/ddt.1231.tar.gz -C /disk3/ddt/install
+cd ./install
+./ddt --tst=0 --ip=false --ilm=true --isct=0 --osct=0 --vs=1920x1080_59i --bbm=1 --ibm=1 --obm=0 --nss=3 --nit=0xFFFFFFFF --eoe=true --oal=true --rfr=2000 --tbr=3000 --ll=7 --lm=0xFFFF --rm=0 --rx1=udp://239.131.20.1:8100 --tx1=udp://239.125.250.1:10001 --rx2=udp://239.131.20.1:8100 --tx2=udp://239.125.250.2:10002 --rx3=udp://239.131.20.1:8100 --tx3=udp://239.125.250.3:10003 --rx4=udp://239.131.20.1:8100 --tx4=udp://239.125.250.4:10004 --nip=udp://10.131.120.58 --nmsk=udp://255.255.255.248 --ngw=udp://10.131.120.57
+
+    il y a un Kiloview sur le multiviewer et sur les outputs
+​[18:42] TRAN, Laurent
+    j'ai centralisé les infos ici https://wiki.evs.tv/pages/viewpage.action?spaceKey=PRENG&title=DYVI+6+PMY+Setup+in+HQ
+	
+		Multiviewer Monitoring
+		(Ref. QC Server Team WebRTC)
+
+		Two multiviewers are accessible through a web interface. Contact LTRAN or someone from QC Server if they need to be restarted.
+
+		PM202 (LTRAN Kiloview): 
+		http://212.222.125.92:5080/WebRTCAppEE/play.html?name=794418393447212531987737
+
+		http://212.222.125.93:5080/WebRTCAppEE/play.html?name=588770758347082670306106
+
+		PM215 (Yawcam on LTRAN GXServer): http://10.129.110.210:8081/
+		Output Monitoring
+		Matrix (CDO Kiloview):
+
+		http://212.222.125.92:5080/WebRTCAppEE/play.html?name=676729806279927351664858
+
+
+
+		http://212.222.125.93:5080/WebRTCAppEE/play.html?name=983727944119139684941222	
+	
+	
+[10:48] DORMAL, Celia
+    http://212.222.125.92:5080/WebRTCAppEE/play.html?name=676729806279927351664858
+​[10:48] DORMAL, Celia
+    http://212.222.125.93:5080/WebRTCAppEE/play.html?name=983727944119139684941222
+​[10:50] TRAN, Laurent
+    https://wiki.evs.tv/pages/viewpage.action?spaceKey=PRENG&title=DYVI+6+PMY+Setup+in+HQ
+
+
+IORoutingTest
+--standard 1920x1080_59i --gui --uid 1 --npi 8 --rpms 12 --nrpc 4 --nmpc 2 --imask 1 --omask 1 --dmask 1
+
+POWER CYCLE DARMSTAD
+PM25 10.143.137.25 iKVM+40->10.143.137.65 
+http://10.143.137.65 
+
+usr admin pw admin
+POWER CONTROL: Cycle
+
+
+rdp on 10.129.110.210 (login:password= DVB:<pas_de_mdp>
+use app to power on/off .202
+
+ cd /RamRecorder/home/bha/hg/eclipse
+ ./eclipse
+ 
+cd /RamRecorder/home/bha/pingu/evs-mmgw/driver/
+rmmod dyvi
+insmod ./dyvi.ko
+
+Virtual machine to work with PM25 in Darmstad+eclipse:
+Rdp dedavcovidw03 user evs\bha
+
+
+https://artifactory.evs.tv/ui/repos/tree/General/evs-dyvi-snapshot-generic%2FVersions%2Fbha_MergeFromDefault%2F2.1.4.2460%2FDev%2Fpanel_debian_9_2.1.4.2460_bha_MergeFromDefault_dc1b7adf9114.tar.gz
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:home/bha/hg/Pangaea/cmake-build-debug/binaries/lib
+
+remote debugging ddt on .202:
+Edit configuration
+	Remote Gdb Server
+	
+	Target dtt
+	Executable ddt
+	Credentials: root@10.129.110.202:22
+	Upload executable: always
+	Upload path: /home/svs/mainframe/bin/
+	Target remote args: 10.129.110.202:1234
+	gdbserver: /home/svs/mainframe/gdbserver
+	gdb server args: 10.129.110.202:1234 /home/svs/mainframe/bin/ddt --tst=0 --ip=false --vs=1920x1080_59i --bbm=15 --ibm=255 --obm=15 --nss=3 --nit=0xFFFFFFFF --eoe=true --oal=true --ios=false --lhl=true --rfr=2000 --tbr=3000 --verbose=1 --ll=7 --lm=0xFFFF --rm=0 --rx1=udp://239.131.20.1:8100 --tx1=udp://239.125.250.1:10001 --rx2=udp://239.131.20.1:8100 --tx2=udp://239.125.250.2:10002 --rx3=udp://239.131.20.1:8100 --tx3=udp://239.125.250.3:10003 --rx4=udp://239.131.20.1:8100 --tx4=udp://239.125.250.4:10004 --nip=udp://10.131.120.58 --nmsk=udp://255.255.255.248 --ngw=udp://10.131.120.57
+	
+	for mainfreme: 10.129.110.202:1234 /home/svs/mainframe/bin/PangaeaMainframe --scb --usedmastream 2 --streamsyncmode 0 --procprec 16 --procpreclores 8 --colormodel rgb --vstandard 1920x1080_59i
+	
+	
+	Advanced Gdb server options:
+	Working dir: /home/svs/mainframe
+	Environement variable: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/svs/mainframe/lib
+	
+	
+copy all debug /home/bha/bld/dyvi/Debug/lib .so in /home/svs/mainframe/lib
+copy /home/bha/gdb-10.1/build/gdbserver/gdbserver in /home/svs/mainframe  -> chmod 777 /home/svs/mainframe/gdbserver
+
+Ensuite redeployer les .so modifié au fur et a mesure
+
+Add -DNOXSECURE=ON -DNOXSEC=1 to cmake settings
+
+run mainframe on .33 (not pm)
+cmake setting:
+cmake option -DNOXSECURE=ON -DNOXSEC=1
+Build dir /home/bha/bld/dyvi/Debug
+
+Edit Config (mainframe)
+Program arg: --streamsyncmode 0 --procprec 16 --procpreclores 8 --colormodel rgb --standard 1920x1080_59i --rpmsv 4 --dmask 1 --omask 0 --imask 0xFFFFFFFF ou --imask 0x01010101  01 is for in1 on 4 board
+Working dir /home/bha/bld/dyvi/Debug/binaries/bin
+Env var LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/bha/bld/dyvi/Debug/binaries/lib
+copy Y:\mainframe_datadir into /home/bha/bld/dyvi/Debug/binaries/bin
+it contains 3 dir (config, http, nosignal) with config files
+copy Y:\mainframe_datadir\config.xml into /disk3
+
+on develpc 
+- create a NiosBootstrapFiles dir in your home dir and copy nios bootstrap (DYVI_Bootloader.bin) and kernel file (vmlinux.bin)
+- create /home/svs/OTV2_driver/ and put the Fpga.rbf file that you need in
+
+
+Need to manually compile target 
+IODyvi2Channel
+PixServiceDrivers
+IORamRecorderChannel
+IOBSDSocketChannel
+
+check for special char (not in 0-127 range:
+search for regexp [^\x00-\x7F]
+look for null: \x00
+
+
+
+cmake --install . --prefix ./install
