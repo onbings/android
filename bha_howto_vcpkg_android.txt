@@ -1,5 +1,5 @@
-add C:\Android\Sdk\platform-tools to patch for adb.exe
-add alseo C:\Program Files\CMake\bin and c:\pro\vcpkg
+add C:\Android\Sdk\platform-tools to path for adb.exe
+add also C:\Program Files\CMake\bin and c:\pro\vcpkg
 set env var ANDROID_HOME to C:\Android\Sdk
 set env var JAVA_HOME to C:\Android\jre
 
@@ -151,6 +151,96 @@ C:\pro\android\demobof2d\app\src\main\cpp\Renderer.cpp
 	
 	    EGLint contextAttribs[] = {EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE};  -->EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE
 		
-C:\pro\android\demobof2d\app\src\main\cpp\CMakeLists.txt		
+C:\pro\android\demobof2d\app\src\main\cpp\CMakeLists.txt	
 
 
+
+
+
+
+
+
+
+
+add C:\Android\Sdk\platform-tools to path for adb.exe
+add also C:\Program Files\CMake\bin and c:\pro\vcpkg
+set env var ANDROID_HOME to C:\Android\Sdk
+set env var JAVA_HOME to C:\Program Files\Android\Android Studio\jre
+
+ANDROID STUDIO
+https://developer.android.com/studio
+install
+delete env var JAVA_HOME if it exists
+create directory c:\Android\Sdk
+download and install last cmake
+download and install ninja https://github.com/ninja-build/ninja/releases
+copy C:\pro\vcpkg\triplets\community\arm-android.cmake        C:\pro\vcpkg\triplets\community\arm-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\arm-neon-android.cmake   C:\pro\vcpkg\triplets\community\arm-neon-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\arm64-android.cmake      C:\pro\vcpkg\triplets\community\arm64-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\armv6-android.cmake      C:\pro\vcpkg\triplets\community\armv6-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\x64-android.cmake        C:\pro\vcpkg\triplets\community\x64-android-32.cmake
+copy C:\pro\vcpkg\triplets\community\x86-android.cmake        C:\pro\vcpkg\triplets\community\x86-android-32.cmake
+
+add
+#BHA
+set(VCPKG_CMAKE_SYSTEM_VERSION 32)
+at the end on -32.cmake file
+    
+- Install last cmake, put it in PATH
+- Install android studio
+- Use android studio to create a 'game activity c++" app
+		Tools - Sdk Manager - download Ndk and api 30/32 in c:\adroid\sdk and c:\adroid\sdk\ndk
+- Edit C:\Program Files\CMake\share\cmake-3.25\Modules\FindThreads.cmake and comment the line	
+	int main(void)
+	{
+		pthread_t thread;
+		pthread_create(&thread, NULL, test_func, NULL);
+		pthread_detach(thread);
+		--->//BHA_FOR_ANDROID pthread_cancel(thread);
+
+Launch android studio
+Select Custom installation
+select ui theme
+accept default jdk location
+set c:\Android\Sdk as sdk location	
+
+open project c:\pro\github\android\lvgldemo
+wait for graddle download
+click on build tab and wait for end of build
+
+install sdl2 under vcpkg
+vcpkg install sdl2:x64-android-32
+
+- use C:\pro\github\cmp_prj.bat to compile bofstd/bof2d/SDL2 and lvgl
+cd c:\pro
+C:\pro\github\android\cmp_prj github\bofstd x86_64 32 x64 Debug
+C:\pro\github\android\cmp_prj github\bof2d x86_64 32 x64 Debug
+C:\pro\github\android\cmp_prj github\lvgl x86_64 32 x64 Debug
+C:\pro\github\android\cmp_prj github\SDL2 x86_64 32 x64 Debug
+
+at the end C:\pro\github\vcpkg\installed\x64-android-32\share\lvgl is missing cmake filesthese one are in 
+C:\pro\github\vcpkg\installed\x64-android-32\share\bof2d\lvgl 
+and C:\pro\github\vcpkg\installed\x64-android-32\share\bof2d but WHY ????
+copy them form C:\pro\github\vcpkg\installed\x64-android-32\share\bof2d\lvgl in C:\pro\github\vcpkg\installed\x64-android-32\share\lvgl
+
+tous les fichiers de config cmake de lvgl doivent etre tous dans C:\pro\github\vcpkg\installed\x64-android-32\share\lvgl (ne pas recreer un sous dir lvgl dans lvgl)
+
+
+sinon del C:\Android\bld\32\x86_64\lvgl
+C:\pro\github\android\cmp_prj github\lvgl x86_64 32 x64 Debug
+
+Pour mettre a jour lvgl
+modif ex C:\pro\github\lvgl\lv_conf.h activate #define LV_TICK_CUSTOM     1
+commit
+push ref git in port C:\pro\github\onbings-vcpkg-registry\ports\lvgl\portfile.cmake
+ REF f0ef5b755afd7d1221965559c985a1ff91d2ef95
+  SHA512 d8b98687771d0ee86a0e3178c46318fe57c08403b543b29b9b16cfbbfce31c4976ce086b72510c44c21cf1c07f223ba773c3c0f39951a1fac2d07f0ce3d0c978
+
+
+set SHA512 to 0
+
+vcpkg remove lvgl:x64-android-32
+ C:\pro\github\android\cmp_prj github\lvgl x86_64 32 x64 Debug
+ adjust SHA512
+ C:\pro\github\android\cmp_prj github\lvgl x86_64 32 x64 Debug
+ 

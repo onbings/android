@@ -11,6 +11,12 @@
 #include "Utility.h"
 #include "TextureAsset.h"
 
+//https://lazyfoo.net/tutorials/SDL/52_hello_mobile/android_windows/index.php
+//#include <SDL2/SDL.h>
+//#include <stdio.h>
+
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
 
 //! executes glGetString and outputs the result to logcat
 #define PRINT_GL_STRING(s) {aout << #s": "<< glGetString(s) << std::endl;}
@@ -85,6 +91,50 @@ static constexpr float kProjectionNearPlane = -1.f;
  */
 static constexpr float kProjectionFarPlane = 1.f;
 
+int f() {
+    /*
+    SDL_Window *window = NULL;
+    SDL_Surface *screenSurface = NULL;
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        fprintf(stderr, "could not initialize sdl2: %s\n", SDL_GetError());
+        return 1;
+    }
+    window = SDL_CreateWindow(
+            "hello_sdl2",
+            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+            SCREEN_WIDTH, SCREEN_HEIGHT,
+            SDL_WINDOW_SHOWN
+    );
+    if (window == NULL) {
+        fprintf(stderr, "could not create window: %s\n", SDL_GetError());
+        return 1;
+    }
+    screenSurface = SDL_GetWindowSurface(window);
+    SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+    SDL_UpdateWindowSurface(window);
+    SDL_Delay(2000);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+     */
+    return 0;
+}
+
+//link with sdl2 dump the app
+Renderer::Renderer(android_app *pApp) :
+app_(pApp),
+display_(EGL_NO_DISPLAY),
+surface_(EGL_NO_SURFACE),
+context_(EGL_NO_CONTEXT),
+width_(0),
+height_(0),
+shaderNeedsNewProjectionMatrix_(true) {
+    f();
+    initRenderer();
+
+
+
+
+}
 Renderer::~Renderer() {
     if (display_ != EGL_NO_DISPLAY) {
         eglMakeCurrent(display_, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);

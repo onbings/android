@@ -9,8 +9,10 @@ cmake_minimum_required(VERSION 3.18.1)
 
 project("demolvgl")
     set(VCPKG_TARGET_TRIPLET "x64-android-32")
-    set(VCPKG_ROOT "C:/pro/vcpkg")
+    set(VCPKG_ROOT "C:/pro/github/vcpkg")
     include(${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
+message("Activate debug find_package")
+    set(CMAKE_FIND_DEBUG_MODE TRUE)
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -53,7 +55,8 @@ find_package(game-activity REQUIRED CONFIG)
 
 find_package(bofstd REQUIRED)
 find_package(bof2d REQUIRED)
-find_package(lvgl REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(lvgl CONFIG REQUIRED)
 
 target_compile_definitions(demolvgl
         PUBLIC
@@ -86,6 +89,8 @@ target_link_libraries( # Specifies the target library.
         ONBINGS::bofstd
         ONBINGS::bof2d
         ONBINGS::lvgl
+        #SDL2::SDL2main
+        #SDL2::SDL2 #SDL2-static
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})

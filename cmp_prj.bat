@@ -1,10 +1,11 @@
 #echo off
-REM c:\pro\android\cmp_prj C:\pro\github\bofstd x86_64 32 x64 Debug
-REM c:\pro\android\cmp_prj C:\pro\github\bof2d x86_64 32 x64 Debug
-REM c:\pro\android\cmp_prj C:\pro\github\lvgl x86_64 32 x64 Debug
+REM C:\pro\github\android\cmp_prj C:\pro\github\bofstd x86_64 32 x64 Debug
+REM C:\pro\github\android\cmp_prj C:\pro\github\bof2d x86_64 32 x64 Debug
+REM C:\pro\github\android\cmp_prj C:\pro\github\lvgl x86_64 32 x64 Debug
+REM cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/github/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic -DBOFSTD_GENERATE_HELP=ON C:/pro/github/bofstd
 
-REM c:\pro\android\cmp_prj C:\pro\github\bofstd x86_64 32 x64 Release
-REM c:\pro\android\cmp_prj C:\pro\github\bofstd x86 30 x86 Debug
+REM C:\pro\github\android\cmp_prj C:\pro\github\bofstd x86_64 32 x64 Release
+REM C:\pro\github\android\cmp_prj C:\pro\github\bofstd x86 30 x86 Debug
 cls
 set CPP_FULL_PATH=%~f1
 set CPP_DIR=%~dp1
@@ -13,7 +14,7 @@ set CPP_PRJ=%~nx1
 echo BUILD '%CPP_PRJ%' in '%CPP_DIR%'
 set pwd=%cd%
 set ANDROID_NDK_HOME=C:\Android\Sdk\ndk\25.1.8937393
-set VCPKG_ROOT=C:/pro/vcpkg
+set VCPKG_ROOT=C:/pro/github/vcpkg
 set CPP_ANDROID_PORT_FILE=C:/pro/github/onbings-vcpkg-registry/ports
 set CPP_ANDROID_ROOT=C:\Android
 REM x86_64

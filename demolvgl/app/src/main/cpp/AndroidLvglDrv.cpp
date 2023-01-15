@@ -52,11 +52,35 @@ static int volatile g_dpi_value = USER_DEFAULT_SCREEN_DPI;
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
+ /*
 comparer les lv_conf
 voire quoi pour le timer qui n est pas redefinit ici
 quid pour keyboard'
 quid pour wheel
+utiliser le port sdl2
+  */
 
+/*Set in C:\pro\github\lvgl\lv_conf.h as `LV_TICK_CUSTOM_SYS_TIME_EXPR`*/
+extern "C"
+{
+uint32_t custom_tick_get(void)
+{
+    static uint64_t start_ms = 0;
+    if(start_ms == 0) {
+        struct timeval tv_start;
+        gettimeofday(&tv_start, nullptr);
+        start_ms = (tv_start.tv_sec * 1000000 + tv_start.tv_usec) / 1000;
+    }
+
+    struct timeval tv_now;
+    gettimeofday(&tv_now, nullptr);
+    uint64_t now_ms;
+    now_ms = (tv_now.tv_sec * 1000000 + tv_now.tv_usec) / 1000;
+
+    uint32_t time_ms = now_ms - start_ms;
+    return time_ms;
+}
+};
 bool AndroidLvlgDrvInit(Renderer *_pRenderer, uint16_t _Width_U16, uint16_t _Height_U16) {
     bool Rts_B = false;
     
@@ -140,7 +164,7 @@ bool Rts_B = true;
     S_DisplayDriver_X.ver_res = _Height;
     S_DisplayDriver_X.flush_cb = S_lv_android_display_driver_flush_callback;
     S_DisplayDriver_X.draw_buf = &S_DisplayBuffer_X;
-    S_DisplayDriver_X.direct_mode = 1;
+    //Not in this version S_DisplayDriver_X.direct_mode = 1;
     S_pDisplay_X = lv_disp_drv_register(&S_DisplayDriver_X);
     lv_timer_del(S_pDisplay_X->refr_timer);
     S_pDisplay_X->refr_timer = nullptr;
@@ -203,7 +227,7 @@ static void S_lv_android_display_refresh_handler(lv_timer_t *_pTimer_X) {
     //UNREFERENCED_PARAMETER(_pTimer_X);
 
     if (!S_DisplayRefreshing_B) {
-        _lv_disp_refr_timer(nullptr);
+//TODO        _lv_disp_refr_timer(nullptr);   //or _pTimer_X make it crash as _pTimer_X->user_data is null
     }
 }
 
@@ -339,7 +363,83 @@ S_DisplayRefreshing_B = false;
 
  */
 
+#if 0
+#include <SDL2/SDL.h>
+#include <cstdlib>
+#include <iostream>
 
+int sdl2()
+{
+    using std::cerr;
+    using std::endl;
+
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+        cerr << "SDL_Init Error: " << SDL_GetError() << endl;
+        return EXIT_FAILURE;
+    }
+
+    SDL_Window* win = SDL_CreateWindow("Hello World!", 100, 100, 620, 387, SDL_WINDOW_SHOWN);
+    if (win == nullptr) {
+        cerr << "SDL_CreateWindow Error: " << SDL_GetError() << endl;
+        return EXIT_FAILURE;
+    }
+
+    SDL_Renderer* ren
+            = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (ren == nullptr) {
+        cerr << "SDL_CreateRenderer Error" << SDL_GetError() << endl;
+        if (win != nullptr) {
+            SDL_DestroyWindow(win);
+        }
+        SDL_Quit();
+        return EXIT_FAILURE;
+    }
+
+    SDL_Surface* bmp = SDL_LoadBMP("../img/grumpy-cat.bmp");
+    if (bmp == nullptr) {
+        cerr << "SDL_LoadBMP Error: " << SDL_GetError() << endl;
+        if (ren != nullptr) {
+            SDL_DestroyRenderer(ren);
+        }
+        if (win != nullptr) {
+            SDL_DestroyWindow(win);
+        }
+        SDL_Quit();
+        return EXIT_FAILURE;
+    }
+
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(ren, bmp);
+    if (tex == nullptr) {
+        cerr << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << endl;
+        if (bmp != nullptr) {
+            SDL_FreeSurface(bmp);
+        }
+        if (ren != nullptr) {
+            SDL_DestroyRenderer(ren);
+        }
+        if (win != nullptr) {
+            SDL_DestroyWindow(win);
+        }
+        SDL_Quit();
+        return EXIT_FAILURE;
+    }
+    SDL_FreeSurface(bmp);
+
+    for (int i = 0; i < 20; i++) {
+        SDL_RenderClear(ren);
+        SDL_RenderCopy(ren, tex, nullptr, nullptr);
+        SDL_RenderPresent(ren);
+        SDL_Delay(100);
+    }
+
+    SDL_DestroyTexture(tex);
+    SDL_DestroyRenderer(ren);
+    SDL_DestroyWindow(win);
+    SDL_Quit();
+
+    return EXIT_SUCCESS;
+}
+#endif
 #if 0
 
 #include <bofstd/bofstd.h>
@@ -789,7 +889,9 @@ int init_lvgl_under_android(void)
     return 0;
 }
 
-/*Set in lv_conf.h as `LV_TICK_CUSTOM_SYS_TIME_EXPR`*/
+/*Set in C:\pro\github\lvgl\lv_conf.h as `LV_TICK_CUSTOM_SYS_TIME_EXPR`*/
+extern "C"
+{
 uint32_t custom_tick_get(void)
 {
     static uint64_t start_ms = 0;
@@ -807,6 +909,6 @@ uint32_t custom_tick_get(void)
     uint32_t time_ms = now_ms - start_ms;
     return time_ms;
 }
-
+};
 
 #endif
