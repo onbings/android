@@ -12,8 +12,8 @@
 #include "TextureAsset.h"
 
 //https://lazyfoo.net/tutorials/SDL/52_hello_mobile/android_windows/index.php
-//#include <SDL2/SDL.h>
-//#include <stdio.h>
+#include <SDL2/SDL.h>
+#include <stdio.h>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -92,7 +92,7 @@ static constexpr float kProjectionNearPlane = -1.f;
 static constexpr float kProjectionFarPlane = 1.f;
 
 int f() {
-    /*
+
     SDL_Window *window = NULL;
     SDL_Surface *screenSurface = NULL;
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -115,7 +115,7 @@ int f() {
     SDL_Delay(2000);
     SDL_DestroyWindow(window);
     SDL_Quit();
-     */
+
     return 0;
 }
 

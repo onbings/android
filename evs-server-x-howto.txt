@@ -351,16 +351,16 @@ Republish a new version
 dependency of bofstd: 
 - C:\pro\evs-vcpkg-registry\ports\bofstd\vcpkg.json and 
 - C:\pro\github\bofstd\vcpkg.json
-change version in CMakeLists.txt project(bofstd VERSION 5.1.16.70) C:/pro/github/bofstd/CMakeLists.txt
+change version in CMakeLists.txt project(bofstd VERSION 5.1.16.74) C:/pro/github/bofstd/CMakeLists.txt
 Make the modifications
-change version 5.1.16.70 in C:/pro/github/bofstd/vcpkg.json file and update version
+change version 5.1.16.74 in C:/pro/github/bofstd/vcpkg.json file and update version
 Push modified file to git
-get push ref eeb75ca2ce9f7779b0596abc8eae7c566e216b03		used also during last phase with the ./update-port.py command at rhe end of the procedure
+get push ref 01fd4e1e686617f6d1b86d8abffaa29a09cb309b		used also during last phase with the ./update-port.py command at rhe end of the procedure
 
-change portfile.cmake file in C:/pro/evs-vcpkg-registry/ports/bofstd/portfile.cmake with the git ref value: eeb75ca2ce9f7779b0596abc8eae7c566e216b03
+change portfile.cmake file in C:/pro/github/onbings-vcpkg-registry/ports/bofstd/portfile.cmake with the git ref value: 01fd4e1e686617f6d1b86d8abffaa29a09cb309b
 portfile.cmake with the new push ref and SHA512 to 0 to get the correct one
 
-validate it with the C:\pro\vcpkg-packaging-env project
+validate it with the C:\pro\github\vcpkg-packaging-env project
 
 add 
 target_link_libraries(vcpkg-packaging-env
@@ -368,22 +368,26 @@ target_link_libraries(vcpkg-packaging-env
   ONBINGS::bofstd
     # Put your link libraries here
 )
-to C:\pro\vcpkg-packaging-env\CMakeLists.txt
+to C:\pro\github\vcpkg-packaging-env\CMakeLists.txt
 add
   "dependencies": [
 	"bofstd"
 	]
-to C:\pro\vcpkg-packaging-env\vcpkg.json	
+to C:\pro\github\vcpkg-packaging-env\vcpkg.json	
 del a dir and create a new "a" dir
 C:/bld>mkdir a
 C:/bld>cd ./a
-C:/bld/a>cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic -DVCPKG_OVERLAY_PORTS=C:/pro/evs-vcpkg-registry/ports/ C:/pro/vcpkg-packaging-env
+Android:
+C:\pro\github\android\cmp_prj C:/pro/github/vcpkg-packaging-env x86_64 32 x64 Debug
 
-[DEBUG] Downloading https://github.com/onbings/bofstd/archive/eeb75ca2ce9f7779b0596abc8eae7c566e216b03.tar.gz
+ou windows:
+C:/bld/a>cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/github/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic -DVCPKG_OVERLAY_PORTS=C:/pro/github/onbings-vcpkg-registry/ports/ C:/pro/github/vcpkg-packaging-env
+
+[DEBUG] Downloading https://github.com/onbings/bofstd/archive/01fd4e1e686617f6d1b86d8abffaa29a09cb309b.tar.gz
 Error: Failed to download from mirror set:
 File does not have the expected hash:
-             url : [ https://github.com/onbings/bofstd/archive/eeb75ca2ce9f7779b0596abc8eae7c566e216b03.tar.gz ]
-       File path : [ C:\pro\vcpkg\downloads\onbings-bofstd-eeb75ca2ce9f7779b0596abc8eae7c566e216b03.tar.gz.20964.part ]
+             url : [ https://github.com/onbings/bofstd/archive/01fd4e1e686617f6d1b86d8abffaa29a09cb309b.tar.gz ]
+       File path : [ C:\pro\vcpkg\downloads\onbings-bofstd-01fd4e1e686617f6d1b86d8abffaa29a09cb309b.tar.gz.20964.part ]
    Expected hash : [ 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 ]
      Actual hash : [ e33ded711b18c07c4aaa20955c17b4bfb02a0449f238f7298ddb9be4f0e504878ddf20f58294c3f8b48059c3e74c101cc53daacc201429e8bc7c1350063315d0 ]
 
@@ -402,28 +406,28 @@ cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUI
 with doc gen:
 cmake -DEVS_MUSE_STORAGE_GENERATE_HELP=ON -DCMAKE_TOOLCHAIN_FILE=C:/pro/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=ON -DVCPKG_TARGET_TRIPLET=evs-x64-swx-windows-dynamic -DVCPKG_OVERLAY_PORTS=C:/pro/evs-vcpkg-registry/ports/ C:/pro/evs-muse
 
-cd C:/pro/evs-vcpkg-registry
+cd C:/pro/github/onbings-vcpkg-registry
 git pull
-python ./update-port.py bofstd 5.1.16.70 eeb75ca2ce9f7779b0596abc8eae7c566e216b03 <- push git ref of the lib: this is the same than url : [ https://github.com/onbings/bofstd/archive/eeb75ca2ce9f7779b0596abc8eae7c566e216b03.tar.gz ]
+python ./update-port.py bofstd 5.1.16.74 01fd4e1e686617f6d1b86d8abffaa29a09cb309b <- push git ref of the lib: this is the same than url : [ https://github.com/onbings/bofstd/archive/01fd4e1e686617f6d1b86d8abffaa29a09cb309b.tar.gz ]
 
-get the new push git ref 949ecf17a451641f3dd6b114732625478ccb067c (C:/pro/evs-vcpkg-registry>git log)
-commit message should be "Update bofstd to 5.1.16.70/eeb75ca2ce9f7779b0596abc8eae7c566e216b03"
+get the new push git ref 16787a78b4a6246b53bf207af4d9337b5aa3e501 (C:/pro/evs-vcpkg-registry>git log)
+commit message should be "Update bofstd to 5.1.16.74/01fd4e1e686617f6d1b86d8abffaa29a09cb309b"
 
-commit 949ecf17a451641f3dd6b114732625478ccb067c (HEAD -> master)
+commit 16787a78b4a6246b53bf207af4d9337b5aa3e501 (HEAD -> master)
 Author: bha <b.harmel@evs.com>
 Date:   Fri Aug 12 14:53:18 2022 +0200
 
-    Update bofstd to 5.1.16.70/eeb75ca2ce9f7779b0596abc8eae7c566e216b03
+    Update bofstd to 5.1.16.74/01fd4e1e686617f6d1b86d8abffaa29a09cb309b
 
 
-update baseline in your vcpkg-configuration of your project which want to use this new lib (C:/pro/evs-muse/vcpkg-configuration.json)
-949ecf17a451641f3dd6b114732625478ccb067c
+update baseline in your vcpkg-configuration of your project which want to use this new lib (C:/pro/github/onbings-muse/vcpkg-configuration.json)
+16787a78b4a6246b53bf207af4d9337b5aa3e501
 
 "registries": [
     {
       "kind": "git",
       "repository": "ssh://git@bitbucket.evs.tv:7999/vcpkg/evs-vcpkg-registry.git",
-      "baseline": "949ecf17a451641f3dd6b114732625478ccb067c",
+      "baseline": "16787a78b4a6246b53bf207af4d9337b5aa3e501",
 	  
 C:/pro/evs-vcpkg-registry: git pull, git log,git push git log
 

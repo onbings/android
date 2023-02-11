@@ -11,8 +11,7 @@ project("demolvgl")
     set(VCPKG_TARGET_TRIPLET "x64-android-32")
     set(VCPKG_ROOT "C:/pro/github/vcpkg")
     include(${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
-message("Activate debug find_package")
-    set(CMAKE_FIND_DEBUG_MODE TRUE)
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -53,10 +52,29 @@ find_library( # Sets the name of the path variable.
 
 find_package(game-activity REQUIRED CONFIG)
 
+#set(CMAKE_FIND_ROOT_PATH C:/Android/repo/32)
+set(CMAKE_FIND_DEBUG_MODE TRUE)
 find_package(bofstd REQUIRED)
 find_package(bof2d REQUIRED)
 find_package(SDL2 REQUIRED)
-find_package(lvgl CONFIG REQUIRED)
+find_package(lvgl REQUIRED)
+
+message("==BOFSTD_FOUND======>" ${BOFSTD_FOUND})
+message("==BOFSTD_INCLUDE_DIRS======>" ${BOFSTD_INCLUDE_DIRS})
+message("==BOFSTD_LIBRARIES======>" ${BOFSTD_LIBRARIES})
+
+message("==BOF2D_FOUND======>" ${BOF2D_FOUND})
+message("==BOF2D_INCLUDE_DIRS======>" ${BOF2D_INCLUDE_DIRS})
+message("==BOF2D_LIBRARIES======>" ${BOF2D_LIBRARIES})
+
+message("==LVGL_FOUND======>" ${LVGL_FOUND})
+message("==LVGL_INCLUDE_DIRS======>" ${LVGL_INCLUDE_DIRS})
+message("==LVGL_LIBRARIES======>" ${LVGL_LIBRARIES})
+
+message("==SDL2_FOUND======>" ${SDL2_FOUND})
+message("==SDL2_INCLUDE_DIRS======>" ${SDL2_INCLUDE_DIRS})
+message("==SDL2_LIBRARIES======>" ${SDL2_LIBRARIES})
+
 
 target_compile_definitions(demolvgl
         PUBLIC
@@ -89,8 +107,8 @@ target_link_libraries( # Specifies the target library.
         ONBINGS::bofstd
         ONBINGS::bof2d
         ONBINGS::lvgl
-        #SDL2::SDL2main
-        #SDL2::SDL2 #SDL2-static
+        SDL2::SDL2main
+        SDL2::SDL2 #SDL2-static
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})

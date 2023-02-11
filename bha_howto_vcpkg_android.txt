@@ -229,7 +229,7 @@ tous les fichiers de config cmake de lvgl doivent etre tous dans C:\pro\github\v
 sinon del C:\Android\bld\32\x86_64\lvgl
 C:\pro\github\android\cmp_prj github\lvgl x86_64 32 x64 Debug
 
-Pour mettre a jour lvgl
+Pour mettre a jour lvgllvgl
 modif ex C:\pro\github\lvgl\lv_conf.h activate #define LV_TICK_CUSTOM     1
 commit
 push ref git in port C:\pro\github\onbings-vcpkg-registry\ports\lvgl\portfile.cmake
@@ -243,4 +243,44 @@ vcpkg remove lvgl:x64-android-32
  C:\pro\github\android\cmp_prj github\lvgl x86_64 32 x64 Debug
  adjust SHA512
  C:\pro\github\android\cmp_prj github\lvgl x86_64 32 x64 Debug
+ 
+ 
+ sdl https://github.com/georgik/sdl2-android-example
+ 
+ https://www.youtube.com/watch?v=5_we0KZqDlU
+ 
+ https://www.d8s.eu/blog/2022-03-27-sdl-on-android/#:~:text=Architecture%20de%20SDL%20sur%20Android,lier%20%C3%A0%20du%20code%20Java.
+ 
+ test sous testbha
+ 
+ https://benedicthenshaw.com/soft_render_sdl2.html
+ https://demensdeum.com/blog/2020/01/12/porting-cpp-sdl-app-on-android/
+ 
+ 
+ 
+ 
+ https://lazyfoo.net/tutorials/SDL/52_hello_mobile/android_windows/index.php
+ 
+ 
+ lvgl and sdl2
+ https://betterprogramming.pub/build-a-c-gui-application-with-lvgl-and-a-sdl2-as-the-backend-85a07ee94a9f
+ 
+ lvgl vcpkg windows
+ md c:\bld\lvgl
+ cd c:\bld\lvgl
+ cmake -DCMAKE_TOOLCHAIN_FILE=C:/pro/github/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=OFF -DVCPKG_TARGET_TRIPLET=x64-windows-static C:/pro/github/lvgl
+ 
+ 
+ 
+ android prebuild:
+ https://developer.android.com/ndk/guides/prebuilts
+ 
+ app/build.graddle
+        externalNativeBuild {
+            ndkBuild {
+                arguments "APP_PLATFORM=android-16"
+                //BHA abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+                abiFilters 'x86_64'
+            }
+
  
